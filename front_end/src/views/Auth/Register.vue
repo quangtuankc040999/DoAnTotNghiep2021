@@ -275,7 +275,7 @@ export default {
       rgba(36, 35, 35, 0.7)
     ),
     url('https://wallpaperaccess.com/full/1925843.jpg');
-  background-size: contain;
+  background-size: cover;
   height: 100vh;
   display: flex;
   justify-content: right;
