@@ -6,4 +6,6 @@ router.post('/', productController.addNewProduct);
 router.get('/category/:categoryName', productController.getProductByCategoryName);
 router.get('/category/:categoryName/:categoryDetail', productController.getProductByCategoryNameAndCategoryDetail);
 router.get('/brand/:brandName', productController.getProductByBrand);
+router.put('/update/:productId', productController.updateProduct);
+router.put('/delete/:productId', productController.deleteProduct);
 module.exports = router;
