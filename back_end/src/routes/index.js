@@ -1,8 +1,8 @@
 const authRouter = require('./modules/auth');
-// const projectRouter = require('./modules/project');
+const categoryRouter = require('./modules/category');
 
 function route(app) {
   app.use('/auth', authRouter);
-  // app.use('/project', projectRouter)
+  app.use('/category', categoryRouter)
 }
 module.exports = route;
