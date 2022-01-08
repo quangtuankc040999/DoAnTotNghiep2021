@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 const User = new Schema(
   {
-    fullName: { type: String, require: true },
+    firstName: { type: String, require: true },
+    lastName: { type: String, require: true },
     email: { type: String, require: true },
     password: { type: String, require: true, minlength: 6 },
     token: { type: String },

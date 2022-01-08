@@ -46,8 +46,7 @@ const actions = {
         commit('setUserInfo', response.data.data);
         localStorage.setItem('token', response.data.data.token);
         commit('ERROR/clearErrorMessage', null, { root: true });
-        // router.go();
-        router.push('/')
+        router.go();
       })
       .catch((err) => {
         commit('ERROR/setErrorMessage', err.response.data.message, {

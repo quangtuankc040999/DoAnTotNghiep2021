@@ -30,7 +30,10 @@ export function showTime(startTime) {
 export function decodeToken() {
   const token = localStorage.getItem('token');
   let user = Vue.$jwt.decode(token, process.env.VUE_APP_TOKEN_SECRET);
-  return user.user;
+  if (!user) {
+    localStorage.clear();
+  }
+  return user;
 }
 
 export function sortLeaderProjects(projects) {
