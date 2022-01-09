@@ -6,8 +6,7 @@ import Products from '../views/Products/Products.vue';
 import Home from '../views/Home.vue'
 import Blog from '../views/Blog/Blog.vue'
 import Contact from '../views/Contact/Contact.vue'
-
-
+import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
   {
@@ -40,6 +39,9 @@ const routes = [
     path: '/',
     name: Home,
     component: Home,
+    meta:{
+      requiresAuth: true
+    }
   },
 ];
 
@@ -48,21 +50,25 @@ const router = new VueRouter({
   routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//   if (to.matched.some((record) => record.meta.requiresAuth)) {
-//     if (!localStorage.getItem('token')) {
-//       next('/login');
-//     } else {
-//       next();
-//     }
-//     next();
-//   } else {
-//     if (!localStorage.getItem('token')) {
-//       next();
-//     } else {
-//       next('/');
-//     }
-//     next();
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  let token = localStorage.getItem('token');
+  let user = decodeToken();
+  console.log(user)
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!token) {
+      next('/login');
+    } else {
+      next();
+    }
+    next();
+  } else {
+    if (!token) {
+      next();
+    } else {
+      next('/');
+    }
+    next();
+  }
+});
+
 export default router;

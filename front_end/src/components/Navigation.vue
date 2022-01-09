@@ -2,7 +2,7 @@
   <div class="nav">
     <div class="content">
       <div class="logo">
-        <a href="/"><img src="../assets/Logo-design-Width.png" ></a>
+        <a href="/"><img src="../assets/Logo-design-Width.png" /></a>
       </div>
       <div class="search-box">
         <v-text-field
@@ -10,10 +10,19 @@
           prepend-inner-icon="mdi-magnify "
         ></v-text-field>
       </div>
-      <div class="action">
+      <div class="action" v-if="!userInfoAuth">
         <ul>
           <router-link tag="li" to="/login">Đăng nhập</router-link>
           <router-link tag="li" to="/signup">Đăng ký</router-link>
+        </ul>
+      </div>
+      <div class="action" v-else>
+        <ul>
+          <router-link tag="li" to="/"
+            >Xin chào: {{ userInfoAuth.firstName
+            }}{{ userInfoAuth.lastName }}</router-link
+          >
+          <!-- <li @click="logout">Đăng xuất</li> -->
         </ul>
       </div>
       <div class="cart">
@@ -51,11 +60,16 @@
                 </v-list-item>
               </router-link>
 
-              <router-link to="/login"
+              <router-link v-if="!userInfoAuth" to="/login"
                 ><v-list-item>
                   <v-list-item-title>Đăng nhập</v-list-item-title>
                 </v-list-item>
               </router-link>
+              <li v-else @click="logout">
+                <v-list-item>
+                  <v-list-item-title>Đăng xuất</v-list-item-title>
+                </v-list-item>
+              </li>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
@@ -66,6 +80,7 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
     drawer: false,
@@ -76,6 +91,20 @@ export default {
     group() {
       this.drawer = false;
     },
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: "USER/userInfo",
+      userInfoAuth: "AUTH/userInfo",
+    }),
+  },
+  methods: {
+    logout() {
+      this.logoutAction();
+    },
+    ...mapActions({
+      logoutAction: "AUTH/logout",
+    }),
   },
 };
 </script>
@@ -102,7 +131,7 @@ export default {
   width: 30%;
 }
 .action {
-  width: 15%;
+  width: 20%;
 }
 .cart {
   width: 10%;
@@ -130,8 +159,9 @@ ul {
   background-color: none;
 }
 li {
-  margin: 5px 10px;
+  margin: 5px 0px;
   cursor: pointer;
+  list-style: none;
 }
 a {
   color: rgba(0, 0, 0, 0.87);
