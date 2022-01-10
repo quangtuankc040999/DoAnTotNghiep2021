@@ -1,35 +1,49 @@
 <template>
   <div>
-      <navigation/>
-      <side-bar/>
-      <footer-rubik/>
+    <navigation />
+    <div class="container">
+      <side-bar class="side-bar" />
+      <list-product class="list-product" />
+    </div>
+    <footer-rubik />
   </div>
 </template>
 
 <script>
-import Navigation from '../../components/Navigation.vue';
-import FooterRubik from '../../components/Footer.vue';
-import SideBar from '../../components/Products/SideBar.vue';
-import { mapActions } from 'vuex';
+import Navigation from "../../components/Navigation.vue";
+import FooterRubik from "../../components/Footer.vue";
+import SideBar from "../../components/Products/SideBar.vue";
+import ListProduct from "../../components/Products/ListProduct.vue";
+import { mapActions } from "vuex";
 export default {
-  name: 'Product',
+  name: "Product",
   components: {
     Navigation,
     FooterRubik,
-    SideBar
+    SideBar,
+    ListProduct,
   },
   methods: {
     ...mapActions({
-      getUserByToken: 'AUTH/getUserByToken',
-    })
+      getUserByToken: "AUTH/getUserByToken",
+    }),
   },
-   created() {
+  created() {
     this.getUserByToken();
   },
-
-}
+};
 </script>
 
-<style>
-
+<style scoped>
+.container{
+display: flex;
+width: 85% !important;
+}
+.side-bar{
+  width: 30%;
+}
+.list-product{
+  width: 65%;
+}
 </style>
+

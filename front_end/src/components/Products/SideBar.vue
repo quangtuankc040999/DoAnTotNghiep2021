@@ -11,8 +11,7 @@
       >
         <template v-slot:activator>
           <v-list-item-content>
-            <v-list-item-title>
-              <i style="font-size: 20px" class="bx bxl-trello" />
+            <v-list-item-title @click="getProductsByCategoryName(category.name)">
               {{ category.name }}
             </v-list-item-title>
           </v-list-item-content>
@@ -24,7 +23,7 @@
             link
             class="category-detail"
           >
-            <v-list-item-title style="font-size: 0.7rem;"> {{ categoryDetail }}</v-list-item-title>
+            <v-list-item-title style="font-size: 0.7rem;" @click="getProductsByCategoryDetail(category.name, categoryDetail)"> {{ categoryDetail }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list-group>
@@ -43,7 +42,20 @@ export default {
   methods: {
     ...mapActions({
       getCategoryInfor: "SIDEBAR/getCategory",
+      getProductsByCategoryNameAction: "PRODUCTS/getProductByCategoryName",
+      getProductByCategoryDetailAction: "PRODUCTS/getProductByCategoryDetail"
     }),
+    getProductsByCategoryName(category){
+      console.log(category)
+      this.getProductsByCategoryNameAction(category)
+      this.$router.push(`/products/${category}`);
+    },
+     getProductsByCategoryDetail(category, categoryDetail){
+      console.log(category),
+      console.log(categoryDetail)
+      this.getProductByCategoryDetailAction({category: category, categoryDetail: categoryDetail})
+      this.$router.push(`/products/${category}/${categoryDetail}`);
+    }
   },
   created() {
     this.getCategoryInfor();

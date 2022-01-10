@@ -6,6 +6,7 @@ import Products from '../views/Products/Products.vue';
 import Home from '../views/Home.vue'
 import Blog from '../views/Blog/Blog.vue'
 import Contact from '../views/Contact/Contact.vue'
+import Profile  from '../views/Profile/Profile.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -24,6 +25,26 @@ const routes = [
     path: '/products',
     name: Products,
     component: Products,
+    meta:{
+      requiresAuth: true
+    }
+  },
+  
+  {
+    path: '/products/:categoryName',
+    name: Products,
+    component: Products,
+    meta:{
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/products/:categoryName/:categoryDetail',
+    name: Products,
+    component: Products,
+    meta:{
+      requiresAuth: true
+    }
   },
   {
     path: '/blog',
@@ -39,6 +60,14 @@ const routes = [
     path: '/',
     name: Home,
     component: Home,
+    meta:{
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/profile',
+    name: Profile,
+    component: Profile,
     meta:{
       requiresAuth: true
     }
