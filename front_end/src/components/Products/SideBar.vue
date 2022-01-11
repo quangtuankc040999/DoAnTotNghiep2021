@@ -46,13 +46,10 @@ export default {
       getProductByCategoryDetailAction: "PRODUCTS/getProductByCategoryDetail"
     }),
     getProductsByCategoryName(category){
-      console.log(category)
       this.getProductsByCategoryNameAction(category)
       this.$router.push(`/products/${category}`);
     },
      getProductsByCategoryDetail(category, categoryDetail){
-      console.log(category),
-      console.log(categoryDetail)
       this.getProductByCategoryDetailAction({category: category, categoryDetail: categoryDetail})
       this.$router.push(`/products/${category}/${categoryDetail}`);
     }
@@ -68,9 +65,18 @@ export default {
   margin-left: 30px !important;
 } 
 .v-list-item__title {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
     font-family: "Open Sans", sans-serif !important;
     color: rgba(102, 102, 102, 0.85) !important;
     text-transform: uppercase !important;
+}
+p{
+  font-size: 1rem;
+    font-family: "Open Sans", sans-serif !important;
+    color: #2e97f4 !important;
+    text-transform: uppercase !important;
+    padding-bottom: 10px;
+    border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
 }
 </style>

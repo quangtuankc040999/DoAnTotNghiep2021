@@ -26,24 +26,29 @@ export default {
   methods: {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
+      getAllProduct: "PRODUCTS/getAllProduct",
     }),
   },
   created() {
     this.getUserByToken();
+    this.getAllProduct();
   },
 };
 </script>
 
 <style scoped>
-.container{
-display: flex;
-width: 85% !important;
+.container {
+  max-width: 90% !important;
+  display: flex;
+  justify-content: center;
+  width: 80% !important;
 }
-.side-bar{
-  width: 30%;
+.side-bar {
+  margin: 0 20px 0 0;
+  width: 20%;
 }
-.list-product{
-  width: 65%;
+.list-product {
+  width: 70%;
 }
 </style>
 

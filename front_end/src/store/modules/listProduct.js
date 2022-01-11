@@ -22,11 +22,15 @@ const actions = {
       });
  },
  getProductByCategoryDetail({ commit },params) {
-    console.log(params)
     http.get(`/product/category/${params.category}/${params.categoryDetail}`).then((response) => {
         commit('setProductInfor', response.data.data);
       });
- }
+ },
+ getAllProduct({ commit }) {
+  http.get(`/product/`).then((response) => {
+      commit('setProductInfor', response.data.data);
+    });
+}
 };
 
 export default {

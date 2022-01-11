@@ -72,6 +72,14 @@ class ProductController {
             listProduct,
         );
     }
+    getAllProduct = async (req, res) => {
+        const listProduct = await Product.find({is_deleted: false});
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            listProduct,
+        );
+    }
 
 }
 module.exports = new ProductController;

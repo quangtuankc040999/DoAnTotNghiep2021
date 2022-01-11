@@ -18,9 +18,9 @@
       </div>
       <div class="action" v-else>
         <ul>
-          <router-link tag="li" to="/"
+          <router-link tag="li" to="/profile"
             >Xin chào: {{ userInfoAuth.firstName
-            }}{{ userInfoAuth.lastName }}</router-link
+            }}{{ userInfoAuth.lastName }} <v-icon>mdi-account</v-icon></router-link
           >
           <!-- <li @click="logout">Đăng xuất</li> -->
         </ul>
@@ -109,7 +109,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .logo,
 .action,
 .cart,
@@ -123,15 +123,16 @@ export default {
 }
 .nav {
   background-color: none;
-  width: 85%;
+  width: 80%;
   margin: 0 auto;
   padding: 7.5px 20px;
 }
 .search-box {
-  width: 30%;
+  width: 20%;
 }
 .action {
-  width: 20%;
+  width: 22%;
+  margin-bottom: 0 !important;
 }
 .cart {
   width: 10%;
@@ -153,6 +154,7 @@ img {
 ul {
   display: flex;
   list-style: none;
+  margin-bottom: 0 !important;
 }
 .v-input {
   height: 20px !important;
@@ -166,5 +168,9 @@ li {
 a {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
+}
+.navigation-drawes{
+  border: 1px solid rgba(102, 102, 102, 0.85);
+  border-radius: 10px;
 }
 </style>
