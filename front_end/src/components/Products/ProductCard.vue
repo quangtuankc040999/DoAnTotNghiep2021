@@ -2,7 +2,7 @@
   <div class="product-card">
     <div class="container">
       <div class="out-of-stock" v-if="product.inventory == 0">
-          <span>Hết hàng</span>
+        <span>Hết hàng</span>
       </div>
       <div class="img">
         <b-carousel
@@ -27,7 +27,7 @@
         <div class="product-infor">
           <div class="name">
             <h6>{{ product.category_name }}</h6>
-            <h3>{{ product.title }}</h3>
+            <h3 @click="viewProductDetail">{{ product.title }}</h3>
           </div>
         </div>
         <div class="product-price">
@@ -64,6 +64,11 @@ export default {
         currency: "VND",
       }).format(price);
     },
+    viewProductDetail() {
+      localStorage.setItem("index", this.indexProduct);
+      localStorage.setItem("productID", this.product._id);
+      this.$router.push(`/products/product-detail/${this.product.title}}`)
+    },
   },
 };
 </script>
@@ -78,24 +83,24 @@ export default {
   width: 200px;
   border: 3px rgba(212, 208, 208, 0.4) solid;
   position: relative;
-  .out-of-stock{
-      display: flex;
-      justify-content: center;
-      align-content: center;
-      color: white;
-      font-weight: 700;
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      z-index: 100;
-      background-color: rgba(56, 51, 51, 0.3);
-      span{
-          margin: auto;
-          top: 0;
-          bottom: 0;
-          left: 0;
-          right: 0;
-      }
+  .out-of-stock {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    color: white;
+    font-weight: 700;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 100;
+    background-color: rgba(56, 51, 51, 0.3);
+    span {
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
   .img {
     opacity: 1.2;
@@ -115,6 +120,7 @@ export default {
       font-size: 1em;
       opacity: 0.9;
       text-align: center;
+      cursor: pointer;
     }
   }
   .product-price {
@@ -153,7 +159,7 @@ export default {
       font-size: 0.7em;
       font-weight: 700;
       background-color: #9e9e9e;
-      padding: 6px;
+      padding: 5px 10px;
       color: rgb(255, 255, 255, 0.9);
       border-radius: 2px;
     }

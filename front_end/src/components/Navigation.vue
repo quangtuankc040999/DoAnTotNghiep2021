@@ -75,7 +75,6 @@
         </v-navigation-drawer>
       </div>
     </div>
-    <hr />
   </div>
 </template>
 
@@ -126,6 +125,7 @@ export default {
   width: 80%;
   margin: 0 auto;
   padding: 7.5px 20px;
+  border-bottom: 3px rgba(187, 166, 166, 0.3) solid;
 }
 .search-box {
   width: 20%;

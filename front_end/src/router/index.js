@@ -6,7 +6,9 @@ import Products from '../views/Products/Products.vue';
 import Home from '../views/Home.vue'
 import Blog from '../views/Blog/Blog.vue'
 import Contact from '../views/Contact/Contact.vue'
-import Profile  from '../views/Profile/Profile.vue'
+import Profile from '../views/Profile/Profile.vue'
+import ProductDetail from '../views/Products/ProductDetail.vue'
+import ListProduct from '../views/Products/ListProduct.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -25,27 +27,46 @@ const routes = [
     path: '/products',
     name: Products,
     component: Products,
-    meta:{
+    meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: '/products/product-detail/:title',
+        name: ProductDetail,
+        component: ProductDetail,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/products/:categoryName',
+        name: ListProduct,
+        component: ListProduct,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/products/:categoryName/:categoryDetail',
+        name: ListProduct,
+        component: ListProduct,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/products',
+        name: ListProduct,
+        component: ListProduct,
+        meta: {
+          requiresAuth: true
+        }
+      },
+    ]
   },
-  
-  {
-    path: '/products/:categoryName',
-    name: Products,
-    component: Products,
-    meta:{
-      requiresAuth: true
-    }
-  },
-  {
-    path: '/products/:categoryName/:categoryDetail',
-    name: Products,
-    component: Products,
-    meta:{
-      requiresAuth: true
-    }
-  },
+
+ 
   {
     path: '/blog',
     name: Blog,
@@ -60,7 +81,7 @@ const routes = [
     path: '/',
     name: Home,
     component: Home,
-    meta:{
+    meta: {
       requiresAuth: true
     }
   },
@@ -68,7 +89,7 @@ const routes = [
     path: '/profile',
     name: Profile,
     component: Profile,
-    meta:{
+    meta: {
       requiresAuth: true
     }
   },

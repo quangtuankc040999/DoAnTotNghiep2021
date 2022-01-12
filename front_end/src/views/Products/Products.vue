@@ -3,7 +3,7 @@
     <navigation />
     <div class="container">
       <side-bar class="side-bar" />
-      <list-product class="list-product" />
+      <router-view/>
     </div>
     <footer-rubik />
   </div>
@@ -13,7 +13,6 @@
 import Navigation from "../../components/Navigation.vue";
 import FooterRubik from "../../components/Footer.vue";
 import SideBar from "../../components/Products/SideBar.vue";
-import ListProduct from "../../components/Products/ListProduct.vue";
 import { mapActions } from "vuex";
 export default {
   name: "Product",
@@ -21,17 +20,15 @@ export default {
     Navigation,
     FooterRubik,
     SideBar,
-    ListProduct,
+    // ListProduct,
   },
   methods: {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
-      getAllProduct: "PRODUCTS/getAllProduct",
     }),
   },
   created() {
     this.getUserByToken();
-    this.getAllProduct();
   },
 };
 </script>

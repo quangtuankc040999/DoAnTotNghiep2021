@@ -80,6 +80,14 @@ class ProductController {
             listProduct,
         );
     }
+    getProduct = async(req, res) =>{
+        const product = await Product.findById(req.params.productId);
+        return apiResponse.successResponseWithData(
+            res,
+            'Get product successfully',
+            product
+        );
+    }
 
 }
 module.exports = new ProductController;
