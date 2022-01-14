@@ -9,9 +9,13 @@ import {BootstrapVue, IconsPlugin, BootstrapVueIcons} from 'bootstrap-vue'
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import 'vueperslides/dist/vueperslides.css'
+import VueClazyLoad from 'vue-clazy-load'
+
 
 Vue.use(BootstrapVue, IconsPlugin, BootstrapVueIcons)
 Vue.use(VueJWT)
+Vue.use(VueClazyLoad);
 Vue.config.productionTip = false
 
 new Vue({

@@ -9,7 +9,7 @@
         class="product"
       />
     </div>
-    <div class="products" v-else>
+    <div  v-else>
       Rất tiếc không có sản phẩm nào thỏa điều kiện tìm kiếm
     </div>
   </div>
@@ -49,14 +49,14 @@ export default {
   watch: {
     $route() {
       if (this.$route.params.categoryName) {
-      this.getProductsByCategoryNameAction(this.$route.params.categoryName);
-      if (this.$route.params.categoryDetail) {
-        this.getProductByCategoryDetailAction({
-          category: this.$route.params.categoryName,
-          categoryDetail: this.$route.params.categoryDetail,
-        });
+        this.getProductsByCategoryNameAction(this.$route.params.categoryName);
+        if (this.$route.params.categoryDetail) {
+          this.getProductByCategoryDetailAction({
+            category: this.$route.params.categoryName,
+            categoryDetail: this.$route.params.categoryDetail,
+          });
+        }
       }
-    }
     },
   },
 };
@@ -65,13 +65,13 @@ export default {
 <style lang="scss" scoped>
 .list-product {
   .products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template: 1fr 1fr  / 1fr 1fr 1fr 1fr;
+    grid-gap: 15px;
+    width: 100%;
     .product {
       height: 350px;
       width: 25%;
-      margin: 15px;
     }
   }
 }
