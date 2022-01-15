@@ -37,7 +37,7 @@
             >{{ productInfor[index].category_detail }}
           </router-link>
         </div>
-        <p class="title">{{ productInfor[index].title }} </p>
+        <p class="title">{{ productInfor[index].title }}</p>
         <div class="price">
           <h4>{{ formatPrice(productInfor[index].sale_price) }}</h4>
           <div class="discount" v-if="productInfor[index].discount > 0">
@@ -53,15 +53,16 @@
           <v-card flat class="py-12">
             <v-card-text>
               <v-row align="center" justify="center">
-                <v-btn-toggle v-model="toggle_exclusive" mandatory>
-                  <v-btn> - </v-btn>
-                  <v-btn> + </v-btn>
+                <v-btn-toggle mandatory>
+                  <v-btn @click="updateCart('subtract')"> - </v-btn>
+                  <span class="cart-quantity">{{ product_quantity }}</span>
+                  <v-btn @click="updateCart('add', productInfor[index].inventory)"> + </v-btn>
                 </v-btn-toggle>
               </v-row>
             </v-card-text>
           </v-card>
           <div class="select-btn">
-            <v-btn class="btn-add-cart" color="primary"> MUA HÀNG </v-btn>
+            <v-btn class="btn-add-cart" color="primary" @click="setProductCart({product: productInfor[index], quantity: product_quantity})"> MUA HÀNG </v-btn>
           </div>
         </div>
         <p class="danh-muc">
@@ -85,7 +86,7 @@
 </template>
 <script>
 import { VueperSlides, VueperSlide } from "vueperslides";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters} from "vuex";
 export default {
   components: {
     VueperSlides,
@@ -94,6 +95,7 @@ export default {
   data() {
     return {
       index: localStorage.getItem("index"),
+      product_quantity: 1,
     };
   },
   computed: {
@@ -104,7 +106,11 @@ export default {
   methods: {
     ...mapActions({
       getProductInforAction: "PRODUCTS/getProduct",
+      setProductCartAction: "CART/setProductCart"
     }),
+    setProductCart(product){
+      this.setProductCartAction(product);
+    },
     getProductInfor(productId) {
       this.getProductInforAction(productId);
     },
@@ -113,6 +119,17 @@ export default {
         style: "currency",
         currency: "VND",
       }).format(price);
+    },
+    updateCart(updateType, inventory) {
+      if (updateType === "subtract") {
+        if (this.product_quantity !== 0) {
+          this.product_quantity--;
+        }
+      } else {
+        if (this.product_quantity <= inventory) {
+          this.product_quantity++;
+        }
+      }
     },
   },
 };
@@ -134,7 +151,7 @@ export default {
   display: flex;
   width: 100%;
   .product-infor {
-    padding-top: 20px ;
+    padding-top: 20px;
     margin-left: 40px;
     width: 50%;
     .category {
@@ -182,8 +199,16 @@ export default {
     .action-buy {
       display: flex;
       align-self: center;
+      span {
+        justify-content: center;
+        align-self: center;
+        font-size: 20px !important;
+        margin: 0 1rem;
+      }
       .select-btn {
         display: flex;
+        justify-content: center;
+        align-self: center;
         margin-left: 20px;
         .btn-add-cart {
           background-color: #d26e4b;

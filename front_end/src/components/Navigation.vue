@@ -19,14 +19,31 @@
       <div class="action" v-else>
         <ul>
           <router-link tag="li" to="/profile"
-            >Xin chào: {{ userInfoAuth.firstName
-            }}{{ userInfoAuth.lastName }} <v-icon>mdi-account</v-icon></router-link
+            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }}
+            <v-icon>mdi-account</v-icon></router-link
           >
           <!-- <li @click="logout">Đăng xuất</li> -->
         </ul>
       </div>
-      <div class="cart">
-        <div>Giỏ hàng/0đ <v-icon>mdi-basket </v-icon></div>
+      <div v-if="productCart.length > 0" class="cart">
+        <div>
+          Giỏ hàng/{{formatPrice(totalPrice(productCart))}}
+          <v-badge
+            bordered
+            color="error"
+            v-bind:content="totalQuantity(productCart)"
+            offset-x="10"
+            offset-y="10"
+          >
+            <v-icon>mdi-basket </v-icon>
+          </v-badge>
+        </div>
+      </div>
+      <div v-else class="cart">
+        <div>
+          Giỏ hàng/0đ
+          <v-icon>mdi-basket </v-icon>
+        </div>
       </div>
       <div class="navigation-drawes">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -93,17 +110,36 @@ export default {
   },
   computed: {
     ...mapGetters({
+      productCart: "CART/productCart",
       userInfo: "USER/userInfo",
       userInfoAuth: "AUTH/userInfo",
     }),
   },
   methods: {
+     formatPrice(price) {
+      return new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "VND",
+      }).format(price);
+    },
     logout() {
       this.logoutAction();
     },
     ...mapActions({
       logoutAction: "AUTH/logout",
     }),
+    totalQuantity(productCart) {
+      return productCart.reduce(
+        (total, product) => total + product.quantity,
+        0
+      );
+    },
+    totalPrice(productCart){
+       return productCart.reduce(
+        (total, product) => total + product.quantity*product.product.sale_price,
+        0
+      );
+    }
   },
 };
 </script>
@@ -135,7 +171,7 @@ export default {
   margin-bottom: 0 !important;
 }
 .cart {
-  width: 10%;
+  width: 20%;
 }
 img {
   width: 100%;
@@ -169,8 +205,11 @@ a {
   color: rgba(0, 0, 0, 0.87);
   text-decoration: none;
 }
-.navigation-drawes{
+.navigation-drawes {
   border: 1px solid rgba(102, 102, 102, 0.85);
   border-radius: 10px;
+}
+.v-badge__badge {
+  background-color: rgba(214, 100, 100, 0.8);
 }
 </style>
