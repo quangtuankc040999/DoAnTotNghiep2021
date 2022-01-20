@@ -56,13 +56,33 @@
                 <v-btn-toggle mandatory>
                   <v-btn @click="updateCart('subtract')"> - </v-btn>
                   <span class="cart-quantity">{{ product_quantity }}</span>
-                  <v-btn @click="updateCart('add', productInfor[index].inventory)"> + </v-btn>
+                  <v-btn
+                    @click="updateCart('add', productInfor[index].inventory)"
+                  >
+                    +
+                  </v-btn>
                 </v-btn-toggle>
               </v-row>
             </v-card-text>
           </v-card>
           <div class="select-btn">
-            <v-btn class="btn-add-cart" color="primary" @click="setProductCart({product: productInfor[index], quantity: product_quantity})"> MUA HÀNG </v-btn>
+            <v-btn
+              class="btn-add-cart"
+              color="primary"
+              @click="
+                setProductCart(
+                  userInfoAuth._id,
+                  {
+                    idProduct: productInfor[index]._id,
+                    product: productInfor[index],
+                    quantity: product_quantity,
+                  },
+                  productCarts
+                )
+              "
+            >
+              MUA HÀNG
+            </v-btn>
           </div>
         </div>
         <p class="danh-muc">
@@ -86,7 +106,7 @@
 </template>
 <script>
 import { VueperSlides, VueperSlide } from "vueperslides";
-import { mapActions, mapGetters} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   components: {
     VueperSlides,
@@ -101,15 +121,46 @@ export default {
   computed: {
     ...mapGetters({
       productInfor: "PRODUCTS/productInfor",
+      userInfoAuth: "AUTH/userInfo",
+      productCarts: "CART/productCart",
     }),
   },
   methods: {
     ...mapActions({
       getProductInforAction: "PRODUCTS/getProduct",
-      setProductCartAction: "CART/setProductCart"
+      getProductCartOfUserAction: "CART/userProductCart",
+      pushProductToCartAction: "CART/pushProductToCart",
+      pushProductToCartDBAction: "CART/pushProductToCartDB",
+      updateQuantityProductFromCartDBAction:
+        "CART/updateQuantityProductFromCartDB",
+      updateQuantityProductFromCartAction: "CART/updateQuantityProductFromCart",
     }),
-    setProductCart(product){
-      this.setProductCartAction(product);
+    setProductCart(userId, product, productCarts) {
+      let check = false; // kiem tra san pham co trong gio hang hay chua
+      for (let index in productCarts) {
+        if (product.product._id == productCarts[index].product._id) {
+          check = true; // check san pham da co trong gio hang roi
+          this.updateQuantityProductFromCartDBAction({ 
+            id: userId,
+            product: {
+              idProduct: product.product._id,
+              quantity: product.quantity,
+              quantity_old: productCarts[index].quantity,
+            },
+          });
+          this.updateQuantityProductFromCartAction({ 
+            index: index,
+            idProduct: product.product._id,
+            quantity: product.quantity,
+            quantity_old: productCarts[index].quantity,
+          });
+          break;
+        }
+      }
+      if (!check) {
+        this.pushProductToCartAction(product); // ham nay da thay doi cai state roi
+        this.pushProductToCartDBAction({ id: userId, product: product });
+      }
     },
     getProductInfor(productId) {
       this.getProductInforAction(productId);
@@ -126,11 +177,14 @@ export default {
           this.product_quantity--;
         }
       } else {
-        if (this.product_quantity <= inventory) {
+        if (this.product_quantity < inventory) {
           this.product_quantity++;
         }
       }
     },
+  },
+  created() {
+    this.getProductCartOfUserAction(this.userInfoAuth._id);
   },
 };
 </script>

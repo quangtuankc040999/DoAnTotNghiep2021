@@ -40,7 +40,11 @@
           </div>
         </div>
         <div class="select-btn">
-          <button class="btn-add-cart">MUA HÀNG</button>
+          <button
+            class="btn-add-cart"
+            @click="viewProductDetail"
+          >XEM CHI TIẾT
+          </button>
         </div>
       </div>
     </div>
@@ -67,7 +71,7 @@ export default {
     viewProductDetail() {
       localStorage.setItem("index", this.indexProduct);
       localStorage.setItem("productID", this.product._id);
-      this.$router.push(`/products/product-detail/${this.product.title}}`)
+      this.$router.push(`/products/product-detail/${this.product.title}}`);
     },
   },
 };
@@ -162,6 +166,9 @@ export default {
       padding: 5px 10px;
       color: rgb(255, 255, 255, 0.9);
       border-radius: 2px;
+    }
+    .btn-add-cart:hover {
+      background-color: #3d3a3a;
     }
   }
 }

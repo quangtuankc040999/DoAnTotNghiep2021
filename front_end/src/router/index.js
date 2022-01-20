@@ -9,6 +9,8 @@ import Contact from '../views/Contact/Contact.vue'
 import Profile from '../views/Profile/Profile.vue'
 import ProductDetail from '../views/Products/ProductDetail.vue'
 import ListProduct from '../views/Products/ListProduct.vue'
+import Cart from '../views/Products/Cart.vue'
+import Payment from '../views/Products/Payment.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -65,7 +67,22 @@ const routes = [
       },
     ]
   },
-
+  {
+    path: '/cart',
+    name: Cart,
+    component: Cart,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/payment',
+    name: Payment,
+    component: Payment,
+    meta: {
+      requiresAuth: true
+    }
+  },
  
   {
     path: '/blog',

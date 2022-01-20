@@ -25,10 +25,14 @@ export default {
   methods: {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
+      getProductCart: 'CART/userProductCart'
+
     }),
   },
   created() {
     this.getUserByToken();
+    this.getProductCart(this.userInfoAuth._id)
+
   },
 };
 </script>

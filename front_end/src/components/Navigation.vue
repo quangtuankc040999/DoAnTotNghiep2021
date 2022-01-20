@@ -26,8 +26,8 @@
         </ul>
       </div>
       <div v-if="productCart.length > 0" class="cart">
-        <div>
-          Giỏ hàng/{{formatPrice(totalPrice(productCart))}}
+        <div @click="showCart = !showCart">
+          Giỏ hàng/{{ formatPrice(totalPrice(productCart)) }}
           <v-badge
             bordered
             color="error"
@@ -37,12 +37,37 @@
           >
             <v-icon>mdi-basket </v-icon>
           </v-badge>
+
+          <div v-if="showCart" class="cart-dropdown" >
+            <ul class="cart-dropdown__list">
+              <li v-for="(product, index) in productCart" :key="index">
+                <img v-bind:src="product.product.image[0]" alt="" />
+                {{ product.product.title }}
+                <br />
+                {{ product.quantity }} *
+                {{ formatPrice(product.product.sale_price) }}
+              </li>
+            </ul>
+            <p>
+              <span>Tạm tính:</span> {{ formatPrice(totalPrice(productCart)) }}
+            </p>
+            <div class="btn-action">
+              <router-link to="/cart">
+                <v-btn class="watch-cart"> XEM GIỎ HÀNG </v-btn>
+              </router-link>
+              <router-link to="/payment">
+                <v-btn class="payment"> THANH TOÁN </v-btn>
+              </router-link>
+            </div>
+          </div>
         </div>
       </div>
       <div v-else class="cart">
         <div>
-          Giỏ hàng/0đ
-          <v-icon>mdi-basket </v-icon>
+          <router-link to="/cart">
+            Giỏ hàng/0đ
+            <v-icon>mdi-basket </v-icon>
+          </router-link>
         </div>
       </div>
       <div class="navigation-drawes">
@@ -101,6 +126,7 @@ export default {
   data: () => ({
     drawer: false,
     group: null,
+    showCart: false,
   }),
 
   watch: {
@@ -116,7 +142,11 @@ export default {
     }),
   },
   methods: {
-     formatPrice(price) {
+    ...mapActions({
+      getUserByToken: "AUTH/getUserByToken",
+    }),
+
+    formatPrice(price) {
       return new Intl.NumberFormat("de-DE", {
         style: "currency",
         currency: "VND",
@@ -134,17 +164,18 @@ export default {
         0
       );
     },
-    totalPrice(productCart){
-       return productCart.reduce(
-        (total, product) => total + product.quantity*product.product.sale_price,
+    totalPrice(productCart) {
+      return productCart.reduce(
+        (total, product) =>
+          total + product.quantity * product.product.sale_price,
         0
       );
-    }
+    },
   },
 };
 </script>
 
-<style >
+<style lang="scss" >
 .logo,
 .action,
 .cart,
@@ -172,6 +203,7 @@ export default {
 }
 .cart {
   width: 20%;
+  position: relative;
 }
 img {
   width: 100%;
@@ -211,5 +243,80 @@ a {
 }
 .v-badge__badge {
   background-color: rgba(214, 100, 100, 0.8);
+}
+.cart-dropdown {
+  background: white;
+  border: 1px solid lightgray;
+  border-radius: 3px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+  color: rgb(10, 10, 10);
+  font-size: 1rem;
+  font-weight: 300;
+  overflow: auto;
+  padding: 0 1rem;
+  position: absolute;
+  top: 30px;
+  left: -10px;
+  z-index: 1000;
+  right: 0;
+  width: 20rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .cart-dropdown__list {
+    overflow-y: auto;
+    list-style: none;
+    display: flex;
+    height: 300px;
+    flex-direction: column;
+    align-items: center;
+
+    li {
+      width: 90%;
+      margin: 0.4rem 0;
+      display: flex;
+      align-items: center;
+      padding-bottom: 5px;
+      border-bottom: rgba(177, 171, 171, 0.5) 1px solid;
+      img {
+        height: 90%;
+        width: 50%;
+        margin-right: 10px;
+      }
+    }
+  }
+  p {
+    width: 90%;
+    color: black !important;
+    font-weight: 700;
+    text-align: center;
+    border-bottom: rgba(177, 171, 171, 0.5) 2px solid;
+    span {
+      text-transform: unset !important;
+      color: rgba(177, 171, 171, 0.9);
+    }
+  }
+  .btn-action {
+    width: 90%;
+    text-align: center;
+    cursor: pointer;
+    a:hover {
+      text-decoration: none;
+    }
+    .watch-cart {
+      width: 100%;
+      color: white !important;
+      font-weight: 700;
+      background-color: #9e9e9e !important;
+      margin-bottom: 10px;
+    }
+    .payment {
+      width: 100%;
+      color: white !important;
+      font-weight: 700;
+      background-color: #d26e4b !important;
+      margin-bottom: 10px;
+    }
+  }
 }
 </style>

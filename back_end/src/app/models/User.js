@@ -13,6 +13,7 @@ const User = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Role',
     },
+    productCart: [{type: Object}]
   },
   {
     timestamps: true,
