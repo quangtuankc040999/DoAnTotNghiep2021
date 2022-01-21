@@ -71,7 +71,7 @@ export default {
     viewProductDetail() {
       localStorage.setItem("index", this.indexProduct);
       localStorage.setItem("productID", this.product._id);
-      this.$router.push(`/products/product-detail/${this.product.title}}`);
+      this.$router.push(`/products/product-detail/${this.product._id}`);
     },
   },
 };

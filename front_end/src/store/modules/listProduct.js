@@ -1,17 +1,24 @@
 import http from '../../service/api.js';
 const state = {
   productInfor: null,
+  productById: null
 };
 
 const getters = {
   productInfor(state) {
     return state.productInfor;
   },
+  productById(state) {
+    return state.productById;
+  },
 
 };
 const mutations = {
   setProductInfor(state, productInfor) {
     state.productInfor = productInfor;
+  },
+  setProductInforById(state, productInfor) {
+    state.productById = productInfor;
   },
 };
 const actions = {
@@ -31,8 +38,9 @@ const actions = {
     });
   },
   getProduct({ commit },params) {
+    console.log(params, '---------------')
     http.get(`/product/${params}`).then((response) => {
-      commit('setProductInfor', response.data.data);
+      commit('setProductInforById', response.data.data);
     });
   }
 };

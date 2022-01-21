@@ -26,7 +26,7 @@
         </ul>
       </div>
       <div v-if="productCart.length > 0" class="cart">
-        <div @click="showCart = !showCart">
+        <div class="cart-label">
           Giỏ hàng/{{ formatPrice(totalPrice(productCart)) }}
           <v-badge
             bordered
@@ -38,14 +38,24 @@
             <v-icon>mdi-basket </v-icon>
           </v-badge>
 
-          <div v-if="showCart" class="cart-dropdown" >
+          <div class="cart-dropdown">
             <ul class="cart-dropdown__list">
-              <li v-for="(product, index) in productCart" :key="index">
+              <li
+                v-for="(product, index) in productCart"
+                :key="index"
+              >
                 <img v-bind:src="product.product.image[0]" alt="" />
-                {{ product.product.title }}
-                <br />
-                {{ product.quantity }} *
-                {{ formatPrice(product.product.sale_price) }}
+                <div>
+                  <router-link
+                    class="product-cart"
+                    :to="`/products/product-detail/${product.product._id}`"
+                  >
+                    {{ product.product.title }}
+                  </router-link>
+                  <br />
+                  {{ product.quantity }} *
+                  {{ formatPrice(product.product.sale_price) }}
+                </div>
               </li>
             </ul>
             <p>
@@ -260,7 +270,6 @@ a {
   z-index: 1000;
   right: 0;
   width: 20rem;
-  display: flex;
   flex-direction: column;
   align-items: center;
   .cart-dropdown__list {
@@ -282,6 +291,12 @@ a {
         height: 90%;
         width: 50%;
         margin-right: 10px;
+      }
+      .product-cart {
+        color: rgb(0, 0, 0) !important;
+      }
+      .product-cart:hover {
+        text-decoration: none;
       }
     }
   }
@@ -318,5 +333,15 @@ a {
       margin-bottom: 10px;
     }
   }
+}
+.cart-dropdown {
+  display: none;
+}
+.cart-label {
+  top: 7px;
+  padding-bottom: 6px;
+}
+.cart:hover .cart-dropdown {
+  display: flex;
 }
 </style>

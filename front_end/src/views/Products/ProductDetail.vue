@@ -14,7 +14,7 @@
           >
             <vueper-slide
               class="slide"
-              v-for="(img, i) in productInfor[index].image"
+              v-for="(img, i) in productById.image"
               :key="i"
               :image="img"
             >
@@ -28,25 +28,23 @@
       </div>
       <div class="product-infor">
         <div class="category">
-          <router-link :to="`/products/${productInfor[index].category_name}`"
-            >{{ productInfor[index].category_name }}
+          <router-link :to="`/products/${productById.category_name}`"
+            >{{ productById.category_name }}
           </router-link>
           <span> / </span>
           <router-link
-            :to="`/products/${productInfor[index].category_name}/${productInfor[index].category_detail}`"
-            >{{ productInfor[index].category_detail }}
+            :to="`/products/${productById.category_name}/${productById.category_detail}`"
+            >{{ productById.category_detail }}
           </router-link>
         </div>
-        <p class="title">{{ productInfor[index].title }}</p>
+        <p class="title">{{ productById.title }}</p>
         <div class="price">
-          <h4>{{ formatPrice(productInfor[index].sale_price) }}</h4>
-          <div class="discount" v-if="productInfor[index].discount > 0">
+          <h4>{{ formatPrice(productById.sale_price) }}</h4>
+          <div class="discount" v-if="productById.discount > 0">
             <h6 class="old-price">
-              {{ formatPrice(productInfor[index].starting_price) }}
+              {{ formatPrice(productById.starting_price) }}
             </h6>
-            <h6 class="discount-persent">
-              -{{ productInfor[index].discount }}%
-            </h6>
+            <h6 class="discount-persent">-{{ productById.discount }}%</h6>
           </div>
         </div>
         <div class="action-buy">
@@ -56,9 +54,7 @@
                 <v-btn-toggle mandatory>
                   <v-btn @click="updateCart('subtract')"> - </v-btn>
                   <span class="cart-quantity">{{ product_quantity }}</span>
-                  <v-btn
-                    @click="updateCart('add', productInfor[index].inventory)"
-                  >
+                  <v-btn @click="updateCart('add', productById.inventory)">
                     +
                   </v-btn>
                 </v-btn-toggle>
@@ -73,8 +69,8 @@
                 setProductCart(
                   userInfoAuth._id,
                   {
-                    idProduct: productInfor[index]._id,
-                    product: productInfor[index],
+                    idProduct: productById._id,
+                    product: productById,
                     quantity: product_quantity,
                   },
                   productCarts
@@ -86,13 +82,13 @@
           </div>
         </div>
         <p class="danh-muc">
-          <span>Danh mục: </span> {{ productInfor[index].category_name }},{{
-            productInfor[index].category_detail
+          <span>Danh mục: </span> {{ productById.category_name }},{{
+            productById.category_detail
           }}
         </p>
         <p class="product-key">
           <span>Từ khoá: </span>
-          <span v-for="i in productInfor[index].product_key" v-bind:key="i"
+          <span v-for="i in productById.product_key" v-bind:key="i"
             >{{ i }},
           </span>
         </p>
@@ -100,7 +96,7 @@
     </div>
     <div class="description">
       <p class="description-title">description</p>
-      <p class="description-content">{{ productInfor[index].description }}</p>
+      <p class="description-content">{{ productById.description }}</p>
     </div>
   </div>
 </template>
@@ -115,12 +111,13 @@ export default {
   data() {
     return {
       index: localStorage.getItem("index"),
+      productId: localStorage.getItem("productID"),
       product_quantity: 1,
     };
   },
   computed: {
     ...mapGetters({
-      productInfor: "PRODUCTS/productInfor",
+      productById: "PRODUCTS/productById",
       userInfoAuth: "AUTH/userInfo",
       productCarts: "CART/productCart",
     }),
@@ -140,7 +137,7 @@ export default {
       for (let index in productCarts) {
         if (product.product._id == productCarts[index].product._id) {
           check = true; // check san pham da co trong gio hang roi
-          this.updateQuantityProductFromCartDBAction({ 
+          this.updateQuantityProductFromCartDBAction({
             id: userId,
             product: {
               idProduct: product.product._id,
@@ -148,7 +145,7 @@ export default {
               quantity_old: productCarts[index].quantity,
             },
           });
-          this.updateQuantityProductFromCartAction({ 
+          this.updateQuantityProductFromCartAction({
             index: index,
             idProduct: product.product._id,
             quantity: product.quantity,
@@ -162,9 +159,7 @@ export default {
         this.pushProductToCartDBAction({ id: userId, product: product });
       }
     },
-    getProductInfor(productId) {
-      this.getProductInforAction(productId);
-    },
+
     formatPrice(price) {
       return new Intl.NumberFormat("de-DE", {
         style: "currency",
@@ -185,6 +180,15 @@ export default {
   },
   created() {
     this.getProductCartOfUserAction(this.userInfoAuth._id);
+    this.getProductInforAction(this.$route.params.id);
+  },
+  watch: {
+    $route() {
+      if (this.$route.params.id) {
+        this.$router.go();
+        this.getProductInforAction(this.$route.params.id);
+      }
+    },
   },
 };
 </script>
