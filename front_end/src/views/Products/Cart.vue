@@ -3,30 +3,37 @@
     <navigation />
     <div v-if="productCarts.length > 0" class="cart-container">
       <div class="product-list">
-        <table>
+        <table class="table-infor">
           <thead>
             <tr>
-              <th style="width: 45%">sản phẩm</th>
-              <th style="width: 10%">Giá</th>
+              <th style="width: 50%" colspan="2">sản phẩm</th>
+              <th style="width: 15%">Giá</th>
               <th style="width: 25%">Số lượng</th>
-              <th style="width: 10%">Tạm tính</th>
+              <th style="width: 15%">Tạm tính</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(product, index) in productCarts" :key="index">
-              <td style="width: 45%">
-                <v-btn
+              <td style="width: 25%">
+                <button
+                  class="btn-del"
                   @click="
                     removeProductFromCart(userInfoAuth._id, {
                       idProduct: product.product._id,
                     })
                   "
-                  >x</v-btn
+                  >x</button
                 >
                 <img v-bind:src="product.product.image[0]" alt="" />
-                <span>{{ product.product.title }}</span>
               </td>
-              <td style="width: 10%">
+              <td style="width: 25%; font-weight: 400">
+                <router-link
+                  :to="`/products/product-detail/${product.product._id}`"
+                >
+                  <span>{{ product.product.title }}</span>
+                </router-link>
+              </td>
+              <td style="width: 15%">
                 {{ formatPrice(product.product.sale_price) }}
               </td>
               <td style="width: 25%">
@@ -71,7 +78,7 @@
                   </v-card-text>
                 </v-card>
               </td>
-              <td style="width: 10%">
+              <td style="width: 15%">
                 {{
                   formatPrice(
                     calOne(product.quantity, product.product.sale_price)
@@ -83,7 +90,9 @@
         </table>
         <div class="action-cart">
           <router-link to="/products">
-            <v-btn class="back-products"> TIẾP TỤC XEM SẢN PHẨM </v-btn>
+            <v-btn class="back-products"
+              ><v-icon>mdi-arrow-left-circle</v-icon>TIẾP TỤC XEM SẢN PHẨM
+            </v-btn>
           </router-link>
           <v-btn
             class="update-cart"
@@ -205,6 +214,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a{
+    color: rgb(0, 0, 0) !important;
+    font-weight: 400;
+    margin-left: 0;
+}
+a:hover {
+  text-decoration: none;
+  color: #646161 !important;
+  font-weight: 500;
+}
 .cart-container {
   display: flex;
   margin: 0 auto;
@@ -214,10 +233,72 @@ export default {
     border-right: 1px solid rgba(156, 151, 151, 0.5);
     padding-right: 2%;
     margin-right: 2%;
-
-    td img {
-      height: 100px;
-      width: 100px;
+    .table-infor {
+      margin-bottom: 20px;
+      thead tr th {
+        text-transform: uppercase;
+        color: #2e97f4;
+        border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
+        font-size: 1.1rem;
+      }
+      td img {
+        padding: 10px;
+        padding-right: 0;
+        height: 130px;
+        width: 130px;
+      }
+      td {
+        font-size: 20px !important;
+        text-align: left;
+        font-weight: 600;
+      }
+      tbody tr {
+        margin-top: 10px;
+        border-bottom: rgba(177, 171, 171, 0.5) 0.5px solid;
+      }
+      tbody tr td .btn-del {
+        padding-bottom: 30px;
+        text-align: center;
+        width: 30px !important;
+        height: 30px !important;
+        color: rgba(173, 173, 173, 0.4);
+        border: 2px solid rgba(173, 173, 173, 0.4);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      tbody tr td .btn-del:hover {
+        color: black;
+        border: 2px solid rgba(0, 0, 0, 0.9);
+      }
+    }
+    .action-cart {
+      display: flex;
+      justify-content: left;
+      .back-products {
+        background: rgb(253, 253, 253);
+        border: 2px solid rgba(94, 92, 92, 0.6);
+        color: rgba(94, 92, 92, 0.6);
+        border-radius: 0;
+        font-weight: 700;
+        cursor: pointer;
+        margin: 0 20px 20px 0;
+      }
+      .back-products:hover {
+        background-color: #9e9e9e;
+        color: white;
+      }
+      .update-cart {
+        border-radius: 0;
+        background-color: #9e9e9e;
+        color: white;
+        font-weight: 700;
+      }
+      .update-cart:hover {
+        border-radius: 0;
+        background-color: #615f5f;
+        color: white;
+        font-weight: 700;
+      }
     }
   }
   .cal-price {
