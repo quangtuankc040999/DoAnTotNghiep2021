@@ -7,6 +7,8 @@ import SideBar from './modules/sideBar'
 import ErrorMessage from './modules/errorMessage';
 import ListProduct from './modules/listProduct'
 import Cart from './modules/cart'
+import Payment from './modules/payment'
+import ProductAction from './modules/admin/productAction'
 
 Vue.use(Vuex);
 
@@ -19,5 +21,7 @@ export default new Vuex.Store({
     SIDEBAR: SideBar,
     PRODUCTS: ListProduct,
     CART: Cart,
+    PAYMENT: Payment,
+    PRODUCTACTION: ProductAction
   },
 });

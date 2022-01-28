@@ -5,6 +5,7 @@
       <form @submit.prevent="makeOrder">
         <div class="form-order">
           <h3>Thanh toán vào giao hàng</h3>
+          <h5>Thông tin cá nhân</h5>
           <div class="form-group">
             <input
               type="text"
@@ -50,8 +51,9 @@
               </p>
             </div>
           </div>
+          <h5>Địa chỉ</h5>
+          <label for="">Tỉnh- Thành phố</label>
           <div class="province group">
-            <label for="">Tỉnh- Thành phố</label>
             <select
               v-model="selectedProvince"
               @change="fetchDistricts"
@@ -71,9 +73,8 @@
               </p>
             </div>
           </div>
-
+          <label for="">Quận - Huyện</label>
           <div class="district group">
-            <label for="">Quận - Huyện</label>
             <select
               v-model="selectedDistrict"
               @change="fetchCities"
@@ -93,9 +94,8 @@
               </p>
             </div>
           </div>
-
+          <label for="">Phường - xã</label>
           <div class="ward group">
-            <label for="">Phường - xã</label>
             <select v-model="selectedCity" :disabled="!cities.length">
               <option v-for="city in cities" :key="city.id" :value="city">
                 {{ city.Name }}
@@ -112,6 +112,7 @@
               type="text"
               placeholder="Địa chỉ cụ thể"
               v-model="addressDetail"
+              style="margin-top: 20px !important"
             />
             <div class="errors">
               <p v-show="showErrors.emptyAddressDetail" class="errors">
@@ -120,14 +121,14 @@
             </div>
           </div>
           <div class="add-infor">
-            <label>Thông tin bổ sung</label>
+            <h5>Thông tin bổ sung</h5>
             <textarea
               name=""
               id=""
-              cols="30"
-              rows="10"
-              placeholder="Thông tin về giờ giấc nhận hàng..."
+              rows="4"
+              placeholder="Ghi chú về đơn hàng. Ví dụ: Thông tin về giờ giấc giao hàng chi tiết hơn..."
               v-model="orderInput.additionalInformation"
+              style="width: 90%"
             ></textarea>
           </div>
         </div>
@@ -142,8 +143,10 @@
             </thead>
             <tbody>
               <tr v-for="(product, index) in productCarts" :key="index">
-                <td>{{ product.product.title }} x {{ product.quantity }}</td>
                 <td>
+                  {{ product.product.title }} x <b>{{ product.quantity }}</b>
+                </td>
+                <td class="price">
                   {{
                     formatPrice(
                       calOne(product.quantity, product.product.sale_price)
@@ -152,20 +155,24 @@
                 </td>
               </tr>
               <tr>
-                <td>tạm tính</td>
-                <td>{{ formatPrice(totalPrice(productCarts)) }}</td>
+                <td class="blue">Tạm tính</td>
+                <td class="price">
+                  {{ formatPrice(totalPrice(productCarts)) }}
+                </td>
               </tr>
               <tr>
-                <td>giao hàng</td>
-                <td>{{ formatPrice(15000) }}</td>
+                <td class="blue">Giao hàng</td>
+                <td class="price">{{ formatPrice(15000) }}</td>
               </tr>
               <tr>
-                <td>Tổng cộng</td>
-                <td>{{ formatPrice(15000 + totalPrice(productCarts)) }}</td>
+                <td class="blue">Tổng cộng</td>
+                <td class="price">
+                  {{ formatPrice(15000 + totalPrice(productCarts)) }}
+                </td>
               </tr>
             </tbody>
           </table>
-          <v-btn :disabled="disabledMakeOrder" type="submit">Dat hang</v-btn>
+          <v-btn :disabled="disabledMakeOrder" type="submit" class="btn-make-order"> Đặt hàng </v-btn>
         </div>
       </form>
     </div>
@@ -184,10 +191,11 @@ export default {
   data() {
     return {
       orderInput: {
+        customerId: "",
         customerName: "",
         customerPhone: "",
         customerEmail: "",
-        localization:"",
+        localization: "",
         additionalInformation: "",
         product: [],
         total: "",
@@ -225,6 +233,7 @@ export default {
       userInfoAuth: "AUTH/userInfo",
       productCarts: "CART/productCart",
       validationOrderInput: "VALIDATION/validateOrderInput",
+      productById: "PRODUCTS/productById",
     }),
   },
   methods: {
@@ -256,13 +265,40 @@ export default {
         this.disabledMakeOrder = true;
         return;
       } else {
+        this.orderInput.customerId = this.userInfoAuth._id;
+        this.orderInput.total = 15000 + this.totalPrice(this.productCarts);
+        this.orderInput.product = this.productCarts;
+        for (let index in this.productCarts) {
+          this.getProductInforAction(this.productCarts[index].idProduct);
+          this.updateProductAction({
+            productId: this.productCarts[index].idProduct,
+            body: {
+              inventory:
+                this.productById.inventory - this.productCarts[index].quantity,
+            },
+          });
+        }
+        this.clearCartAction(this.userInfoAuth._id);
         this.newOrderAction(this.orderInput);
       }
     },
     validateBeforeSubmit() {
       let passedValidate = true;
-      this.orderInput.localization = this.selectedProvince + this.selectedDistrict +  this.selectedCity + this.addressDetail;
-      const errors = this.validationOrderInput(this.orderInput);
+      this.orderInput.localization =
+        this.selectedProvince.Name +
+        " - " +
+        this.selectedDistrict.Name +
+        " - " +
+        this.selectedCity.Name +
+        " - " +
+        this.addressDetail;
+      const errors = this.validationOrderInput(
+        this.orderInput,
+        this.selectedProvince,
+        this.selectedDistrict,
+        this.selectedCity,
+        this.addressDetail
+      );
       if (errors) {
         Vue.set(
           this.showErrors,
@@ -323,6 +359,9 @@ export default {
       getUserByToken: "AUTH/getUserByToken",
       getProductCartOfUserAction: "CART/userProductCart",
       newOrderAction: "PAYMENT/newOrder",
+      updateProductAction: "PRODUCTACTION/updateProduct",
+      getProductInforAction: "PRODUCTS/getProduct",
+      clearCartAction: "CART/clearProductCart",
     }),
   },
   created() {
@@ -336,7 +375,7 @@ export default {
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
     },
-    "orderInput.CustomerPhone"() {
+    "orderInput.customerPhone"() {
       Vue.set(this.showErrors, "emptyCustomerPhone", null);
       Vue.set(this.showErrors, "customerPhoneMaxLength", null);
       this.disabledMakeOrder = false;
@@ -348,22 +387,22 @@ export default {
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
     },
-    "orderInput.localization.provinces"() {
+    selectedProvince() {
       Vue.set(this.showErrors, "emptyProvince", null);
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
     },
-    "orderInput.localization.districts"() {
+    selectedDistrict() {
       Vue.set(this.showErrors, "emptyDistrict", null);
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
     },
-    "orderInput.localization.ward"() {
+    selectedCity() {
       Vue.set(this.showErrors, "emptyWard", null);
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
     },
-    "orderInput.localization.addressDetail"() {
+    addressDetail() {
       Vue.set(this.showErrors, "emptyAddressDetail", null);
       this.disabledMakeOrder = false;
       this.clearErrorMessage();
@@ -381,5 +420,76 @@ export default {
   color: red !important;
   text-transform: none !important;
   font-style: italic;
+}
+input,
+select,
+textarea {
+  border: 1px solid rgb(179, 174, 174);
+  width: 90%;
+  padding: 10px;
+  border-radius: 4px;
+  .detail-adress {
+    margin-top: 100px !important;
+  }
+}
+h3,
+h5 {
+  color: #dd9933 !important;
+  margin: 10px 0;
+}
+.payment-container {
+  width: 70%;
+  margin: 20px auto;
+  form {
+    display: flex;
+    .form-order {
+      width: 60%;
+    }
+    .your-order {
+      height: 50%;
+      width: 35%;
+      border: 2px solid rgb(187, 178, 178);
+      border-radius: 4px;
+      padding: 30px;
+      padding-top: 0;
+      table {
+        width: 100% !important;
+        thead {
+          tr {
+            border-bottom: 2px solid rgba(201, 182, 182, 0.5);
+            th {
+              text-transform: uppercase;
+              color: #2e97f4 !important;
+            }
+          }
+        }
+        tbody {
+          tr {
+            td {
+              padding: 10px 0;
+              border-bottom: 1px solid rgba(201, 182, 182, 0.5);
+            }
+          }
+          .price {
+            font-weight: 700;
+          }
+          .blue {
+            color: #2e97f4 !important;
+            font-weight: 700;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
+</style>
+<style scoped>
+.btn-make-order {
+  background-color:  #d26e4b  !important;
+  color: white !important;
+  font-weight: 700;
+  margin-top: 20px ;
+  width: 100%;
 }
 </style>

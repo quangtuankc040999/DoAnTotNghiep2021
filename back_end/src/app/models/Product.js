@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const Product = new Schema({
     title: { type: String },
     brand: { type: String },
-    product_key: [{ type: String }],
+    product_key: { type: String },
     popularity: { type: Number, default: 1 },
     rating: { type: Number, default: 0 },
     image: [{type: String }],

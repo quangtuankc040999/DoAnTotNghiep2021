@@ -1,6 +1,5 @@
 <template>
   <div class="side-bar">
-    <div>Filter giá</div>
     <p>DANH MỤC SẢN PHẨM</p>
     <v-list class="list-category">
       <v-list-group
@@ -11,7 +10,9 @@
       >
         <template v-slot:activator>
           <v-list-item-content>
-            <v-list-item-title @click="getProductsByCategoryName(category.name)">
+            <v-list-item-title
+              @click="getProductsByCategoryName(category.name)"
+            >
               {{ category.name }}
             </v-list-item-title>
           </v-list-item-content>
@@ -23,7 +24,14 @@
             link
             class="category-detail"
           >
-            <v-list-item-title style="font-size: 0.7rem;" @click="getProductsByCategoryDetail(category.name, categoryDetail)"> {{ categoryDetail }}</v-list-item-title>
+            <v-list-item-title
+              style="font-size: 0.7rem"
+              @click="
+                getProductsByCategoryDetail(category.name, categoryDetail)
+              "
+            >
+              {{ categoryDetail }}</v-list-item-title
+            >
           </v-list-item>
         </v-list-item-group>
       </v-list-group>
@@ -43,16 +51,19 @@ export default {
     ...mapActions({
       getCategoryInfor: "SIDEBAR/getCategory",
       getProductsByCategoryNameAction: "PRODUCTS/getProductByCategoryName",
-      getProductByCategoryDetailAction: "PRODUCTS/getProductByCategoryDetail"
+      getProductByCategoryDetailAction: "PRODUCTS/getProductByCategoryDetail",
     }),
-    getProductsByCategoryName(category){
-      this.getProductsByCategoryNameAction(category)
+    getProductsByCategoryName(category) {
+      this.getProductsByCategoryNameAction(category);
       this.$router.push(`/products/${category}`);
     },
-     getProductsByCategoryDetail(category, categoryDetail){
-      this.getProductByCategoryDetailAction({category: category, categoryDetail: categoryDetail})
+    getProductsByCategoryDetail(category, categoryDetail) {
+      this.getProductByCategoryDetailAction({
+        category: category,
+        categoryDetail: categoryDetail,
+      });
       this.$router.push(`/products/${category}/${categoryDetail}`);
-    }
+    },
   },
   created() {
     this.getCategoryInfor();
@@ -63,20 +74,20 @@ export default {
 <style>
 .category-detail {
   margin-left: 30px !important;
-} 
-.v-list-item__title {
-    font-size: 0.8rem;
-    font-weight: 700;
-    font-family: "Open Sans", sans-serif !important;
-    color: rgba(102, 102, 102, 0.85) !important;
-    text-transform: uppercase !important;
 }
-p{
+.v-list-item__title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: "Open Sans", sans-serif !important;
+  color: rgba(102, 102, 102, 0.85) !important;
+  text-transform: uppercase !important;
+}
+p {
   font-size: 1rem;
-    font-family: "Open Sans", sans-serif !important;
-    color: #2e97f4 !important;
-    text-transform: uppercase !important;
-    padding-bottom: 10px;
-    border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
+  font-family: "Open Sans", sans-serif !important;
+  color: #2e97f4 !important;
+  text-transform: uppercase !important;
+  padding-bottom: 10px;
+  border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
 }
 </style>

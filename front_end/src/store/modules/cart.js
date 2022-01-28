@@ -8,7 +8,6 @@ const mutations = {
     state.productCart.push(productCartInfor);
   },
   updateQuantityProductFromCart(state, productCartInfor) {
-    console.log(productCartInfor);
     state.productCart[productCartInfor.index].quantity = productCartInfor.quantity + productCartInfor.quantity_old
   },
   setProductCartDB(state, productCartInfor) {
@@ -54,6 +53,15 @@ const actions = {
   removeProductFromCartDB({ commit }, params){
     http
     .put(`/user/cart/remove/${params.id}`, params.product)
+    .catch((error) => {
+      commit('ERROR/setErrorMessage', error.response.data.message, {
+        root: true,
+      });
+    });
+  },
+  clearProductCart({ commit }, userId){
+    http
+    .put(`/user/cart/clear/${userId}`)
     .catch((error) => {
       commit('ERROR/setErrorMessage', error.response.data.message, {
         root: true,

@@ -47,6 +47,7 @@
             <h6 class="discount-persent">-{{ productById.discount }}%</h6>
           </div>
         </div>
+        <p>Còn lại {{ productById.inventory }} sản phẩm</p>
         <div class="action-buy">
           <v-card flat class="py-12">
             <v-card-text>
@@ -88,9 +89,10 @@
         </p>
         <p class="product-key">
           <span>Từ khoá: </span>
-          <span v-for="i in productById.product_key" v-bind:key="i"
+          <!-- <span v-for="i in productById.product_key" v-bind:key="i"
             >{{ i }},
-          </span>
+          </span> -->
+          <span>{{productById.product_key}}</span>
         </p>
       </div>
     </div>
@@ -254,6 +256,12 @@ export default {
         }
       }
     }
+    p {
+        border: none !important;
+        color: rgb(126, 43, 43) !important;
+        text-transform: none !important;
+        width: 100% !important;
+      }
     .action-buy {
       display: flex;
       align-self: center;

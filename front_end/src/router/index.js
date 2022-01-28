@@ -11,6 +11,10 @@ import ProductDetail from '../views/Products/ProductDetail.vue'
 import ListProduct from '../views/Products/ListProduct.vue'
 import Cart from '../views/Products/Cart.vue'
 import Payment from '../views/Products/Payment.vue'
+import Admin from '../views/Admin/Admin.vue'
+import manageProduct from '../views/Admin/ManageProduct.vue'
+import manageOrder from '../views/Admin/ManageOrder.vue'
+import manageUser from '../views/Admin/ManageUser.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -34,7 +38,7 @@ const routes = [
     },
     children: [
       {
-        path: '/products/product-detail/:title',
+        path: '/products/product-detail/:id',
         name: ProductDetail,
         component: ProductDetail,
         meta: {
@@ -83,11 +87,14 @@ const routes = [
       requiresAuth: true
     }
   },
- 
+
   {
     path: '/blog',
     name: Blog,
     component: Blog,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/contact',
@@ -110,6 +117,41 @@ const routes = [
       requiresAuth: true
     }
   },
+  {
+    path: '/admin',
+    name: Admin,
+    component: Admin,
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: '/admin/manage-product/',
+        name: manageProduct,
+        component: manageProduct,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/admin/manage-order/',
+        name: manageOrder,
+        component: manageOrder,
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: '/admin/manage-user/',
+        name: manageUser,
+        component: manageUser,
+        meta: {
+          requiresAuth: true
+        }
+      },
+    ]
+  },
+
 ];
 
 const router = new VueRouter({

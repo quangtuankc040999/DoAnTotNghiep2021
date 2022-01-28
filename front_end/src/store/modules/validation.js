@@ -112,6 +112,84 @@ const getters = {
       return null;
     };
   },
+  validateOrderInput() {
+    return (orderInput, provinces, districts, wards, addressDetail) => {
+      const errors = {};
+      if (!orderInput.customerName) {
+        errors.emptyCustomerName = true
+      }
+      if (orderInput.customerName && orderInput.customerName.trim().length > MAX_LENGTH) {
+        errors.customerNameMaxLength = true
+      }
+      if (!orderInput.customerPhone) {
+        errors.emptyCustomerPhone = true
+      }
+      if (orderInput.customerPhone && orderInput.customerPhone.trim().length > 11) {
+        errors.customerPhoneMaxLength = true
+      }
+      if (!orderInput.customerEmail) {
+        errors.emptyEmail = true;
+      }
+      if (orderInput.customerEmail && !EMAIL_REGEX.test(orderInput.customerEmail)) {
+        errors.invalidEmail = true;
+      }
+      if (!provinces.Name) {
+        errors.emptyProvince = true
+      }
+      if (!districts.Name) {
+        errors.emptyDistrict = true
+      }
+      if (!wards.Name) {
+        errors.emptyWard = true
+      }
+      if (!addressDetail) {
+        errors.emptyAddressDetail = true
+      }
+      if (Object.keys(errors).length) return errors;
+      return null;
+    }
+  },
+
+  validateProductInput() {
+    return (productInput) => {
+      const errors = {};
+      if (!productInput.title) {
+        errors.emptyTitle = true
+      }
+      if (productInput.title && productInput.title.trim().length > MAX_LENGTH) {
+        errors.titleMaxLength = true
+      }
+      if (!productInput.brand) {
+        errors.emptyBrand = true
+      }
+      if (productInput.brand && productInput.brand.trim().length > 255) {
+        errors.brandMaxLength = true
+      }
+      if (productInput.product_key.length == 0) {
+        errors.emptyProductKey = true;
+      }
+      if (!productInput.starting_price) {
+        errors.emptyStartingPrice = true
+      }
+      if (parseInt(productInput.discount) > 100) {
+        errors.maxDiscount = true
+      }
+      if (!productInput.description) {
+        errors.emptyDescription = true
+      }
+      if (!productInput.category_name) {
+        errors.emptyCategoryName = true
+      }
+      if (!productInput.category_detail) {
+        errors.emptyCategoryDetail = true
+      }
+      if (productInput.image.length <= 0) {
+        errors.emptyImages = true
+      }
+      if (Object.keys(errors).length) return errors;
+      return null;
+    }
+  }
 };
 
 export default {

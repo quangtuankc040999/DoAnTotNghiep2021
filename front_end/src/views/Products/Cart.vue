@@ -22,8 +22,9 @@
                       idProduct: product.product._id,
                     })
                   "
-                  >x</button
                 >
+                  <v-icon>mdi-alpha-x-circle-outline</v-icon>
+                </button>
                 <img v-bind:src="product.product.image[0]" alt="" />
               </td>
               <td style="width: 25%; font-weight: 400">
@@ -106,29 +107,33 @@
         <p>CỘNG GIỎ HÀNG</p>
         <table>
           <tr>
-            <td>Tạm tính:</td>
-            <td>{{ formatPrice(totalPrice(productCarts)) }}</td>
+            <td class="blue">Tạm tính:</td>
+            <td class="price">{{ formatPrice(totalPrice(productCarts)) }}</td>
           </tr>
           <tr>
-            <td>Phí giao hàng:</td>
-            <td>
+            <td class="blue">Phí giao hàng:</td>
+            <td class="price">
               {{ formatPrice(15000) }}
             </td>
           </tr>
           <tr>
-            <td>Tổng:</td>
-            <td>{{ formatPrice(totalPrice(productCarts) + 15000) }}</td>
+            <td class="blue">Tổng:</td>
+            <td class="price">
+              {{ formatPrice(totalPrice(productCarts) + 15000) }}
+            </td>
           </tr>
         </table>
         <router-link to="/payment">
-          <v-btn class="payment"> TIẾN HÀNH THANH TOÁN </v-btn>
+          <v-btn class="btn-payment"> TIẾN HÀNH THANH TOÁN </v-btn>
         </router-link>
       </div>
     </div>
-    <div v-else class="cart-container">
-      <p>Giỏ hàng trống</p>
+    <div v-else class="cart-empty">
+      <img src="../../assets/empty-cart.png" alt="" />
+      <router-link to="/products">
+        <v-btn class="back-products"> TRỞ LẠI CỬA HÀNG </v-btn>
+      </router-link>
     </div>
-
     <footer-rubik />
   </div>
 </template>
@@ -214,10 +219,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-a{
-    color: rgb(0, 0, 0) !important;
-    font-weight: 400;
-    margin-left: 0;
+a {
+  color: rgb(0, 0, 0) !important;
+  font-weight: 400;
+  margin-left: 0;
 }
 a:hover {
   text-decoration: none;
@@ -256,19 +261,12 @@ a:hover {
         margin-top: 10px;
         border-bottom: rgba(177, 171, 171, 0.5) 0.5px solid;
       }
-      tbody tr td .btn-del {
-        padding-bottom: 30px;
-        text-align: center;
-        width: 30px !important;
-        height: 30px !important;
-        color: rgba(173, 173, 173, 0.4);
-        border: 2px solid rgba(173, 173, 173, 0.4);
-        border-radius: 50%;
+      tbody tr td .btn-del .v-icon {
+        color: rgba(170, 163, 163, 0.4) !important;
         cursor: pointer;
       }
-      tbody tr td .btn-del:hover {
-        color: black;
-        border: 2px solid rgba(0, 0, 0, 0.9);
+      tbody tr td .btn-del:hover .v-icon {
+        color: black !important;
       }
     }
     .action-cart {
@@ -301,8 +299,61 @@ a:hover {
       }
     }
   }
+
   .cal-price {
-    width: 40%;
+    width: 35%;
+    height: 50%;
+    padding: 30px;
+    padding-top: 0;
+    p {
+      font-weight: 700;
+    }
+    tr {
+      td {
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(201, 182, 182, 0.5);
+      }
+    }
+    table {
+      width: 100%;
+      .price {
+        font-weight: 700;
+      }
+      .blue {
+        color: #2e97f4 !important;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+    }
   }
+}
+.cart-empty {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  img {
+    width: 188px;
+    height: 177px;
+    margin: 20px auto;
+  }
+  .back-products {
+    background: rgb(41, 39, 39, 0.4) !important;
+    border: 2px solid rgba(94, 92, 92, 0.6);
+    color: rgba(255, 249, 249);
+    border-radius: 0;
+    font-weight: 700;
+    cursor: pointer;
+    margin: 0 20px 20px 0;
+  }
+}
+</style>
+<style scoped>
+.btn-payment{
+  background-color:  #d26e4b  !important;
+  color: white !important;
+  font-weight: 700;
+  margin-top: 20px ;
+  width: 100%;
 }
 </style>

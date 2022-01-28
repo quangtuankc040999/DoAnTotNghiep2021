@@ -38,7 +38,6 @@ const actions = {
     });
   },
   getProduct({ commit },params) {
-    console.log(params, '---------------')
     http.get(`/product/${params}`).then((response) => {
       commit('setProductInforById', response.data.data);
     });

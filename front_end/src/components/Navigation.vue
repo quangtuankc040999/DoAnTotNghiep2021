@@ -40,10 +40,7 @@
 
           <div class="cart-dropdown">
             <ul class="cart-dropdown__list">
-              <li
-                v-for="(product, index) in productCart"
-                :key="index"
-              >
+              <li v-for="(product, index) in productCart" :key="index">
                 <img v-bind:src="product.product.image[0]" alt="" />
                 <div>
                   <router-link
@@ -73,7 +70,7 @@
         </div>
       </div>
       <div v-else class="cart">
-        <div>
+        <div class="cart-label">
           <router-link to="/cart">
             Giỏ hàng/0đ
             <v-icon>mdi-basket </v-icon>
@@ -214,6 +211,14 @@ export default {
 .cart {
   width: 20%;
   position: relative;
+  a {
+    color: rgba(102, 102, 102, 0.85);
+    text-decoration: none;
+  }
+  a:hover {
+    color: rgba(39, 38, 38, 0.85);
+    text-decoration: none;
+  }
 }
 img {
   width: 100%;

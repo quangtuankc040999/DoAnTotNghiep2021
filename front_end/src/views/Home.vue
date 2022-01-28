@@ -43,9 +43,42 @@
           </div>
         </div>
       </div>
-      <div class="new-product"></div>
-      <div class="hot-saler"></div>
-      <div class="discounting"></div>
+      <div class="new-products" style="">
+        <p>Hàng mới lên kệ</p>
+        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+          <product
+            v-for="(product, index) in productInfor"
+            :key="index"
+            :product="product"
+            :indexProduct="index"
+            class="product"
+          />
+        </VueSlickCarousel>
+      </div>
+      <div class="hot-saler">
+        <p>Hàng bán chạy</p>
+        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+          <product
+            v-for="(product, index) in productInfor"
+            :key="index"
+            :product="product"
+            :indexProduct="index"
+            class="product"
+          />
+        </VueSlickCarousel>
+      </div>
+      <div class="discounting">
+        <p>Hàng đang giảm giá!!!</p>
+        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+          <product
+            v-for="(product, index) in productInfor"
+            :key="index"
+            :product="product"
+            :indexProduct="index"
+            class="product"
+          />
+        </VueSlickCarousel>
+      </div>
       <div class="new-posts"></div>
     </div>
     <footerRubik />
@@ -55,21 +88,65 @@
 <script>
 import Navigation from "../components/Navigation.vue";
 import FooterRubik from "../components/Footer.vue";
+import VueSlickCarousel from "vue-slick-carousel";
+import Product from "../components/Products/ProductCard.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
   components: {
     Navigation,
     FooterRubik,
+    VueSlickCarousel,
+    Product,
+  },
+  data() {
+    return {
+      settings: {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        initialSlide: 0,
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4,
+              infinite: true,
+              dots: true,
+            },
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              initialSlide: 3,
+            },
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+            },
+          },
+        ],
+      },
+    };
   },
   computed: {
     ...mapGetters({
       userInfo: "USER/userInfo",
       userInfoAuth: "AUTH/userInfo",
+      productInfor: "PRODUCTS/productInfor",
     }),
   },
   methods: {
     ...mapActions({
+      getAllProduct: "PRODUCTS/getAllProduct",
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
     }),
@@ -86,6 +163,7 @@ export default {
   created() {
     this.getUserByToken();
     this.getProductCart(this.userInfoAuth._id);
+    this.getAllProduct();
   },
 };
 </script>
@@ -93,12 +171,12 @@ export default {
 <style lang="scss" scoped>
 .home-container {
   margin: 0 auto;
-  width: 75% !important;
+  width: 70% !important;
   .grid-img {
     display: flex;
     justify-content: center;
     height: 610px;
-    border-bottom: 3px solid rgba(177, 171, 171, 0.5) ;
+    border-bottom: 3px solid rgba(177, 171, 171, 0.5);
     .div-1,
     .div-2,
     .div-3 {
@@ -118,26 +196,27 @@ export default {
         display: flex;
         flex-direction: column;
         text-align: center;
+
         align-items: center;
         color: white !important;
         font-weight: 700 !important;
-        span{
+        span {
           font-size: 1.5rem;
           margin: 5px;
         }
-        button{
+        button {
           border: 1px solid rgb(255, 255, 255);
           width: 40%;
           padding: 5px;
         }
-        button:hover{
+        button:hover {
           background-color: rgba(253, 253, 253, 0.8);
           color: rgba(36, 34, 34, 0.7);
         }
       }
     }
     .div-1 {
-      width: 45%;
+      width: 40%;
       background-image: linear-gradient(
           rgba(255, 255, 255, 0.5),
           rgba(100, 84, 84, 0.3)
@@ -155,14 +234,14 @@ export default {
         width: 100%;
         z-index: 100;
         top: 70%;
-        button:hover{
+        button:hover {
           text-decoration: underline;
           font-size: 18px;
         }
       }
     }
     .div-2 {
-      width: 30%;
+      width: 25%;
       background-image: linear-gradient(
           rgba(255, 255, 255, 0.5),
           rgba(100, 84, 84, 0.3)
@@ -170,7 +249,7 @@ export default {
         url("https://thegioirubik.com/wp-content/uploads/2019/07/Valk-4M-1-1024x1024.jpg");
     }
     .div-3 {
-      width: 25%;
+      width: 20%;
       .div3-1 {
         height: 48%;
         margin-bottom: 10px;
@@ -195,5 +274,26 @@ export default {
       }
     }
   }
+  .new-products,
+  .hot-saler,
+  .discounting {
+    margin-top: 30px !important;
+    text-align: center;
+    width: 95%;
+    margin: 0 auto;
+    p {
+      font-size: 1.1rem !important;
+      font-weight: 700;
+      color: #dd9933 !important;
+      border: none;
+      margin-bottom: 10px;
+    }
+  }
+}
+</style>
+<style>
+.slick-arrow:before,
+.slick-prev:before {
+  color: rgb(175, 175, 175) !important;
 }
 </style>
