@@ -23,7 +23,7 @@ const actions = {
     },
     updateProduct({ commit }, params) {
         http
-            .put(`/product/update/${params.productId}`, params.body )
+            .put(`/product/update/${params.productId}`, params.body)
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
             })
@@ -33,6 +33,18 @@ const actions = {
                 });
             });
     },
+    deleteProduct({ commit }, productId) {
+        http
+            .put(`/product/delete/${productId}`)
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+            });
+    }
 };
 
 export default {

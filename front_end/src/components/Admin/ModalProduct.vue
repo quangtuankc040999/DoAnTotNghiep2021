@@ -138,7 +138,7 @@
       </div>
       <label for="">Giá bán: </label>
       <div class="sale-price">
-        <input type="number" v-model="productRequest.sale_price" />
+        <input type="number" v-model="productRequest.sale_price" readonly />
       </div>
       <h5>Mô tả sản phẩm</h5>
       <div class="description group">
@@ -152,7 +152,7 @@
       <h5>Hình ảnh sản phẩm</h5>
       <div class="img">
         <div class="btn">
-          <v-btn class="addImg" @click="handleUpload">Add img</v-btn>
+          <v-btn class="addImg" @click="handleUpload">Thêm ảnh</v-btn>
           <input
             type="file"
             accept="image/*"
@@ -178,22 +178,35 @@
         </div>
       </div>
       <div class="d-flex flex-row-reverse">
-        <button
+        <b-button
           class="okButton"
           block
+          variant="primary"
           @click="addProduct"
+          v-if="modalType == 'add'"
           :disabled="isDisableButton"
         >
-          Save
-        </button>
-        <button
+          Thêm sản phẩm
+        </b-button>
+        <b-button
+          class="okButton"
+          block
+          variant="primary"
+          @click="addProduct(idProduct)"
+          :disabled="isDisableButton"
+          v-else-if="modalType == 'edit'"
+        >
+          Chỉnh sửa
+        </b-button>
+        <b-button
           class="cancelButton"
           block
-          style="margin-right: 20px"
+          variant="danger"
+          style="margin-right: 20px; margin-top: 0"
           @click="hideModal()"
         >
-          Close
-        </button>
+          Thoát
+        </b-button>
       </div>
     </div>
   </b-modal>
@@ -204,7 +217,7 @@ import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 import Vue from "vue";
 export default {
-  props: ["productRequest", "modalType"],
+  props: ["productRequest", "modalType", "idProduct"],
   data() {
     return {
       showErrors: {},
@@ -329,6 +342,7 @@ export default {
       }
       return passedValidate;
     },
+ 
 
     addProduct() {
       this.productRequest.category_name = this.selectedCategoryName.name;
@@ -337,7 +351,12 @@ export default {
         this.isDisableButton = true;
         return;
       } else {
-        this.addProductAction(this.productRequest);
+        if (this.modalType == "add") {
+          this.addProductAction(this.productRequest);
+        }
+        else if(this.modalType == "edit"){
+          this.updateProductAction({productId: this.idProduct, body: this.productRequest})
+        }
       }
     },
     async fetchCategoryDetail() {
@@ -347,6 +366,7 @@ export default {
     ...mapActions({
       getCategoryInfor: "SIDEBAR/getCategory",
       addProductAction: "PRODUCTACTION/addProduct",
+      updateProductAction: "PRODUCTACTION/updateProduct",
     }),
   },
   created() {

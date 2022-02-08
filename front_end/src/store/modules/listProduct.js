@@ -41,6 +41,9 @@ const actions = {
     http.get(`/product/${params}`).then((response) => {
       commit('setProductInforById', response.data.data);
     });
+  },
+  clearState({ commit }) {
+      commit('setProductInforById', null);
   }
 };
 

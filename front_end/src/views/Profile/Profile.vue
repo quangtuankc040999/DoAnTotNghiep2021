@@ -1,24 +1,39 @@
 <template>
   <div>
-      <navigation/>
-        Profile
-      <footer-rubik/>
+    <navigation />
+    <div class="container">
+      <side-bar-user class="side-bar" />
+      <router-view />
+    </div>
+    <footerRubik />
   </div>
 </template>
 
 <script>
-import Navigation from '../../components/Navigation.vue';
-import FooterRubik from '../../components/Footer.vue'
+import Navigation from "../../components/Navigation.vue";
+import FooterRubik from "../../components/Footer.vue";
+import SideBarUser from '../../components/User/SideBarUser.vue';
+
 export default {
-  name: 'Profile',
+  name: "Profile",
   components: {
     Navigation,
-    FooterRubik
+    FooterRubik,
+    SideBarUser,
   },
-
-}
+};
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+.container {
+  max-width: 90% !important;
+  width: 80% !important;
+  display: flex;
+  justify-content: center;
+  width: 80% !important;
+}
+.side-bar {
+  margin: 0 20px 0 0;
+  width: 20%;
+}
 </style>

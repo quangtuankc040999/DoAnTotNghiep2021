@@ -4,9 +4,7 @@ const apiResponse = require('../../utils/apiResponse')
 class ProductController {
     // admin add product
     addNewProduct = async (req, res) => {
-        console.log('vao day----------')
         const product = req.body;
-        console.log(product);
         await Product.create(product);
         return apiResponse.successResponse(
             res,

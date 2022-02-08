@@ -23,7 +23,7 @@
                     })
                   "
                 >
-                  <v-icon>mdi-alpha-x-circle-outline</v-icon>
+                  <v-icon>mdi-close-circle-outline</v-icon>
                 </button>
                 <img v-bind:src="product.product.image[0]" alt="" />
               </td>

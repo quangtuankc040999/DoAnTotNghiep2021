@@ -15,6 +15,10 @@ import Admin from '../views/Admin/Admin.vue'
 import manageProduct from '../views/Admin/ManageProduct.vue'
 import manageOrder from '../views/Admin/ManageOrder.vue'
 import manageUser from '../views/Admin/ManageUser.vue'
+import manageOrderUser from '../views/User/ManageOrderUser.vue'
+import ListOrder from '../views/User/ListOrder.vue'
+import orderDetail from '../views/User/OrderDetail.vue'
+
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -115,7 +119,35 @@ const routes = [
     component: Profile,
     meta: {
       requiresAuth: true
-    }
+    },
+    children: [
+      {
+        path: '/profile/user/manage-order/',
+        name: manageOrderUser,
+        component: manageOrderUser,
+        meta: {
+          requiresAuth: true
+        },
+        children: [
+          {
+            path: '/profile/user/manage-order/:statusOrder',
+            name: ListOrder,
+            component: ListOrder,
+            meta: {
+              requiresAuth: true
+            },
+          },
+        ]
+      },
+      {
+        path: '/profile/user/manage-order/detail/:orderId',
+        name: orderDetail,
+        component: orderDetail,
+        meta: {
+          requiresAuth: true
+        },
+      }
+    ]
   },
   {
     path: '/admin',
