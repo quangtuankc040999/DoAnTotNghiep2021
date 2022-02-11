@@ -34,14 +34,30 @@
           <v-btn v-if="order.status == 'Chờ xác nhận'" class="btn"
             >Chỉnh sửa</v-btn
           >
-          <v-btn v-if="order.status == 'Chờ xác nhận'" class="btn"
-            @click="updateOrder({orderId: order._id, body: {status: 'Đã huỷ'}})">Huỷ đơn hàng</v-btn
+          <v-btn
+            v-if="order.status == 'Chờ xác nhận'"
+            class="btn"
+            @click="
+              updateOrder({ orderId: order._id, body: { status: 'Đã huỷ' } })
+            "
+            >Huỷ đơn hàng</v-btn
           >
-          <v-btn v-if="order.status == 'Đã đóng gói, đang vận chuyển'" class="btn"
-            @click="updateOrder({orderId: order._id, body: {status: 'Đã hoàn thành'}})">Đã nhận được hàng</v-btn
+          <v-btn
+            v-if="order.status == 'Đã đóng gói, đang vận chuyển'"
+            class="btn"
+            @click="
+              updateOrder({
+                orderId: order._id,
+                body: { status: 'Đã hoàn thành' },
+              })
+            "
+            >Đã nhận được hàng</v-btn
           >
           <v-btn v-if="order.status == 'Đã huỷ'" class="btn">Mua lại</v-btn>
-          <v-btn v-if="order.status == 'Đã hoàn thành'" class="btn"
+          <v-btn
+            v-if="order.status == 'Đã hoàn thành'"
+            class="btn"
+            @click="showModalRatting(order._id)"
             >Đánh giá</v-btn
           >
           <v-btn class="btn chat">Liên hệ người bán</v-btn>
@@ -54,13 +70,20 @@
       />
       Chưa có đơn hàng
     </div>
+    <modalRatting :idOrder="idOrder" ref="modalRatting" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import modalRatting from "../../components/User/ModalRatting.vue";
 export default {
-  components: {},
+  components: { modalRatting },
+  data() {
+    return {
+      idOrder: "",
+    };
+  },
   computed: {
     ...mapGetters({
       userInfo: "USER/userInfo",
@@ -69,6 +92,10 @@ export default {
     }),
   },
   methods: {
+    showModalRatting(idOrder) {
+      this.idOrder = idOrder;
+      this.$refs.modalRatting.show();
+    },
     toOrderDetail(orderId) {
       this.$router.push(`/profile/user/manage-order/detail/${orderId}`);
     },
@@ -78,16 +105,17 @@ export default {
         currency: "VND",
       }).format(price);
     },
-    updateOrder(params){
-        this.updateOrderAction(params)
+    updateOrder(params) {
+      this.updateOrderAction(params);
     },
+
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
       getWaittingOrderAction: "PAYMENT/getOrderWattingUser",
       getDeliveryOrderAction: "PAYMENT/getOrderDeliveryUser",
       getCancelOrderAction: "PAYMENT/getOrderCancelUser",
       getDoneOrderAction: "PAYMENT/getOrderDoneUser",
-      updateOrderAction: "PAYMENT/updateOrder"
+      updateOrderAction: "PAYMENT/updateOrder",
     }),
   },
   created() {

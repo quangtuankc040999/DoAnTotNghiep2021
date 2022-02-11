@@ -14,7 +14,6 @@ import VueClazyLoad from 'vue-clazy-load'
 import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 
-
 Vue.use(BootstrapVue, IconsPlugin, BootstrapVueIcons)
 Vue.use(VueJWT)
 Vue.use(VueClazyLoad);

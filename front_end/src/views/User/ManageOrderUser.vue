@@ -82,17 +82,21 @@ export default {
   methods: {
     toListWaitting() {
       this.$router.push(`/profile/user/manage-order/waitting`);
+        this.getWaittingOrderAction(this.userInfoAuth._id);
     },
     toListDelivery() {
       this.$router.push(`/profile/user/manage-order/delivery`);
+         this.getDeliveryOrderAction(this.userInfoAuth._id);
     },
     toListCancel() {
       this.$router.push(`/profile/user/manage-order/cancel`);
+      this.getCancelOrderAction(this.userInfoAuth._id);
     },
     toListRate() {
       this.$router.push(`/profile/user/manage-order/rate`);
+      this.getDoneOrderAction(this.userInfoAuth._id);
     },
-
+  
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
       getWaittingOrderAction: "PAYMENT/getOrderWattingUser",
