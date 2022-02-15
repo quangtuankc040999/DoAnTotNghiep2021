@@ -18,8 +18,9 @@ import manageUser from '../views/Admin/ManageUser.vue'
 import manageOrderUser from '../views/User/ManageOrderUser.vue'
 import ListOrder from '../views/User/ListOrder.vue'
 import orderDetail from '../views/User/OrderDetail.vue'
+import userInformation from '../views/Profile/UserInformation.vue'
 
-import { decodeToken } from '../utils/helper';
+// import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
   {
@@ -122,6 +123,14 @@ const routes = [
     },
     children: [
       {
+        path: '/profile/user/manage-account/',
+        name: userInformation,
+        component: userInformation,
+        meta: {
+          requiresAuth: true
+        },
+      },
+      {
         path: '/profile/user/manage-order/',
         name: manageOrderUser,
         component: manageOrderUser,
@@ -193,8 +202,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('token');
-  let user = decodeToken();
-  console.log(user)
+  // let user = decodeToken();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!token) {
       next('/login');

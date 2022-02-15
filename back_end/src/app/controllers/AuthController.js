@@ -5,6 +5,7 @@ const apiResponse = require('../../utils/apiResponse');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const host = require('../../utils/decodeJWT');
+const Room = require('../models/Room');
 
 require('dotenv').config();
 
@@ -26,21 +27,17 @@ class AuthController {
           user.lastName = req.body.lastName;
           user.email = req.body.email;
           user.password = await bcrypt.hash(req.body.password, salt);
-          user.avatar =
-            req.body.firstName.charAt(0) + req.body.lastName.charAt(0);
-          Role.findOne({ name: 'User' }).then((role) => {
-            user.role = role;
-            user.save(function (err) {
-              if (err) {
-                return apiResponse.ErrorResponse(res, err);
-              }
-              return apiResponse.successResponseWithData(
-                res,
-                'register success',
-                user,
-              );
-            });
-          });
+          user.avatar = "";
+          const admin = await User.findOne({ email: 'admin@gmail.com' })
+          const role = await Role.findOne({ name: 'User' })
+          user.role = role;
+          const newUser = await User.create(user)
+          const newRoom = await Room.create({ member: user, createdBy: admin })
+          return apiResponse.successResponseWithData(
+            res,
+            'register success',
+            newUser,
+          );
         }
       } catch (err) {
         return apiResponse.ErrorResponse(res, err);
@@ -63,13 +60,13 @@ class AuthController {
         }
         const user = await User.findOne({ email });
         if (!user) {
-          return apiResponse.ErrorResponse(res, 'Email wrong');
+          return apiResponse.ErrorResponse(res, 'Email không đúng');
         }
         const role = await Role.findById(user.role);
         let roleName = role.name
         bcrypt.compare(password, user.password, (error, isValid) => {
           if (!isValid) {
-            return apiResponse.ErrorResponse(res, 'Password wrong');
+            return apiResponse.ErrorResponse(res, 'Mật khẩu không trùng khớp');
           } else {
             const tokenCreated = jwt.sign(
               {

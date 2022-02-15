@@ -3,7 +3,7 @@
     <navigation />
     <div class="container">
       <side-bar class="side-bar" />
-      <router-view/>
+      <router-view class="infor" />
     </div>
     <footer-rubik />
   </div>
@@ -13,7 +13,7 @@
 import Navigation from "../../components/Navigation.vue";
 import FooterRubik from "../../components/Footer.vue";
 import SideBar from "../../components/Products/SideBar.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Product",
   components: {
@@ -22,34 +22,36 @@ export default {
     SideBar,
     // ListProduct,
   },
+  computed: {
+    ...mapGetters({
+      userInfoAuth: "AUTH/userInfo",
+    }),
+  },
+
   methods: {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
-      getProductCart: 'CART/userProductCart'
-
+      getProductCart: "CART/userProductCart",
     }),
   },
   created() {
     this.getUserByToken();
-    this.getProductCart(this.userInfoAuth._id)
-
+    this.getProductCart(this.userInfoAuth._id);
   },
 };
 </script>
 
 <style scoped>
 .container {
-  max-width: 90% !important;
-  display: flex;
-  justify-content: center;
   width: 80% !important;
+  display: flex;
 }
 .side-bar {
   margin: 0 20px 0 0;
   width: 20%;
 }
-.list-product {
-  width: 70%;
+.infor{
+  width: 70% !important;
 }
 </style>
 

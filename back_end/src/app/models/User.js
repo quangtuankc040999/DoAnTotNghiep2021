@@ -13,7 +13,9 @@ const User = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Role',
     },
-    productCart: [{type: Object}]
+    avatar: {type: String},
+    productCart: [{type: Object}],
+    
   },
   {
     timestamps: true,

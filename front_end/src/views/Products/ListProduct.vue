@@ -1,5 +1,5 @@
 <template>
-  <div class="list-product">
+  <div class="list-product" v-if="productInfor">
     <div class="products" v-if="productInfor.length > 0">
       <product
         v-for="(product, index) in productInfor"

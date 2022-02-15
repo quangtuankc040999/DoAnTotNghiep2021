@@ -11,5 +11,6 @@ router.put('/cart/update/:id', userController.updateQuantityProductFromCart)
 router.put('/cart/remove/:id', userController.removeProductFromCart)
 router.put('/cart/clear/:id', userController.clearProductCart)
 router.get('/cart/:id', userController.getProductCart)
+
 module.exports = router;
                   

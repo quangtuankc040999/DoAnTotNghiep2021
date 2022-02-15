@@ -3,41 +3,39 @@
     <navigation />
     <div v-if="productCarts.length > 0" class="cart-container">
       <div class="product-list">
-        <table class="table-infor">
-          <thead>
+        <v-data-table
+          :headers="headers"
+          :items="productCarts"
+          :items-per-page="5"
+          class="elevation-1"
+        >
+          <template v-slot:item="{ item }">
             <tr>
-              <th style="width: 50%" colspan="2">sản phẩm</th>
-              <th style="width: 15%">Giá</th>
-              <th style="width: 25%">Số lượng</th>
-              <th style="width: 15%">Tạm tính</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(product, index) in productCarts" :key="index">
-              <td style="width: 25%">
-                <button
+              <td class="cart-td product-info">
+                <v-btn
+                  text
                   class="btn-del"
                   @click="
                     removeProductFromCart(userInfoAuth._id, {
-                      idProduct: product.product._id,
+                      idProduct: item.product._id,
                     })
                   "
                 >
                   <v-icon>mdi-close-circle-outline</v-icon>
-                </button>
-                <img v-bind:src="product.product.image[0]" alt="" />
+                </v-btn>
+                <img :src="item.product.image[0]" alt="" />
               </td>
-              <td style="width: 25%; font-weight: 400">
+              <td>
                 <router-link
-                  :to="`/products/product-detail/${product.product._id}`"
+                  :to="`/products/product-detail/${item.product._id}`"
                 >
-                  <span>{{ product.product.title }}</span>
+                  <span>{{ item.product.title }}</span>
                 </router-link>
               </td>
-              <td style="width: 15%">
-                {{ formatPrice(product.product.sale_price) }}
+              <td class="cart-td">
+                {{ formatPrice(item.product.sale_price) }}
               </td>
-              <td style="width: 25%">
+              <td class="cart-td">
                 <v-card flat class="py-12">
                   <v-card-text>
                     <v-row align="center" justify="center">
@@ -46,8 +44,8 @@
                           @click="
                             updateQuantityCart(
                               'subtract',
-                              product.product.inventory,
-                              product
+                              item.product.inventory,
+                              item
                             )
                           "
                         >
@@ -61,14 +59,14 @@
                             font-size: 20px !important;
                             margin: 0 1rem;
                           "
-                          >{{ product.quantity }}</span
+                          >{{ item.quantity }}</span
                         >
                         <v-btn
                           @click="
                             updateQuantityCart(
                               'add',
-                              product.product.inventory,
-                              product
+                              item.product.inventory,
+                              item
                             )
                           "
                         >
@@ -79,16 +77,15 @@
                   </v-card-text>
                 </v-card>
               </td>
-              <td style="width: 15%">
+              <td class="cart-td">
                 {{
-                  formatPrice(
-                    calOne(product.quantity, product.product.sale_price)
-                  )
+                  formatPrice(calOne(item.quantity, item.product.sale_price))
                 }}
               </td>
             </tr>
-          </tbody>
-        </table>
+          </template>
+        </v-data-table>
+
         <div class="action-cart">
           <router-link to="/products">
             <v-btn class="back-products"
@@ -107,17 +104,17 @@
         <p>CỘNG GIỎ HÀNG</p>
         <table>
           <tr>
-            <td class="blue">Tạm tính:</td>
+            <td class="blue1">Tạm tính:</td>
             <td class="price">{{ formatPrice(totalPrice(productCarts)) }}</td>
           </tr>
           <tr>
-            <td class="blue">Phí giao hàng:</td>
+            <td class="blue1">Phí giao hàng:</td>
             <td class="price">
               {{ formatPrice(15000) }}
             </td>
           </tr>
           <tr>
-            <td class="blue">Tổng:</td>
+            <td class="blue1">Tổng:</td>
             <td class="price">
               {{ formatPrice(totalPrice(productCarts) + 15000) }}
             </td>
@@ -147,6 +144,26 @@ export default {
   components: {
     Navigation,
     FooterRubik,
+  },
+  data() {
+    return {
+      headers: [
+        {
+          text: "Sản phẩm",
+          align: "start",
+          value: "title",
+          width: "25%"
+        },
+        { text: "", value: "", width: "20%", sortable: false},
+        { text: "Giá bán", value: "" },
+        {
+          text: "Số lượng",
+          value: "category_name",
+          align: "center",
+        },
+        { text: "Tạm tính", value: "sale_price" },
+      ],
+    };
   },
   computed: {
     ...mapGetters({
@@ -185,7 +202,6 @@ export default {
           },
         });
       }
-      this.$router.go();
     },
     formatPrice(price) {
       return new Intl.NumberFormat("de-DE", {
@@ -208,7 +224,6 @@ export default {
         id: userId,
         product: { idProduct: product.idProduct },
       });
-      this.$router.go();
     },
   },
   created() {
@@ -238,40 +253,12 @@ a:hover {
     border-right: 1px solid rgba(156, 151, 151, 0.5);
     padding-right: 2%;
     margin-right: 2%;
-    .table-infor {
-      margin-bottom: 20px;
-      thead tr th {
-        text-transform: uppercase;
-        color: #2e97f4;
-        border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
-        font-size: 1.1rem;
-      }
-      td img {
-        padding: 10px;
-        padding-right: 0;
-        height: 130px;
-        width: 130px;
-      }
-      td {
-        font-size: 20px !important;
-        text-align: left;
-        font-weight: 600;
-      }
-      tbody tr {
-        margin-top: 10px;
-        border-bottom: rgba(177, 171, 171, 0.5) 0.5px solid;
-      }
-      tbody tr td .btn-del .v-icon {
-        color: rgba(170, 163, 163, 0.4) !important;
-        cursor: pointer;
-      }
-      tbody tr td .btn-del:hover .v-icon {
-        color: black !important;
-      }
-    }
+    margin-top: 5px;
+
     .action-cart {
       display: flex;
       justify-content: left;
+      margin-top: 4%;
       .back-products {
         background: rgb(253, 253, 253);
         border: 2px solid rgba(94, 92, 92, 0.6);
@@ -303,8 +290,9 @@ a:hover {
   .cal-price {
     width: 35%;
     height: 50%;
-    padding: 30px;
+    padding: 10px;
     padding-top: 0;
+    margin-top: 5px;
     p {
       font-weight: 700;
     }
@@ -319,7 +307,7 @@ a:hover {
       .price {
         font-weight: 700;
       }
-      .blue {
+      .blue1 {
         color: #2e97f4 !important;
         font-weight: 700;
         font-size: 1rem;
@@ -349,11 +337,31 @@ a:hover {
 }
 </style>
 <style scoped>
-.btn-payment{
-  background-color:  #d26e4b  !important;
+.product-info {
+  padding: 2px !important;
+}
+.cart-td {
+  font-size: 1rem !important;
+  font-weight: 700;
+}
+.btn-payment {
+  background-color: #d26e4b !important;
   color: white !important;
   font-weight: 700;
-  margin-top: 20px ;
+  margin-top: 20px;
   width: 100%;
+}
+.btn-del {
+  min-width: 20px !important;
+  padding: 0 !important;
+  margin: 5px;
+}
+td img {
+  padding-right: 10px;
+  height: 130px;
+  width: 130px;
+}
+.v-application .py-12 {
+  padding: 0 !important;
 }
 </style>

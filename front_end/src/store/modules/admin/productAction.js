@@ -9,7 +9,6 @@ const mutations = {
 };
 const actions = {
     addProduct({ commit }, params) {
-        console.log(params)
         http
             .post(`/product/`, params)
             .then(() => {

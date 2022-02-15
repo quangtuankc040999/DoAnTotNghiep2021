@@ -155,17 +155,17 @@
                 </td>
               </tr>
               <tr>
-                <td class="blue">Tạm tính</td>
+                <td class="blue1">Tạm tính</td>
                 <td class="price">
                   {{ formatPrice(totalPrice(productCarts)) }}
                 </td>
               </tr>
               <tr>
-                <td class="blue">Giao hàng</td>
+                <td class="blue1">Giao hàng</td>
                 <td class="price">{{ formatPrice(15000) }}</td>
               </tr>
               <tr>
-                <td class="blue">Tổng cộng</td>
+                <td class="blue1">Tổng cộng</td>
                 <td class="price">
                   {{ formatPrice(15000 + totalPrice(productCarts)) }}
                 </td>
@@ -273,8 +273,8 @@ export default {
           this.updateProductAction({
             productId: this.productCarts[index].idProduct,
             body: {
-              inventory:
-                this.productById.inventory - this.productCarts[index].quantity,
+              // inventory:
+              //   this.productById.inventory - this.productCarts[index].quantity,
             },
           });
         }
@@ -473,7 +473,7 @@ h5 {
           .price {
             font-weight: 700;
           }
-          .blue {
+          .blue11 {
             color: #2e97f4 !important;
             font-weight: 700;
             font-size: 1rem;

@@ -117,7 +117,7 @@ export default {
 
 <style lang="scss" scoped>
 .manage-order {
-  width: 90%;
+  width: 100%;
   .bar {
     display: flex;
     flex-direction: row;

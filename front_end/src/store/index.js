@@ -9,6 +9,9 @@ import ListProduct from './modules/listProduct'
 import Cart from './modules/cart'
 import Payment from './modules/payment'
 import ProductAction from './modules/admin/productAction'
+import Ratting from './modules/ratting'
+import Chat from './modules/chatRoom/chat'
+import Room from './modules/chatRoom/room'
 
 Vue.use(Vuex);
 
@@ -22,6 +25,9 @@ export default new Vuex.Store({
     PRODUCTS: ListProduct,
     CART: Cart,
     PAYMENT: Payment,
-    PRODUCTACTION: ProductAction
+    PRODUCTACTION: ProductAction,
+    RATTING: Ratting,
+    CHAT: Chat,
+    ROOM: Room
   },
 });

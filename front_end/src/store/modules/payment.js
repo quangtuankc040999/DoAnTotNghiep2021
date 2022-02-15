@@ -1,4 +1,5 @@
 import http from '../../service/api.js';
+import router from '../../router/index.js';
 const state = {
     orderById: null,
     listOrder: [],
@@ -50,15 +51,19 @@ const mutations = {
 };
 const actions = {
     newOrder({ commit }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
-            .post('/order/', params, 'Create a new order successfully!')
+            .post('/order/', params, 'Đặt hàng thành công, chờ xác nhận')
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('ERROR/setIsLoading', false, { root: true })
+                router.push(`/profile/user/manage-order/waitting`)
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true })
             });
     },
     updateOrder({ commit }, params) {

@@ -1,40 +1,52 @@
 <template>
-  <div>
+  <!-- <div>
       <navigation/>
        <div class="container">
       <side-bar-admin class="side-bar" />
       <router-view/>
     </div>
-      <footerRubik/>
+  </div> -->
+  <div class="admin-page">
+    <side-bar-admin  class="side-bar" />
+    <div class="content">
+      <!-- <navigation class="nav" /> -->
+      <router-view class="main-container" />
+    </div>
   </div>
 </template>
 
 <script>
-import Navigation from '../../components/Navigation.vue';
-import FooterRubik from '../../components/Footer.vue';
-import sideBarAdmin from '../../components/Admin/SidebarAdmin.vue'
+// import Navigation from "../../components/Admin/NavigationAdmin.vue";
+// import FooterRubik from '../../components/Footer.vue';
+import sideBarAdmin from "../../components/Admin/SidebarAdmin.vue";
 
 export default {
-  name: 'Admin',
+  name: "Admin",
   components: {
-    Navigation,
-    FooterRubik,
-    sideBarAdmin
+    // Navigation,
+    // FooterRubik,
+    sideBarAdmin,
   },
-
-}
+};
 </script>
 
+
 <style lang="scss" scoped>
-.container {
-  max-width: 90% !important;
-  width: 80% !important;
+.admin-page {
   display: flex;
-  justify-content: center;
-  width: 80% !important;
+  .content {
+    width: 97% !important;
+  }
 }
-.side-bar {
-  margin: 0 20px 0 0;
-  width: 20%;
+.side-bar{
+   height: calc(100vh ) !important;
+  letter-spacing: 2px !important;
+  margin: 0 5px;
 }
+.main-container {
+  background-color: rgb(247, 248, 251);
+  // max-height: 100vh;
+  // padding-top: 80px;
+}
+
 </style>

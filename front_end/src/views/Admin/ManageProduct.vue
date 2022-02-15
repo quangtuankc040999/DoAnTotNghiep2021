@@ -1,12 +1,10 @@
 <template>
   <div class="manage-product">
-    <b-button
-      variant="primary"
+    <v-btn text
       @click="showModalProduct('add', '')"
       style="float: right"
-      >Add Product</b-button
+      ><v-icon class="icon-add">mdi-plus-circle-outline </v-icon></v-btn
     >
-
     <modal-product
       v-if="productById"
       :productRequest="productById"
@@ -23,50 +21,51 @@
     />
     <p>Danh sách sản phẩm</p>
     <div class="product-list">
-      <table class="table-infor">
-        <thead>
-          <td colspan="2" style="width: 45%">Sản phẩm</td>
-          <td style="width: 20%">Phân loại</td>
-          <td style="width: 10%">Giá bán</td>
-          <td style="width: 20%">Hành động</td>
-        </thead>
-        <tbody>
-          <tr v-for="(product, index) in productInfors" :key="index">
-            <td style="width: 25%">
-              <img
-                v-if="product.image[0].length != 0"
-                v-bind:src="product.image[0]"
-                alt=""
-                style="padding: 25px 25px 25px 0px"
-              />
-              <img
-                v-else-if="product.image[0].length == 0"
-                v-bind:src="imageEmpty"
-                alt=""
-                style="padding: 25px 25px 25px 0px"
-              />
-            </td>
-            <td style="font-weight: 500">{{ product.title }}</td>
+      <v-data-table
+        :headers="headers"
+        :items="productInfors"
+        :items-per-page="5"
+        class="elevation-1"
+      >
+        <template v-slot:[`header.title`]="{ header }">
+          {{ header.text }}
+        </template>
+        <template v-slot:[`header.image`]="{ header }">
+          {{ header.text }}
+        </template>
+
+        <template v-slot:item="{ item }">
+          <tr>
+            <td>{{ item.title }}</td>
             <td>
-              <b-badge variant="primary">{{ product.category_name }}</b-badge>
-              <b-badge variant="success">{{ product.category_detail }}</b-badge>
+              <img v-if="item.image.length != 0" :src="item.image[0]" />
+              <img v-else-if="item.image.length == 0" :src="imageEmpty" />
             </td>
             <td>
-              {{ formatPrice(product.sale_price) }}
-            </td>
-            <td>
-              <b-button
-                variant="primary"
-                @click="showModalProduct('edit', product._id)"
-                >Chỉnh sửa</b-button
+              <v-chip
+                color="purple lighten-3"
+                dark
+                style="margin-bottom: 5px"
+                >{{ item.category_name }}</v-chip
               >
-              <b-button variant="danger" @click="deleteProduct(product._id)"
-                >Xoá</b-button
+              <v-chip color="teal lighten-3" dark>{{
+                item.category_detail
+              }}</v-chip>
+            </td>
+            <td class="price">
+              {{ formatPrice(item.sale_price) }}
+            </td>
+            <td>
+              <v-btn text @click="showModalProduct('edit', item._id)"
+                ><v-icon small>mdi-pencil </v-icon></v-btn
+              >
+              <v-btn text @click="deleteProduct(item._id)"
+                ><v-icon small>mdi-delete-outline </v-icon></v-btn
               >
             </td>
           </tr>
-        </tbody>
-      </table>
+        </template>
+      </v-data-table>
     </div>
   </div>
 </template>
@@ -78,6 +77,23 @@ export default {
   name: "manage-product",
   data() {
     return {
+      headers: [
+        {
+          text: "Sản phẩm",
+          align: "start",
+          value: "title",
+          width: "20%",
+        },
+        { text: "Hình ảnh", value: "image", sortable: false },
+        {
+          text: "Phân loại",
+          value: "category_name",
+          width: "20%",
+          align: "center",
+        },
+        { text: "Giá bán", value: "sale_price", width: "15%" },
+        { text: "Hành động", value: "", width: "15%" },
+      ],
       imageEmpty:
         "https://thegioirubik.com/wp-content/uploads/woocommerce-placeholder.png",
       productRequest: {
@@ -142,7 +158,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+img {
+  padding: 5px;
+  width: 150px;
+  height: 150px;
+}
 .manage-product {
-  width: 80% !important;
+  margin-top: 10px;
+  width: 100% !important;
+  height: 100% !important;
+}
+tr {
+  height: 100% !important;
+}
+td {
+}
+.elevation-1 {
+  width: 100%;
+}
+
+</style>
+<style scoped>
+.v-btn {
+  padding: 0 !important;
+  min-width: 40px !important;
+  /* font-size: 2rem !important; */
+}
+.v-icon, .price {
+  font-size: 1.2rem !important;
+}
+.icon-add{
+  font-size: 1.4rem !important;
 }
 </style>

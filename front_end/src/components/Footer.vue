@@ -45,6 +45,8 @@ export default {
   }
 </script>
 
-<style>
-
+<style  scoped>
+.v-application .indigo.lighten-1 {
+  background-color: rgb(41, 41, 41) !important;
+}
 </style>

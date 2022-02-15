@@ -192,7 +192,7 @@
           class="okButton"
           block
           variant="primary"
-          @click="addProduct(idProduct)"
+          @click="addProduct"
           :disabled="isDisableButton"
           v-else-if="modalType == 'edit'"
         >
@@ -355,6 +355,7 @@ export default {
           this.addProductAction(this.productRequest);
         }
         else if(this.modalType == "edit"){
+          
           this.updateProductAction({productId: this.idProduct, body: this.productRequest})
         }
       }

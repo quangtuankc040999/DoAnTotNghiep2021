@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Order = new Schema(
-    {
+    {   
+        emailSeller: {type: String, default: "admin@gmail.com"},
         customerId: { type: String },
         customerName: { type: String },
         customerPhone: { type: String },

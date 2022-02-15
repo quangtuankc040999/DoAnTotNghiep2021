@@ -1,5 +1,5 @@
 <template>
-  <div class="product-detail">
+  <div class="product-detail" v-if="productById">
     <div class="container-product">
       <div class="list-img">
         <div class="img">
@@ -65,7 +65,6 @@
           <div class="select-btn">
             <v-btn
               class="btn-add-cart"
-              color="primary"
               @click="
                 setProductCart(
                   userInfoAuth._id,
@@ -92,26 +91,71 @@
           <!-- <span v-for="i in productById.product_key" v-bind:key="i"
             >{{ i }},
           </span> -->
-          <span>{{productById.product_key}}</span>
+          <span>{{ productById.product_key }}</span>
         </p>
       </div>
     </div>
     <div class="description">
-      <p class="description-title">description</p>
+      <p class="description-title">Thông tin sản phẩm</p>
       <p class="description-content">{{ productById.description }}</p>
     </div>
+    <p style="font-size: 1.2em; font-weight: 700; border: none">
+      Đánh giá sản phẩm
+    </p>
+
+    <div v-if="listCommentProduct">
+      <div v-if="listCommentProduct.length > 0">
+        <div class="star-total">
+          <div class="div1">
+            <AwesomeVueStarRating
+              :star="Math.round(totalStar(listCommentProduct))"
+              :disabled="this.disabled"
+              :maxstars="this.maxstars"
+              :starsize="this.starsize"
+              :hasresults="this.hasresults"
+              :hasdescription="this.hasdescription"
+            />
+            <span
+              >{{ Math.round(totalStar(listCommentProduct) * 100) / 100 }} trên
+              5</span
+            >
+          </div>
+          <span>(Có {{ listCommentProduct.length }} đánh giá)</span>
+        </div>
+        <comment-item
+          v-for="(comment, index) in listCommentProduct"
+          :key="index"
+          :comment="comment"
+          :indexComment="index"
+          class="comment"
+        />
+      </div>
+      <div v-else>Chưa có đánh giá</div>
+    </div>
+
+    
   </div>
 </template>
 <script>
 import { VueperSlides, VueperSlide } from "vueperslides";
 import { mapActions, mapGetters } from "vuex";
+import commentItem from "../../components/Products/CommentItem.vue";
+import AwesomeVueStarRating from "awesome-vue-star-rating";
 export default {
   components: {
     VueperSlides,
     VueperSlide,
+    commentItem,
+    AwesomeVueStarRating,
   },
   data() {
     return {
+      hasresults: false,
+      hasdescription: false,
+      starsize: "1x", //[xs,lg,1x,2x,3x,4x,5x,6x,7x,8x,9x,10x],
+      maxstars: 5,
+      disabled: true,
+
       index: localStorage.getItem("index"),
       productId: localStorage.getItem("productID"),
       product_quantity: 1,
@@ -119,12 +163,19 @@ export default {
   },
   computed: {
     ...mapGetters({
+      listCommentProduct: "RATTING/listCommentProduct",
       productById: "PRODUCTS/productById",
       userInfoAuth: "AUTH/userInfo",
       productCarts: "CART/productCart",
     }),
   },
   methods: {
+    totalStar(listComment) {
+      return (
+        listComment.reduce((total, comnent) => total + comnent.star, 0) /
+        listComment.length
+      );
+    },
     ...mapActions({
       getProductInforAction: "PRODUCTS/getProduct",
       getProductCartOfUserAction: "CART/userProductCart",
@@ -133,6 +184,8 @@ export default {
       updateQuantityProductFromCartDBAction:
         "CART/updateQuantityProductFromCartDB",
       updateQuantityProductFromCartAction: "CART/updateQuantityProductFromCart",
+      getCommentProductByIdProductAction:
+        "RATTING/getCommentProductByIdProduct",
     }),
     setProductCart(userId, product, productCarts) {
       let check = false; // kiem tra san pham co trong gio hang hay chua
@@ -183,12 +236,14 @@ export default {
   created() {
     this.getProductCartOfUserAction(this.userInfoAuth._id);
     this.getProductInforAction(this.$route.params.id);
+    this.getCommentProductByIdProductAction(this.$route.params.id);
   },
   watch: {
     $route() {
       if (this.$route.params.id) {
         this.$router.go();
         this.getProductInforAction(this.$route.params.id);
+        this.getCommentProductByIdProductAction(this.$route.params.id);
       }
     },
   },
@@ -196,11 +251,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+p {
+  font-size: 1rem;
+  font-family: "Open Sans", sans-serif !important;
+  color: #2e97f4 !important;
+  text-transform: uppercase !important;
+  padding-bottom: 10px;
+  border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
+}
+.star-total {
+  display: flex;
+  padding: 15px;
+  margin-bottom: 3%;
+  width: 100%;
+  .div1 {
+    margin-right: 2%;
+     text-align: center;
+     align-content: center;
+    span {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: rgb(243, 210, 62);
+    }
+  }
+}
 .vueperslide--loading .vueperslide__content-wrapper {
   display: none !important;
 }
 .product-detail {
-  width: 100%;
+  width: 90%;
   height: 100%;
 }
 .img {
@@ -257,11 +336,11 @@ export default {
       }
     }
     p {
-        border: none !important;
-        color: rgb(126, 43, 43) !important;
-        text-transform: none !important;
-        width: 100% !important;
-      }
+      border: none !important;
+      color: rgb(126, 43, 43) !important;
+      text-transform: none !important;
+      width: 100% !important;
+    }
     .action-buy {
       display: flex;
       align-self: center;
@@ -303,13 +382,18 @@ export default {
 }
 .description {
   .description-title {
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: 700;
+    border: none;
   }
   .description-content {
     border-bottom: none;
     text-transform: unset !important;
     color: black !important;
   }
+}
+.v-application .py-12 {
+    padding-top: 0px !important; 
+  padding-bottom: 0px !important; 
 }
 </style>

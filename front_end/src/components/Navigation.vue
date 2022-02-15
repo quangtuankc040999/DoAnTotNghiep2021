@@ -18,8 +18,8 @@
       </div>
       <div class="action" v-else>
         <ul>
-          <router-link tag="li" to="/profile"
-            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }}
+          <router-link tag="li" to="/profile/user/manage-account/"
+            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }} 
             <v-icon>mdi-account</v-icon></router-link
           >
           <!-- <li @click="logout">Đăng xuất</li> -->
@@ -151,6 +151,7 @@ export default {
   methods: {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
+      getUser: 'USER/getUser',
     }),
 
     formatPrice(price) {
@@ -179,6 +180,9 @@ export default {
       );
     },
   },
+  created(){
+    this.getUserByToken()
+  }
 };
 </script>
 
@@ -205,18 +209,18 @@ export default {
   width: 20%;
 }
 .action {
-  width: 22%;
+  width: 25%;
   margin-bottom: 0 !important;
 }
 .cart {
   width: 20%;
   position: relative;
   a {
-    color: rgba(102, 102, 102, 0.85);
+    color: rgba(102, 102, 102, 0.85) !important;
     text-decoration: none;
   }
   a:hover {
-    color: rgba(39, 38, 38, 0.85);
+    color: rgba(39, 38, 38, 0.85) !important;
     text-decoration: none;
   }
 }
@@ -268,13 +272,14 @@ a {
   font-size: 1rem;
   font-weight: 300;
   overflow: auto;
-  padding: 0 1rem;
+  padding: 0 0.4rem;
   position: absolute;
-  top: 30px;
-  left: -10px;
+  top: 30px !important;
+  left: -10px !important;
   z-index: 1000;
-  right: 0;
+  right: 0 !important;
   width: 20rem;
+  height: 400px;
   flex-direction: column;
   align-items: center;
   .cart-dropdown__list {
@@ -296,6 +301,7 @@ a {
         height: 90%;
         width: 50%;
         margin-right: 10px;
+        margin-left:0 ;
       }
       .product-cart {
         color: rgb(0, 0, 0) !important;
@@ -307,6 +313,7 @@ a {
   }
   p {
     width: 90%;
+    margin-top: 10px;
     color: black !important;
     font-weight: 700;
     text-align: center;

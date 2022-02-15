@@ -3,7 +3,7 @@ import router from '../../router/index.js';
 import { decodeToken } from '../../utils/helper';
 
 const formatDataUser = function (data) {
-  if(data){
+  if (data) {
     const dataFormat = {
       _id: data._id,
       avatar: data.avatar,
@@ -12,7 +12,7 @@ const formatDataUser = function (data) {
       lastName: data.lastName,
     };
     return dataFormat;
-  }else{
+  } else {
     return data
   }
 };
@@ -30,27 +30,32 @@ const getters = {
   userInfo(state) {
     return state.userInfo;
   },
- 
+
 };
 const actions = {
   login({ commit }, params) {
+    commit('ERROR/setIsLoading', true, { root: true });
+
     http
       .post('/auth/login', params)
       .then((response) => {
         commit('setUserInfo', response.data.data);
         localStorage.setItem('token', response.data.data.token);
         commit('ERROR/clearErrorMessage', null, { root: true });
+        commit('ERROR/setIsLoading', false, { root: true });
         router.go();
       })
       .catch((err) => {
         commit('ERROR/setErrorMessage', err.response.data.message, {
           root: true,
         });
+        commit('ERROR/setIsLoading', false, { root: true });
+
       });
   },
   register({ commit }, params) {
     http
-      .post('/auth/register', params, 'Create a new account successfully!')
+      .post('/auth/register', params, 'Đăng ký tài khoản mới thành công!')
       .then(() => {
         commit('ERROR/clearErrorMessage', null, { root: true });
         router.push('/login');

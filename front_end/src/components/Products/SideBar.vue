@@ -71,9 +71,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .category-detail {
-  margin-left: 30px !important;
 }
 .v-list-item__title {
   font-size: 0.8rem;

@@ -171,7 +171,7 @@ export default {
 <style lang="scss" scoped>
 .home-container {
   margin: 0 auto;
-  width: 70% !important;
+  width: 80% !important;
   .grid-img {
     display: flex;
     justify-content: center;
