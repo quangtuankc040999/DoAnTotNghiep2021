@@ -12,15 +12,15 @@
       </div>
       <div class="action" v-if="!userInfoAuth">
         <ul>
-          <router-link tag="li" to="/login">Đăng nhập</router-link>
-          <router-link tag="li" to="/signup">Đăng ký</router-link>
+          <v-btn text @click="to('login')"> Đăng nhập </v-btn>
+          <v-btn text @click="to('signup')"> Đăng ký </v-btn>
         </ul>
       </div>
       <div class="action" v-else>
         <ul>
-          <router-link tag="li" to="/profile/user/manage-account/"
-            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }} 
-            <v-icon>mdi-account</v-icon></router-link
+          <v-btn text @click="to('profile')"
+            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }}
+            <v-icon>mdi-account</v-icon></v-btn
           >
           <!-- <li @click="logout">Đăng xuất</li> -->
         </ul>
@@ -29,20 +29,31 @@
         <div class="cart-label">
           Giỏ hàng/{{ formatPrice(totalPrice(productCart)) }}
           <v-badge
+          v-if="totalQuantity(productCart) <= 9"
             bordered
-            color="error"
+            color="red darken-1"
             v-bind:content="totalQuantity(productCart)"
             offset-x="10"
             offset-y="10"
           >
-            <v-icon>mdi-basket </v-icon>
+            <v-icon>mdi-cart  </v-icon>
+          </v-badge>
+          <v-badge
+            v-if="totalQuantity(productCart) > 9"
+            bordered
+            color="red darken-1"
+            v-bind:content="'9+'"
+            offset-x="10"
+            offset-y="10"
+          >
+            <v-icon>mdi-cart  </v-icon>
           </v-badge>
 
           <div class="cart-dropdown">
             <ul class="cart-dropdown__list">
               <li v-for="(product, index) in productCart" :key="index">
                 <img v-bind:src="product.product.image[0]" alt="" />
-                <div>
+                <div v-if="product.product">
                   <router-link
                     class="product-cart"
                     :to="`/products/product-detail/${product.product._id}`"
@@ -71,10 +82,10 @@
       </div>
       <div v-else class="cart">
         <div class="cart-label">
-          <router-link to="/cart">
+          <v-btn text @click="to('cart')">
             Giỏ hàng/0đ
-            <v-icon>mdi-basket </v-icon>
-          </router-link>
+            <v-icon>mdi-cart  </v-icon>
+          </v-btn>
         </div>
       </div>
       <div class="navigation-drawes">
@@ -85,6 +96,11 @@
               v-model="group"
               active-class="deep-purple--text text--accent-4"
             >
+              <input
+                class="input-search"
+                type="text"
+                placeholder="Tìm kiếm"
+              /><v-icon>mdi-magnify </v-icon>
               <router-link to="/"
                 ><v-list-item>
                   <v-list-item-title>Trang Chủ</v-list-item-title>
@@ -149,9 +165,24 @@ export default {
     }),
   },
   methods: {
+    to(page) {
+      if (page && page == "profile") {
+        this.$router.push("/profile/user/manage-account/");
+      } else if (page && page == "login") {
+        this.$router.push("/login");
+      } else if (page && page == "signup") {
+        this.$router.push("/signup");
+      } else if (page && page == "cart") {
+        this.$router.push("/cart");
+      }
+    },
+
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
-      getUser: 'USER/getUser',
+      getUser: "USER/getUser",
+      logoutAction: "AUTH/logout",
+      userProductCartAction: "CART/userProductCart",
+      getUserAction: "USER/getUser",
     }),
 
     formatPrice(price) {
@@ -163,9 +194,6 @@ export default {
     logout() {
       this.logoutAction();
     },
-    ...mapActions({
-      logoutAction: "AUTH/logout",
-    }),
     totalQuantity(productCart) {
       return productCart.reduce(
         (total, product) => total + product.quantity,
@@ -180,19 +208,21 @@ export default {
       );
     },
   },
-  created(){
-    this.getUserByToken()
-  }
+  created() {
+    this.getUserByToken();
+    if (this.userInfoAuth) {
+      this.getUserAction(this.userInfoAuth._id);
+    }
+  },
 };
 </script>
 
-<style lang="scss" >
+<style lang="scss" scoped>
 .logo,
 .action,
 .cart,
 .navigation-drawes {
   align-self: flex-end;
-  font-family: "Open Sans", sans-serif;
   font-weight: 700;
   font-size: 0.8em;
   color: rgba(102, 102, 102, 0.85);
@@ -200,21 +230,38 @@ export default {
 }
 .nav {
   background-color: none;
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
-  padding: 7.5px 20px;
-  border-bottom: 3px rgba(187, 166, 166, 0.3) solid;
+  padding: 0px 20px;
+  border-bottom: 1px rgba(187, 166, 166, 0.3) solid;
+  .logo {
+    width: 20% !important;
+    img {
+      margin-top: 10px;
+      max-width: 100%;
+    }
+  }
 }
 .search-box {
   width: 20%;
 }
 .action {
-  width: 25%;
-  margin-bottom: 0 !important;
+  width: 20%;
+  margin-bottom: 9px !important;
+  .v-icon {
+    margin-bottom: 7px;
+    margin-left: 5px;
+  }
 }
 .cart {
-  width: 20%;
+  width: 15%;
   position: relative;
+  margin-bottom: 2px !important;
+  font-weight: 500;
+  .v-icon {
+    margin-bottom: 10px;
+    margin-left: 5px;
+  }
   a {
     color: rgba(102, 102, 102, 0.85) !important;
     text-decoration: none;
@@ -254,11 +301,12 @@ li {
 }
 a {
   color: rgba(0, 0, 0, 0.87);
-  text-decoration: none;
+  text-decoration: none !important;
 }
 .navigation-drawes {
   border: 1px solid rgba(102, 102, 102, 0.85);
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 .v-badge__badge {
   background-color: rgba(214, 100, 100, 0.8);
@@ -275,10 +323,10 @@ a {
   padding: 0 0.4rem;
   position: absolute;
   top: 30px !important;
-  left: -10px !important;
+  left: -30px !important;
   z-index: 1000;
   right: 0 !important;
-  width: 20rem;
+  width: 22rem;
   height: 400px;
   flex-direction: column;
   align-items: center;
@@ -288,20 +336,21 @@ a {
     display: flex;
     height: 300px;
     flex-direction: column;
-    align-items: center;
 
     li {
       width: 90%;
       margin: 0.4rem 0;
       display: flex;
       align-items: center;
-      padding-bottom: 5px;
       border-bottom: rgba(177, 171, 171, 0.5) 1px solid;
       img {
-        height: 90%;
-        width: 50%;
+        height: 100%;
+        width: 40%;
         margin-right: 10px;
-        margin-left:0 ;
+        margin-left: 0;
+      }
+      div {
+        width: 60%;
       }
       .product-cart {
         color: rgb(0, 0, 0) !important;
@@ -309,6 +358,9 @@ a {
       .product-cart:hover {
         text-decoration: none;
       }
+    }
+    li:hover {
+      background-color: rgb(216, 216, 216);
     }
   }
   p {
@@ -359,5 +411,19 @@ a {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.v-list {
+  margin-top: 20px;
+}
+.v-navigation-drawer {
+  width: 20% !important;
+  background-color: rgb(255, 255, 255) !important;
+}
+.input-search {
+  border: 1px solid rgb(226, 226, 226);
+  padding: 10px;
+  width: 90%;
+  font-weight: 300;
+  border-radius: 20px;
 }
 </style>

@@ -12,7 +12,7 @@ import ProductAction from './modules/admin/productAction'
 import Ratting from './modules/ratting'
 import Chat from './modules/chatRoom/chat'
 import Room from './modules/chatRoom/room'
-
+import Log from './modules/log'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -28,6 +28,7 @@ export default new Vuex.Store({
     PRODUCTACTION: ProductAction,
     RATTING: Ratting,
     CHAT: Chat,
-    ROOM: Room
+    ROOM: Room,
+    LOG: Log
   },
 });

@@ -28,6 +28,7 @@ class AuthController {
           user.email = req.body.email;
           user.password = await bcrypt.hash(req.body.password, salt);
           user.avatar = "";
+          user.productCart = [];
           const admin = await User.findOne({ email: 'admin@gmail.com' })
           const role = await Role.findOne({ name: 'User' })
           user.role = role;
@@ -58,12 +59,11 @@ class AuthController {
             errors.array(),
           );
         }
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email }).populate('role');
         if (!user) {
           return apiResponse.ErrorResponse(res, 'Email không đúng');
         }
         const role = await Role.findById(user.role);
-        let roleName = role.name
         bcrypt.compare(password, user.password, (error, isValid) => {
           if (!isValid) {
             return apiResponse.ErrorResponse(res, 'Mật khẩu không trùng khớp');
@@ -74,7 +74,7 @@ class AuthController {
                 email: user.email,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                role: roleName
+                role: role.name
               },
               process.env.TOKEN_SECRET,
               { expiresIn: process.env.JWT_TIMEOUT_DURATION },
@@ -86,6 +86,7 @@ class AuthController {
               email: user.email,
               token: tokenCreated,
               password: user.password,
+              role: role
             };
             User.findByIdAndUpdate(
               user._id,

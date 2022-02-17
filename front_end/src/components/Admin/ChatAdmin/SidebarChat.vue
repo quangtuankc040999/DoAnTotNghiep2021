@@ -1,48 +1,25 @@
 <template>
-  <v-card
-    max-width="450"
-    class="mx-auto"
-  >
-    <v-toolbar
-      color="cyan"
-      dark
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Inbox</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-    </v-toolbar>
-
+  <v-card max-width="450" class="mx-auto sidebar-chat">
     <v-list three-line>
-      <template v-for="(item, index) in items">
-        <v-subheader
-          v-if="item.header"
-          :key="item.header"
-          v-text="item.header"
-        ></v-subheader>
-
-        <v-divider
-          v-else-if="item.divider"
-          :key="index"
-          :inset="item.inset"
-        ></v-divider>
-
-        <v-list-item
-          v-else
-          :key="item.title"
-        >
+      <template v-for="item in roomChats" class="room-sidebar">
+        <v-list-item :key="item.title" @click="toRoomChat(item._id)">
           <v-list-item-avatar>
-            <v-img :src="item.avatar"></v-img>
+            <v-img v-if="item.member.avatar.length != 0" :src="item.member.avatar"></v-img>
+            <v-avatar v-else size="45" color="red lighten-1" class="img">
+              <span class="white--text"
+                >{{ item.member.firstName.charAt(0)
+                }}{{ item.member.lastName.charAt(0) }}</span
+              >
+            </v-avatar>
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title v-html="item.title"></v-list-item-title>
-            <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+            <v-list-item-title
+              v-html="item.member.lastName + ' ' + item.member.firstName"
+            ></v-list-item-title>
+            <v-list-item-subtitle
+              v-html="item.member.email"
+            ></v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -51,44 +28,32 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({
-      items: [
-        { header: 'Today' },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-          title: 'Brunch this weekend?',
-          subtitle: `<span class="text--primary">Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-          subtitle: `<span class="text--primary">to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.`,
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-          title: 'Oui oui',
-          subtitle: '<span class="text--primary">Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-          title: 'Birthday gift',
-          subtitle: '<span class="text--primary">Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?',
-        },
-        { divider: true, inset: true },
-        {
-          avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-          title: 'Recipe to try',
-          subtitle: '<span class="text--primary">Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.',
-        },
-      ],
-    }),
-  }
+// import { mapActions, mapGetters } from 'vuex'
+export default {
+  props: ["roomChats"],
+  data: () => ({}),
+  methods: {
+    toRoomChat(idRoom) {
+      this.$router.push(`/admin/manage-chat/${idRoom}`);
+    },
+  },
+};
 </script>
 
-<style>
-
+<style scoped>
+.content {
+  display: flex !important;
+  flex-direction: row;
+  height: 100vh;
+  width: 100%;
+  justify-content: flex-start;
+  align-self: left !important;
+  margin-bottom: 10px;
+}
+.sidebar-chat {
+  overflow-y: auto;
+}
+.v-list-item {
+  border-bottom: 1px solid rgb(216, 216, 216) !important;
+}
 </style>

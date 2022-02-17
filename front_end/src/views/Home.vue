@@ -43,9 +43,9 @@
           </div>
         </div>
       </div>
-      <div class="new-products" style="">
+      <!-- <div class="new-products" style="">
         <p>Hàng mới lên kệ</p>
-        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+        <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
           <product
             v-for="(product, index) in productInfor"
             :key="index"
@@ -54,22 +54,22 @@
             class="product"
           />
         </VueSlickCarousel>
-      </div>
+      </div> -->
       <div class="hot-saler">
         <p>Hàng bán chạy</p>
-        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+        <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
           <product
             v-for="(product, index) in productInfor"
             :key="index"
             :product="product"
             :indexProduct="index"
-            class="product"
+            class="product-item"
           />
         </VueSlickCarousel>
       </div>
-      <div class="discounting">
+      <!-- <div class="discounting">
         <p>Hàng đang giảm giá!!!</p>
-        <VueSlickCarousel v-bind="settings" v-if="productInfor">
+        <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
           <product
             v-for="(product, index) in productInfor"
             :key="index"
@@ -78,7 +78,7 @@
             class="product"
           />
         </VueSlickCarousel>
-      </div>
+      </div> -->
       <div class="new-posts"></div>
     </div>
     <footerRubik />
@@ -105,15 +105,15 @@ export default {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 5,
+        slidesToShow: 3,
+        slidesToScroll: 3,
         initialSlide: 0,
         responsive: [
           {
             breakpoint: 1024,
             settings: {
-              slidesToShow: 4,
-              slidesToScroll: 4,
+              slidesToShow: 3,
+              slidesToScroll: 3,
               infinite: true,
               dots: true,
             },
@@ -121,16 +121,16 @@ export default {
           {
             breakpoint: 600,
             settings: {
-              slidesToShow: 3,
-              slidesToScroll: 3,
-              initialSlide: 3,
+              slidesToShow: 2,
+              slidesToScroll: 2,
+              initialSlide: 2,
             },
           },
           {
             breakpoint: 480,
             settings: {
-              slidesToShow: 2,
-              slidesToScroll: 2,
+              slidesToShow: 1,
+              slidesToScroll: 1,
             },
           },
         ],
@@ -149,6 +149,7 @@ export default {
       getAllProduct: "PRODUCTS/getAllProduct",
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
+      getUserAction: "USER/getUser"
     }),
     getProductsByCategoryDetail(category, categoryDetail) {
       this.$router.push(`/products/${category}/${categoryDetail}`);
@@ -162,7 +163,10 @@ export default {
   },
   created() {
     this.getUserByToken();
-    this.getProductCart(this.userInfoAuth._id);
+    if (this.userInfoAuth) {
+      this.getUserAction(this.userInfoAuth._id)
+      this.getProductCart(this.userInfoAuth._id);
+    }
     this.getAllProduct();
   },
 };
@@ -171,19 +175,33 @@ export default {
 <style lang="scss" scoped>
 .home-container {
   margin: 0 auto;
-  width: 80% !important;
+  width: 100% !important;
   .grid-img {
     display: flex;
     justify-content: center;
     height: 610px;
-    border-bottom: 3px solid rgba(177, 171, 171, 0.5);
+    width: 100% !important;
+    margin: 15px auto;
+    margin-bottom: 0;
+
     .div-1,
     .div-2,
     .div-3 {
-      margin: 15px;
-      height: 580px;
+      margin: 5px;
+      height: 500px;
       background-size: cover;
       background-position: center;
+    }
+    .div-2 {
+      .action {
+        top: 75%;
+      }
+    }
+    .div3-1,
+    .div3-2 {
+      .action {
+        top: 55%;
+      }
     }
     .div-2,
     .div3-1,
@@ -192,7 +210,6 @@ export default {
       .action {
         width: 100%;
         position: absolute;
-        top: 65%;
         display: flex;
         flex-direction: column;
         text-align: center;
@@ -218,7 +235,7 @@ export default {
     .div-1 {
       width: 40%;
       background-image: linear-gradient(
-          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0.3),
           rgba(100, 84, 84, 0.3)
         ),
         url("https://thegioirubik.com/wp-content/uploads/2020/01/Gan-XS-3.jpg");
@@ -241,22 +258,22 @@ export default {
       }
     }
     .div-2 {
-      width: 25%;
+      width: 30%;
       background-image: linear-gradient(
-          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0.3),
           rgba(100, 84, 84, 0.3)
         ),
         url("https://thegioirubik.com/wp-content/uploads/2019/07/Valk-4M-1-1024x1024.jpg");
     }
     .div-3 {
-      width: 20%;
+      width: 25%;
       .div3-1 {
         height: 48%;
         margin-bottom: 10px;
         background-size: cover;
         background-position: center;
         background-image: linear-gradient(
-            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.3),
             rgba(100, 84, 84, 0.3)
           ),
           url("https://thegioirubik.com/wp-content/uploads/2019/09/Bandaged-Sun-Cybe-1.jpg");
@@ -267,7 +284,7 @@ export default {
         background-position: center;
         margin-top: 10px;
         background-image: linear-gradient(
-            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.3),
             rgba(100, 84, 84, 0.3)
           ),
           url("https://thegioirubik.com/wp-content/uploads/2017/06/Speedstack-Timer-Gen-Pro4-bag-Túi-2.jpg");
@@ -279,15 +296,18 @@ export default {
   .discounting {
     margin-top: 30px !important;
     text-align: center;
-    width: 95%;
+    width: 80%;
     margin: 0 auto;
     p {
-      font-size: 1.1rem !important;
+      font-size: 1.5rem !important;
       font-weight: 700;
       color: #dd9933 !important;
       border: none;
+      text-transform: uppercase;
       margin-bottom: 10px;
     }
+  }
+  .product-item {
   }
 }
 </style>

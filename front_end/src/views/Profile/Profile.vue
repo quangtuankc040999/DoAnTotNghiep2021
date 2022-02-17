@@ -66,7 +66,7 @@ export default {
   right: 0;
 }
 .container {
-  width: 80% !important;
+  width: 100% !important;
   display: flex;
 
   transition: 1s cubic-bezier(0.25, 0.8, 0.25, 1), z-index 1ms;

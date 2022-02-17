@@ -12,7 +12,7 @@ class ProductController {
         );
     }
     // delete product
-    deleteProduct = async(req, res) =>{
+    deleteProduct = async (req, res) => {
         await Product.findByIdAndUpdate(req.params.productId,
             {
                 $set: {
@@ -27,22 +27,44 @@ class ProductController {
     // update product
     updateProduct = async (req, res) => {
         const product = req.body;
-        await Product.findByIdAndUpdate(req.params.productId,
-            {
-                $set: {
-                    title: product.title,
-                    brand: product.brand,
-                    product_key: product.product_key,
-                    image: product.image,
-                    starting_price: product.starting_price,
-                    discount: product.discount,
-                    sale_price: product.sale_price,
-                    description: product.description,
-                    category_name: product.category_name,
-                    category_detail: product.category_detail,
-                    inventory: product.inventory
-                }
-            });
+        const productFind = await Product.findById(req.params.productId)
+        if (product.quantity) {
+            await Product.findByIdAndUpdate(req.params.productId,
+                {
+                    $set: {
+                        title: product.title,
+                        brand: product.brand,
+                        product_key: product.product_key,
+                        image: product.image,
+                        starting_price: product.starting_price,
+                        discount: product.discount,
+                        sale_price: product.sale_price,
+                        description: product.description,
+                        category_name: product.category_name,
+                        category_detail: product.category_detail,
+                        inventory: product.quantity + productFind.inventory
+                    }
+                });
+        }
+        else {
+            await Product.findByIdAndUpdate(req.params.productId,
+                {
+                    $set: {
+                        title: product.title,
+                        brand: product.brand,
+                        product_key: product.product_key,
+                        image: product.image,
+                        starting_price: product.starting_price,
+                        discount: product.discount,
+                        sale_price: product.sale_price,
+                        description: product.description,
+                        category_name: product.category_name,
+                        category_detail: product.category_detail,
+                        inventory: product.inventory
+                    }
+                });
+        }
+
         return apiResponse.successResponse(
             res,
             'Update product successfully',
@@ -66,7 +88,7 @@ class ProductController {
         );
     }
     getProductByBrand = async (req, res) => {
-        const listProduct = await Product.find({ brand: req.params.brandName, is_deleted: false});
+        const listProduct = await Product.find({ brand: req.params.brandName, is_deleted: false });
         return apiResponse.successResponseWithData(
             res,
             'Get Product successfully',
@@ -74,14 +96,14 @@ class ProductController {
         );
     }
     getAllProduct = async (req, res) => {
-        const listProduct = await Product.find({is_deleted: false});
+        const listProduct = await Product.find({ is_deleted: false });
         return apiResponse.successResponseWithData(
             res,
             'Get Product successfully',
             listProduct,
         );
     }
-    getProduct = async(req, res) =>{
+    getProduct = async (req, res) => {
         const product = await Product.findById(req.params.productId);
         return apiResponse.successResponseWithData(
             res,

@@ -15,7 +15,7 @@ class UserController {
         );
       } else {
         const { email } = req.body;
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email: email });
         if (!user) {
           apiResponse.ErrorResponse(res, 'Not found user');
         }
@@ -30,7 +30,7 @@ class UserController {
     }
   };
   getUser = async (req, res) => {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).populate('role');
     if (!user) {
       apiResponse.ErrorResponse(res, 'Not found user');
     }
@@ -102,7 +102,7 @@ class UserController {
       } else {
         const userId = req.params.id;
         const productCart = req.body
-        const user = await User.updateOne({ userId, "productCart.idProduct": productCart.idProduct }, { $set: { "productCart.$.quantity": productCart.quantity + productCart.quantity_old } });
+        const user = await User.findOneAndUpdate({ _id: userId, "productCart.idProduct": productCart.idProduct }, { $set: { "productCart.$.quantity": productCart.quantity + productCart.quantity_old } });
         if (!user) {
           apiResponse.ErrorResponse(res, 'Not found user');
         }
@@ -135,7 +135,10 @@ class UserController {
       } else {
         const userId = req.params.id;
         const productCart = req.body
-        const user = await User.updateOne({userId},{$pull: {'productCart': { idProduct: productCart.idProduct }}});
+        console.log(req.body);
+        const user = await User.findByIdAndUpdate(userId,{$pull: {'productCart': { idProduct: productCart.idProduct }}});
+        // const userFind = await User.findById(userId)
+        // console.log(userFind,"=============dấday nè ==");
         if (!user) {
           apiResponse.ErrorResponse(res, 'Not found user');
         }

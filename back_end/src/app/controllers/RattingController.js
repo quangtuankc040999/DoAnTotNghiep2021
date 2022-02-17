@@ -15,11 +15,19 @@ class RattingController {
         );
     }
     getCommentByProductId = async (req, res) => {
-        const comment = await Ratting.find({"product.idProduct": req.params.productId}).populate('createdBy');
+        let limit = 3
+        const comments = await Ratting.find({ "product.idProduct": req.params.productId }).populate('createdBy').limit(limit).skip(limit * (req.params.page - 1));
+        const numberComment = await Ratting.collection.find({ "product.idProduct": req.params.productId }).count()
+        const listComments  = await Ratting.find({ "product.idProduct": req.params.productId });
+        const totalStar = listComments.reduce( (total, commnent) => total + commnent.star,
+        0)
+        const starAvg = Math.ceil(totalStar / numberComment)
+        let numberPages = Math.ceil(numberComment / limit)
+        let data = { "listComment": comments, "numberPages": numberPages, 'numberComment': numberComment, 'starAvg': starAvg }
         return apiResponse.successResponseWithData(
             res,
             'Add new comment successfully',
-            comment
+            data
         );
     }
 }

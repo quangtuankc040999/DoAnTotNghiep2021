@@ -45,17 +45,19 @@
         </ul>
       </div>
     </div>
-    <span class="time">{{ comment.createdAt }}</span>
+    <span class="time"><vue-time-cus :time="comment.createdAt" /></span>
   </div>
 </template>
 
 <script>
 import AwesomeVueStarRating from "awesome-vue-star-rating";
+import VueTimeCus from "../VueTimeCus.vue";
 export default {
   name: "comment-item",
   props: ["comment", "indexComment"],
   components: {
     AwesomeVueStarRating,
+    VueTimeCus,
   },
   data() {
     return {
@@ -113,6 +115,10 @@ export default {
   }
   .time {
     font-size: 0.7rem;
+  }
+  ul {
+    list-style: none;
+    display: flex;
   }
 }
 </style>

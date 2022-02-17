@@ -29,7 +29,7 @@
                 :src="chat.createdBy.avatar"
                 alt=""
               />
-              <v-avatar v-else size="45" color="teal darken-1" class="img">
+              <v-avatar v-else size="45" color="green" class="img">
                 <span class="white--text"
                   >{{ chat.createdBy.firstName.charAt(0)
                   }}{{ chat.createdBy.lastName.charAt(0) }}</span
@@ -45,7 +45,7 @@
                 :src="chat.createdBy.avatar"
                 alt=""
               />
-              <v-avatar v-else size="45" color="red lighten-1" class="img">
+              <v-avatar v-else size="45" color="red" class="img">
                 <span class="white--text"
                   >{{ chat.createdBy.firstName.charAt(0)
                   }}{{ chat.createdBy.lastName.charAt(0) }}</span
@@ -130,7 +130,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import ChatCard from "./ChatCard.vue";
+import ChatCard from "../../Chat/ChatCard.vue";
 import { VEmojiPicker } from "v-emoji-picker";
 export default {
   name: "ChatRoom",
@@ -162,8 +162,11 @@ export default {
     sendMessage(e) {
       if (e.keyCode === 13) {
         this.sendMessageAction({
-          idRoom: this.currentRoom._id,
-          chat: { idRoom: this.currentRoom._id, message: this.message },
+          idRoom: this.$route.params.idChatRoom,
+          chat: {
+            idRoom: this.$route.params.idChatRoom,
+            message: this.message,
+          },
         });
         this.message = "";
         document.getElementById("content").focus();
@@ -234,8 +237,8 @@ export default {
     },
   },
   async created() {
-    await this.getRoomChatOfUserAction();
-    // await this.getAllChatByIdRoom(this.currentRoom._id);
+    // await this.getRoomChatOfUserAction();
+    await this.getAllChatByIdRoom(this.$route.params.idChatRoom);
     // this.addCurrentRoom(this.$route.params.id);
   },
   components: {
@@ -249,6 +252,11 @@ export default {
     },
     files() {
       console.log(this.files);
+    },
+    $route() {
+      if (this.$route.params.idChatRoom) {
+         this.getAllChatByIdRoom(this.$route.params.idChatRoom);
+      }
     },
   },
 };
@@ -277,7 +285,7 @@ h4 {
 }
 .chat-room {
   border-radius: 5px;
-  height: calc(100vh - 65px);
+  height: calc(100vh - 100px);
   display: flex;
 }
 .container-chat {
@@ -345,26 +353,27 @@ i {
 }
 </style>
 <style lang="scss" scoped>
-@import "../../assets/style.scss";
+@import "../../../assets/style.scss";
 
 .notChat {
   img {
-    height: 100px !important;
-    width: 100px !important;
+    height: 300px !important;
+    width: 300px !important;
   }
 }
 .chat-room {
   position: relative;
   min-width: 500px;
   overflow-wrap: anywhere;
-  width: 100%;
+  width: 100% !important;
   .container-chat {
     min-width: 500px;
     position: relative;
   }
   .layout-chat {
     overflow-y: scroll;
-    height: calc(400px - 90px);
+    height: calc(100vh - 60px);
+    width: 100%;
     padding: 30px;
     .content {
       overflow: auto;

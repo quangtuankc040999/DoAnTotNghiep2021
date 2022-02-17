@@ -64,6 +64,7 @@
           </v-card>
           <div class="select-btn">
             <v-btn
+              v-if="userInfoAuth"
               class="btn-add-cart"
               @click="
                 setProductCart(
@@ -77,6 +78,9 @@
                 )
               "
             >
+              MUA HÀNG
+            </v-btn>
+            <v-btn v-else class="btn-add-cart" @click="goToLogin">
               MUA HÀNG
             </v-btn>
           </div>
@@ -99,41 +103,41 @@
       <p class="description-title">Thông tin sản phẩm</p>
       <p class="description-content">{{ productById.description }}</p>
     </div>
-    <p style="font-size: 1.2em; font-weight: 700; border: none">
-      Đánh giá sản phẩm
-    </p>
-
+    <p class="comment-title">Đánh giá sản phẩm</p>
     <div v-if="listCommentProduct">
-      <div v-if="listCommentProduct.length > 0">
+      <div v-if="listCommentProduct.listComment.length > 0">
         <div class="star-total">
           <div class="div1">
             <AwesomeVueStarRating
-              :star="Math.round(totalStar(listCommentProduct))"
+              :star="Math.round(listCommentProduct.starAvg)"
               :disabled="this.disabled"
               :maxstars="this.maxstars"
               :starsize="this.starsize"
               :hasresults="this.hasresults"
               :hasdescription="this.hasdescription"
             />
-            <span
-              >{{ Math.round(totalStar(listCommentProduct) * 100) / 100 }} trên
-              5</span
-            >
+            <span>{{ listCommentProduct.starAvg }} trên 5</span>
           </div>
-          <span>(Có {{ listCommentProduct.length }} đánh giá)</span>
+          <span>(Có {{ listCommentProduct.numberComment }} đánh giá)</span>
         </div>
         <comment-item
-          v-for="(comment, index) in listCommentProduct"
+          v-for="(comment, index) in listCommentProduct.listComment"
           :key="index"
           :comment="comment"
           :indexComment="index"
           class="comment"
         />
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="listCommentProduct.numberPages"
+            :total-visible="7"
+            circle
+          ></v-pagination>
+        </div>
       </div>
       <div v-else>Chưa có đánh giá</div>
     </div>
-
-    
   </div>
 </template>
 <script>
@@ -150,6 +154,7 @@ export default {
   },
   data() {
     return {
+      page: 1,
       hasresults: false,
       hasdescription: false,
       starsize: "1x", //[xs,lg,1x,2x,3x,4x,5x,6x,7x,8x,9x,10x],
@@ -166,10 +171,17 @@ export default {
       listCommentProduct: "RATTING/listCommentProduct",
       productById: "PRODUCTS/productById",
       userInfoAuth: "AUTH/userInfo",
+      userInfor: "USER/userInfo",
       productCarts: "CART/productCart",
     }),
   },
   methods: {
+    top(number) {
+      return Math.ceil(number);
+    },
+    goToLogin() {
+      this.$router.push(`/login`);
+    },
     totalStar(listComment) {
       return (
         listComment.reduce((total, comnent) => total + comnent.star, 0) /
@@ -186,6 +198,7 @@ export default {
       updateQuantityProductFromCartAction: "CART/updateQuantityProductFromCart",
       getCommentProductByIdProductAction:
         "RATTING/getCommentProductByIdProduct",
+      getUserAction: "USER/getUser",
     }),
     setProductCart(userId, product, productCarts) {
       let check = false; // kiem tra san pham co trong gio hang hay chua
@@ -210,7 +223,7 @@ export default {
         }
       }
       if (!check) {
-        this.pushProductToCartAction(product); // ham nay da thay doi cai state roi
+        this.pushProductToCartAction(product);
         this.pushProductToCartDBAction({ id: userId, product: product });
       }
     },
@@ -234,11 +247,23 @@ export default {
     },
   },
   created() {
-    this.getProductCartOfUserAction(this.userInfoAuth._id);
+    if (this.userInfoAuth) {
+      this.getUserAction(this.userInfoAuth_id);
+      this.getProductCartOfUserAction(this.userInfoAuth._id);
+    }
     this.getProductInforAction(this.$route.params.id);
-    this.getCommentProductByIdProductAction(this.$route.params.id);
+    this.getCommentProductByIdProductAction({
+      productId: this.$route.params.id,
+      page: 1,
+    });
   },
   watch: {
+    page() {
+      this.getCommentProductByIdProductAction({
+        productId: this.$route.params.id,
+        page: this.page,
+      });
+    },
     $route() {
       if (this.$route.params.id) {
         this.$router.go();
@@ -251,10 +276,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/style.scss";
+a{
+  text-decoration: none;
+}
 p {
   font-size: 1rem;
-  font-family: "Open Sans", sans-serif !important;
-  color: #2e97f4 !important;
+  color: $color !important;
   text-transform: uppercase !important;
   padding-bottom: 10px;
   border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
@@ -266,8 +294,8 @@ p {
   width: 100%;
   .div1 {
     margin-right: 2%;
-     text-align: center;
-     align-content: center;
+    text-align: center;
+    align-content: center;
     span {
       font-size: 1.3rem;
       font-weight: 700;
@@ -294,7 +322,6 @@ p {
     margin-left: 40px;
     width: 50%;
     .category {
-      font-family: "Open Sans", sans-serif !important;
       text-transform: uppercase;
       font-weight: 300;
       font-size: 0.9em;
@@ -306,8 +333,7 @@ p {
     .title {
       color: #dd9933 !important;
       font-weight: 700;
-      font-family: "Open Sans", sans-serif;
-      font-size: 1.7em;
+      font-size: 2rem !important;
       line-height: 1.3;
       border-bottom: none;
     }
@@ -322,14 +348,14 @@ p {
         .old-price {
           margin-right: 10px;
           text-decoration: line-through;
-          font-size: 1em;
+          font-size: 1.3em;
           opacity: 0.5;
           font-weight: lighter !important;
         }
         .discount-persent {
-          color: rgb(134, 10, 10);
-          border: 1px rgb(59, 1, 1) solid;
-          padding: 1px;
+          background-color: #c62828;
+          color: white;;
+          padding: 5px;
           font-weight: 700 !important;
           border-radius: 4px;
         }
@@ -393,7 +419,15 @@ p {
   }
 }
 .v-application .py-12 {
-    padding-top: 0px !important; 
-  padding-bottom: 0px !important; 
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+}
+.text-center {
+  float: right !important;
+}
+.comment-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  border: none;
 }
 </style>

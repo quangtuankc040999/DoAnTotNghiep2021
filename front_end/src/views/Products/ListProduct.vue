@@ -64,10 +64,14 @@ export default {
 
 <style lang="scss" scoped>
 .list-product {
+  margin-bottom: 80px;
+  margin-top: 34px;
   .products {
     display: grid;
-    grid-template: 1fr 1fr  / 1fr 1fr 1fr 1fr;
-    grid-gap: 15px;
+    // margin: 0 auto;
+    grid-template: 1fr / 1fr 1fr 1fr;
+    grid-gap: 50px;
+    grid-row-gap: 80px;
     width: 100%;
     .product {
       height: 350px;

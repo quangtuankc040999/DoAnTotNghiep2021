@@ -43,7 +43,12 @@ const actions = {
         localStorage.setItem('token', response.data.data.token);
         commit('ERROR/clearErrorMessage', null, { root: true });
         commit('ERROR/setIsLoading', false, { root: true });
-        router.go();
+        if (response.data.data.role.name == "User") {
+          router.push("/")
+        }
+        else if(response.data.data.role.name == "Admin"){
+          router.push("/admin")
+        }
       })
       .catch((err) => {
         commit('ERROR/setErrorMessage', err.response.data.message, {

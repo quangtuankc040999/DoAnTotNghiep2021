@@ -1,5 +1,4 @@
 import http from '../../service/api.js';
-import router from '../../router/index.js';
 const state = {
   productCart: []
 };
@@ -52,13 +51,13 @@ const actions = {
         commit('ERROR/setIsLoading', false, { root: true });
       });
   },
-  updateQuantityProductFromCartDB({ commit }, params) {
+  updateQuantityProductFromCartDB({ commit, dispatch }, params) {
     commit('ERROR/setIsLoading', true, { root: true });
     http
-      .put(`/user/cart/update/${params.id}`, params.product)
+      .put(`/user/cart/update/${params.id}`, params.product, "Chỉnh sửa giỏ hàng thành công")
       .then(() => {
         commit('ERROR/setIsLoading', false, { root: true })
-        router.go()
+        dispatch('CART/userProductCart',params.id, { root: true })
       })
       .catch((error) => {
         commit('ERROR/setErrorMessage', error.response.data.message, {
@@ -70,14 +69,14 @@ const actions = {
   updateQuantityProductFromCart({ commit }, product) {
     commit('updateQuantityProductFromCart', product);
   },
-  removeProductFromCartDB({ commit }, params) {
+  removeProductFromCartDB({ commit, dispatch }, params) {
     commit('ERROR/setIsLoading', true, { root: true });
     http
       .put(`/user/cart/remove/${params.id}`, params.product, "Xoá sản phẩm thành công khỏi giỏ hàng")
       .then(() => {
+        dispatch('CART/userProductCart',params.id, { root: true })
         commit('ERROR/clearErrorMessage', null, { root: true });
         commit('ERROR/setIsLoading', false, { root: true })
-        router.go()
       })
       .catch((error) => {
         commit('ERROR/setErrorMessage', error.response.data.message, {

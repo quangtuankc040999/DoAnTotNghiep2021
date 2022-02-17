@@ -22,3 +22,4 @@ export default {
   },
 };
 </script>
+<style src="./assets/modifyVuetify.css"></style>

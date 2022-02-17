@@ -29,16 +29,21 @@ const actions = {
                 commit('ERROR/setIsLoading', false, { root: true });
             });
     },
-    getCommentProductByIdProduct({ commit }, productId) {
-        http.get(`/product/comment/${productId}`,)
+    getCommentProductByIdProduct({ commit }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http.get(`/product/comment/${params.productId}/${params.page}`)
             .then((response) => {
                 commit('setListCommentProductById', response.data.data);
                 commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             });
     }
 };

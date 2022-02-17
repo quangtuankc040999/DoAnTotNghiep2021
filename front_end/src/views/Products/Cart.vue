@@ -152,16 +152,17 @@ export default {
           text: "Sản phẩm",
           align: "start",
           value: "title",
-          width: "25%"
+          width: "20%",
         },
-        { text: "", value: "", width: "20%", sortable: false},
-        { text: "Giá bán", value: "" },
+        { text: "", value: "", width: "20%", sortable: false },
+        { text: "Giá bán", value: "", width: "15%" },
         {
           text: "Số lượng",
           value: "category_name",
           align: "center",
+          width: "10%",
         },
-        { text: "Tạm tính", value: "sale_price" },
+        { text: "Tạm tính", value: "sale_price", width: "20%" },
       ],
     };
   },
@@ -217,6 +218,7 @@ export default {
       getProductCartOfUserAction: "CART/userProductCart",
       updateQuantityProductFromCartDBAction:
         "CART/updateQuantityProductFromCartDB",
+      getUserAction: 'USER/getUser',
       removeProductFromCartAction: "CART/removeProductFromCartDB",
     }),
     removeProductFromCart(userId, product) {
@@ -228,7 +230,10 @@ export default {
   },
   created() {
     this.getUserByToken();
-    this.getProductCartOfUserAction(this.userInfoAuth._id);
+    if (this.userInfoAuth) {
+      this.getUserAction(this.userInfoAuth._id);
+      this.getProductCartOfUserAction(this.userInfoAuth._id);
+    }
   },
 };
 </script>
@@ -238,6 +243,7 @@ a {
   color: rgb(0, 0, 0) !important;
   font-weight: 400;
   margin-left: 0;
+  text-decoration: none;
 }
 a:hover {
   text-decoration: none;
@@ -247,9 +253,9 @@ a:hover {
 .cart-container {
   display: flex;
   margin: 0 auto;
-  width: 80%;
+  width: 90%;
   .product-list {
-    width: 60%;
+    width: 70%;
     border-right: 1px solid rgba(156, 151, 151, 0.5);
     padding-right: 2%;
     margin-right: 2%;
@@ -288,7 +294,7 @@ a:hover {
   }
 
   .cal-price {
-    width: 35%;
+    width: 30%;
     height: 50%;
     padding: 10px;
     padding-top: 0;

@@ -39,7 +39,7 @@ const actions = {
         socket.on(
             'new-message',
             function (data) {
-                if (data.message.room === params) {
+                if (data.message.idRoom === params) {
                     dispatch('getAllChatByIdRoom', params);
                     dispatch('NOTIFICATION/getAllNotification', params, { root: true });
                 }
@@ -47,8 +47,7 @@ const actions = {
         );
     },
 
-    sendMessage({ commit, dispatch}, data) {
-        console.log(data);
+    sendMessage({ commit, dispatch }, data) {
         http.post(`/chat/`, data)
             .then((response) => {
                 socket.emit('save-message', response.data.data);

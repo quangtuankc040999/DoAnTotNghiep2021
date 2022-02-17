@@ -5,6 +5,8 @@
       style="float: right"
       ><v-icon class="icon-add">mdi-plus-circle-outline </v-icon></v-btn
     >
+     <p>Danh sách sản phẩm</p>
+     
     <modal-product
       v-if="productById"
       :productRequest="productById"
@@ -19,7 +21,7 @@
       :modalType="action"
       ref="modalProduct"
     />
-    <p>Danh sách sản phẩm</p>
+   
     <div class="product-list">
       <v-data-table
         :headers="headers"
@@ -55,6 +57,7 @@
             <td class="price">
               {{ formatPrice(item.sale_price) }}
             </td>
+            <td>{{item.inventory}}</td>
             <td>
               <v-btn text @click="showModalProduct('edit', item._id)"
                 ><v-icon small>mdi-pencil </v-icon></v-btn
@@ -72,7 +75,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import modalProduct from "../../components/Admin/ModalProduct.vue";
+import modalProduct from "../../../components/Admin/ModalProduct.vue";
 export default {
   name: "manage-product",
   data() {
@@ -92,6 +95,7 @@ export default {
           align: "center",
         },
         { text: "Giá bán", value: "sale_price", width: "15%" },
+        { text: "Tồn kho",  width: "15%" },
         { text: "Hành động", value: "", width: "15%" },
       ],
       imageEmpty:
@@ -164,9 +168,9 @@ img {
   height: 150px;
 }
 .manage-product {
-  margin-top: 10px;
+  overflow-y: auto;
   width: 100% !important;
-  height: 100% !important;
+  height: 95vh !important;
 }
 tr {
   height: 100% !important;

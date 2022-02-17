@@ -45,8 +45,6 @@ export default {
 }
 .main-container {
   background-color: rgb(247, 248, 251);
-  // max-height: 100vh;
-  // padding-top: 80px;
 }
 
 </style>

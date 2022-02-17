@@ -428,6 +428,7 @@ textarea {
   width: 90%;
   padding: 10px;
   border-radius: 4px;
+  margin-bottom: 10px;
   .detail-adress {
     margin-top: 100px !important;
   }

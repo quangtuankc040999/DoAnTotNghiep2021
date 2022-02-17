@@ -15,11 +15,14 @@ import 'vue-slick-carousel/dist/vue-slick-carousel.css'
 import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 import Toasted from 'vue-toasted';
 import VueChatScroll from 'vue-chat-scroll';
+import VueHorizontalList from 'vue-horizontal-list';
+
 
 Vue.use(BootstrapVue, IconsPlugin, BootstrapVueIcons)
 Vue.use(VueJWT)
 Vue.use(VueClazyLoad);
 Vue.use(VueChatScroll)
+Vue.use(VueHorizontalList)
 Vue.config.productionTip = false
 Vue.use(Toasted, {
   type: 'center',

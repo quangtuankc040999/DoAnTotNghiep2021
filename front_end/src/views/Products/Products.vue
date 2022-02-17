@@ -32,26 +32,31 @@ export default {
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
+      getUserAction: "USER/getUser",
     }),
   },
   created() {
     this.getUserByToken();
-    this.getProductCart(this.userInfoAuth._id);
+    if (this.userInfoAuth) {
+      this.getUserAction(this.userInfoAuth._id);
+      this.getProductCart(this.userInfoAuth._id);
+    }
   },
 };
 </script>
 
 <style scoped>
 .container {
-  width: 80% !important;
+  width: 100% !important;
   display: flex;
+  margin: 0 auto;
 }
 .side-bar {
-  margin: 0 20px 0 0;
+  margin: 0 4% 0 0;
   width: 20%;
 }
-.infor{
-  width: 70% !important;
+.infor {
+  width: 76% !important;
 }
 </style>
 

@@ -7,6 +7,7 @@ router.post('/', productController.addNewProduct);
 router.get('/', productController.getAllProduct);
 router.post('/comment/', rattingController.postNewComment);
 router.get('/comment/:productId', rattingController.getCommentByProductId);
+router.get('/comment/:productId/:page', rattingController.getCommentByProductId);
 router.get('/:productId', productController.getProduct);
 router.get('/category/:categoryName', productController.getProductByCategoryName);
 router.get('/category/:categoryName/:categoryDetail', productController.getProductByCategoryNameAndCategoryDetail);

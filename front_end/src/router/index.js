@@ -12,17 +12,27 @@ import ListProduct from '../views/Products/ListProduct.vue'
 import Cart from '../views/Products/Cart.vue'
 import Payment from '../views/Products/Payment.vue'
 import Admin from '../views/Admin/Admin.vue'
-import manageProduct from '../views/Admin/ManageProduct.vue'
+import manageProduct from '../views/Admin/ManageProduct/ManageProduct.vue'
+import manageStore from '../views/Admin/ManageStore/ManageStore.vue'
 import manageOrder from '../views/Admin/ManageOrder.vue'
 import manageUser from '../views/Admin/ManageUser.vue'
 import manageOrderUser from '../views/User/ManageOrderUser.vue'
 import ListOrder from '../views/User/ListOrder.vue'
 import orderDetail from '../views/User/OrderDetail.vue'
 import userInformation from '../views/Profile/UserInformation.vue'
-
-// import { decodeToken } from '../utils/helper';
+import ChatPageAdmin from '../views/Admin/ChatAmin/ChatPageAdmin.vue'
+import ChatRoomAdmin from '../components/Admin/ChatAdmin/ChatAdmin.vue'
+import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
+import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
+import ForbbidenPage from '../views/403Page.vue'
+import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
+  {
+    path: "/403", component: ForbbidenPage, meta: {
+      guest: true
+    },
+  },
   {
     path: '/signup',
     name: Signup,
@@ -39,40 +49,28 @@ const routes = [
     name: Products,
     component: Products,
     meta: {
-      requiresAuth: true
+      guest: true
     },
     children: [
       {
         path: '/products/product-detail/:id',
         name: ProductDetail,
         component: ProductDetail,
-        meta: {
-          requiresAuth: true
-        }
       },
       {
         path: '/products/:categoryName',
         name: ListProduct,
         component: ListProduct,
-        meta: {
-          requiresAuth: true
-        }
       },
       {
         path: '/products/:categoryName/:categoryDetail',
         name: ListProduct,
         component: ListProduct,
-        meta: {
-          requiresAuth: true
-        }
       },
       {
         path: '/products',
         name: ListProduct,
         component: ListProduct,
-        meta: {
-          requiresAuth: true
-        }
       },
     ]
   },
@@ -81,7 +79,8 @@ const routes = [
     name: Cart,
     component: Cart,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      user_system: true
     }
   },
   {
@@ -89,7 +88,8 @@ const routes = [
     name: Payment,
     component: Payment,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      user_system: true
     }
   },
 
@@ -98,53 +98,49 @@ const routes = [
     name: Blog,
     component: Blog,
     meta: {
-      requiresAuth: true
-    }
+      guest: true
+    },
   },
   {
     path: '/contact',
     name: Contact,
     component: Contact,
+    meta: {
+      guest: true
+    },
   },
   {
     path: '/',
     name: Home,
     component: Home,
     meta: {
-      requiresAuth: true
-    }
+      guest: true
+    },
+
   },
   {
     path: '/profile',
     name: Profile,
     component: Profile,
     meta: {
-      requiresAuth: true
+      requiresAuth: true,
+      user_system: true
     },
     children: [
       {
         path: '/profile/user/manage-account/',
         name: userInformation,
         component: userInformation,
-        meta: {
-          requiresAuth: true
-        },
       },
       {
         path: '/profile/user/manage-order/',
         name: manageOrderUser,
         component: manageOrderUser,
-        meta: {
-          requiresAuth: true
-        },
         children: [
           {
             path: '/profile/user/manage-order/:statusOrder',
             name: ListOrder,
             component: ListOrder,
-            meta: {
-              requiresAuth: true
-            },
           },
         ]
       },
@@ -152,9 +148,6 @@ const routes = [
         path: '/profile/user/manage-order/detail/:orderId',
         name: orderDetail,
         component: orderDetail,
-        meta: {
-          requiresAuth: true
-        },
       }
     ]
   },
@@ -163,6 +156,7 @@ const routes = [
     name: Admin,
     component: Admin,
     meta: {
+      admin_system: true,
       requiresAuth: true
     },
     children: [
@@ -170,25 +164,44 @@ const routes = [
         path: '/admin/manage-product/',
         name: manageProduct,
         component: manageProduct,
-        meta: {
-          requiresAuth: true
-        }
       },
       {
         path: '/admin/manage-order/',
         name: manageOrder,
         component: manageOrder,
-        meta: {
-          requiresAuth: true
-        }
       },
       {
         path: '/admin/manage-user/',
         name: manageUser,
         component: manageUser,
-        meta: {
-          requiresAuth: true
-        }
+      },
+      {
+        path: '/admin/manage-chat/',
+        name: ChatPageAdmin,
+        component: ChatPageAdmin,
+        children: [
+          {
+            path: '/admin/manage-chat/:idChatRoom',
+            name: ChatRoomAdmin,
+            component: ChatRoomAdmin,
+          }]
+      },
+      {
+        path: '/admin/manage-store/',
+        name: manageStore,
+        component: manageStore,
+        children: [
+          {
+            path: '/admin/manage-store/in-goods',
+            name: ImportGoods,
+            component: ImportGoods,
+          },
+          {
+            path: '/admin/manage-store/view-log',
+            name: ViewLog,
+            component: ViewLog,
+          },
+        ]
       },
     ]
   },
@@ -202,21 +215,41 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('token');
-  // let user = decodeToken();
+  let user = decodeToken();
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!token) {
       next('/login');
+    }
+    if (to.matched.some((record) => record.meta.admin_system)) {
+      if (user.role != 'Admin') {
+        next('/403')
+      }
+    } else {
+      next();
+    }
+    if (to.matched.some((record) => record.meta.user_system)) {
+      if (user.role != 'User') {
+        next('/')
+      }
     } else {
       next();
     }
     next();
-  } else {
+  } else if (to.matched.some((record) => record.meta.guest)) {
     if (!token) {
+      console.log('guest token null');
       next();
     } else {
-      next('/');
+      next()
     }
-    next();
+  }
+  else {
+    if (token === null) {
+      next()
+    }
+    else {
+      next({ path: '/' })
+    }
   }
 });
 

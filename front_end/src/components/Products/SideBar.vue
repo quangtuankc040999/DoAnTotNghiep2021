@@ -72,21 +72,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../assets/style.scss";
 .category-detail {
+}
+.side-bar{
 }
 .v-list-item__title {
   font-size: 0.8rem;
   font-weight: 700;
-  font-family: "Open Sans", sans-serif !important;
   color: rgba(102, 102, 102, 0.85) !important;
   text-transform: uppercase !important;
 }
 p {
   font-size: 1rem;
-  font-family: "Open Sans", sans-serif !important;
-  color: #2e97f4 !important;
+  color: $color !important;
+  font-weight: 700;
   text-transform: uppercase !important;
   padding-bottom: 10px;
-  border-bottom: rgba(177, 171, 171, 0.5) 3px solid;
+  border-bottom: rgba(177, 171, 171, 0.5) 1px solid;
 }
 </style>
