@@ -26,6 +26,18 @@ const actions = {
                 });
             });
     },
+    createNewLogXuat({ commit }, params) {
+        http
+            .post(`/log/out`, params)
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+            });
+    },
  
 };
 

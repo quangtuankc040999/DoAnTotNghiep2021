@@ -39,7 +39,7 @@
         v-if="orderItem.status == 'Chờ xác nhận'"
         class="btn"
         @click="
-          updateOrder({ orderId: orderItem._id, body: { status: 'Đã huỷ' } })
+          updateOrder({ orderId: orderItem._id, body: { status: 'Đã huỷ', id: userInfoAuth._id } })
         "
         >Huỷ đơn hàng</v-btn
       >
@@ -49,7 +49,7 @@
         @click="
           updateOrder({
             orderId: orderItem._id,
-            body: { status: 'Đã hoàn thành' },
+            body: { status: 'Đã hoàn thành',id: userInfoAuth._id },
           })
         "
         >Đã nhận được hàng</v-btn
@@ -79,7 +79,7 @@ export default {
       userInfoAuth: "AUTH/userInfo",
     }),
   },
-  props: ["orderItem", "indexOrder", "idOrder"],
+  props: ["orderItem", "indexOrder", "idOrder", "idCustomer"],
   methods: {
     showModalRatting() {
       this.$refs.modalRatting.show();
@@ -98,6 +98,7 @@ export default {
       this.updateOrderAction(params);
     },
     ...mapActions({
+      getUserAction: "USER/getUser",
       updateOrderAction: "PAYMENT/updateOrder",
       toggleShowChatAction: "CHAT/toggleShowChat",
     }),

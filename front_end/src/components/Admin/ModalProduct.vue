@@ -178,35 +178,32 @@
         </div>
       </div>
       <div class="d-flex flex-row-reverse">
-        <b-button
+        <v-btn
           class="okButton"
-          block
-          variant="primary"
+          color="indigo lighten-1"
           @click="addProduct"
           v-if="modalType == 'add'"
           :disabled="isDisableButton"
         >
           Thêm sản phẩm
-        </b-button>
-        <b-button
+        </v-btn>
+        <v-btn
           class="okButton"
-          block
-          variant="primary"
+          color="indigo lighten-1"
           @click="addProduct"
           :disabled="isDisableButton"
           v-else-if="modalType == 'edit'"
         >
           Chỉnh sửa
-        </b-button>
-        <b-button
+        </v-btn>
+        <v-btn
+          color="red darken-3"
           class="cancelButton"
-          block
-          variant="danger"
           style="margin-right: 20px; margin-top: 0"
           @click="hideModal()"
         >
           Thoát
-        </b-button>
+        </v-btn>
       </div>
     </div>
   </b-modal>
@@ -342,7 +339,6 @@ export default {
       }
       return passedValidate;
     },
- 
 
     addProduct() {
       this.productRequest.category_name = this.selectedCategoryName.name;
@@ -352,11 +348,24 @@ export default {
         return;
       } else {
         if (this.modalType == "add") {
-          this.addProductAction(this.productRequest);
-        }
-        else if(this.modalType == "edit"){
-          
-          this.updateProductAction({productId: this.idProduct, body: this.productRequest})
+          this.addProductAction(this.productRequest)
+            .then(() => {
+              this.hideModal()
+            })
+            .catch((e) => {
+              console.log(e)
+            });
+        } else if (this.modalType == "edit") {
+          this.updateProductAction({
+            productId: this.idProduct,
+            body: this.productRequest,
+          })
+            .then(() => {
+              this.hideModal()
+            })
+            .catch((e) => {
+              console.log(e)
+            });
         }
       }
     },
@@ -365,13 +374,9 @@ export default {
     },
 
     ...mapActions({
-      getCategoryInfor: "SIDEBAR/getCategory",
       addProductAction: "PRODUCTACTION/addProduct",
       updateProductAction: "PRODUCTACTION/updateProduct",
     }),
-  },
-  created() {
-    this.getCategoryInfor();
   },
   watch: {
     "productRequest.title"() {

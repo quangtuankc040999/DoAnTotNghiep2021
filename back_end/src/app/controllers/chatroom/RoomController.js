@@ -6,6 +6,13 @@ require('dotenv').config();
 
 
 class RoomController {
+    updateRoom = async(req, res) =>{
+        await Room.findOneAndUpdate({ member: host(req, res) }, {isChat: true});
+        return apiResponse.successResponse(
+            res,
+            'Update room successfully',
+        );
+    }
     getRoomChatByUserId = async (req, res) => {
         const room = await Room.findOne({ member: host(req, res) });
         if (!room) {
@@ -21,7 +28,7 @@ class RoomController {
         );
     }
     getAllRoomChat = async (req, res) => {
-        const room = await Room.find()
+        const room = await Room.find({isChat: true}).sort({updatedAt:-1 })
             .populate('createdBy')
             .populate('member');
         if (!room) {

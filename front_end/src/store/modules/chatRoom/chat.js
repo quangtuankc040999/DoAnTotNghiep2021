@@ -41,7 +41,7 @@ const actions = {
             function (data) {
                 if (data.message.idRoom === params) {
                     dispatch('getAllChatByIdRoom', params);
-                    dispatch('NOTIFICATION/getAllNotification', params, { root: true });
+                    // dispatch('NOTIFICATION/getAllNotification', params, { root: true });
                 }
             }.bind(this),
         );

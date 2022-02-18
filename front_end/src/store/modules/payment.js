@@ -6,7 +6,8 @@ const state = {
     listWaitting: [],
     listDelivery: [],
     listCancel: [],
-    listDone: []
+    listDone: [],
+    listRated: []
 };
 
 const getters = {
@@ -28,6 +29,9 @@ const getters = {
     listDone(state) {
         return state.listDone;
     },
+    listRated(state) {
+        return state.listRated;
+    },
 };
 const mutations = {
     setOrderInfor(state, orderInfor) {
@@ -44,6 +48,9 @@ const mutations = {
     },
     setListDone(state, listDone) {
         state.listDone = listDone;
+    },
+    setListRated(state, listRated) {
+        state.listRated = listRated;
     },
     setOrderById(state, order) {
         state.orderById = order;
@@ -66,11 +73,19 @@ const actions = {
                 commit('ERROR/setIsLoading', false, { root: true })
             });
     },
-    updateOrder({ commit }, params) {
+    updateOrder({ commit , dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+
         http
             .put(`/order/user/${params.orderId}`, params.body)
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
+                dispatch('PAYMENT/getOrderWattingUser', params.body.id, {root: true})
+                dispatch('PAYMENT/getOrderDeliveryUser', params.body.id, {root: true})
+                dispatch('PAYMENT/getOrderCancelUser', params.body.id, {root: true})
+                dispatch('PAYMENT/getOrderDoneUser', params.body.id, {root: true})
+                dispatch('PAYMENT/getOrderRatedUser', params.body.id, {root: true})
+                commit('ERROR/setIsLoading', false, { root: true });
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
@@ -79,76 +94,111 @@ const actions = {
             });
 
     },
-    getOrderById({ commit }, orderId) {
+    getOrderById({ commit}, orderId) {
         http
             .get(`/order/user/${orderId}`)
             .then((response) => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('setOrderById', response.data.data);
+            
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
             });
     },
     getOrderWattingUser({ commit }, customerId) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
             .get(`/order/user/waitting-order/${customerId}`)
             .then((response) => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('setOrderInfor', response.data.data);
                 commit('setListWaitting', response.data.data);
+                commit('ERROR/setIsLoading', false, { root: true });
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             });
     },
     getOrderDeliveryUser({ commit }, customerId) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
             .get(`/order/user/delivery-order/${customerId}`)
             .then((response) => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('setOrderInfor', response.data.data);
                 commit('setListDelivery', response.data.data);
-
+                commit('ERROR/setIsLoading', false, { root: true });
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             });
     },
     getOrderCancelUser({ commit }, customerId) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
             .get(`/order/user/cancel-order/${customerId}`)
             .then((response) => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('setOrderInfor', response.data.data);
                 commit('setListCancel', response.data.data);
+                commit('ERROR/setIsLoading', false, { root: true });
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             });
     },
     getOrderDoneUser({ commit }, customerId) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
             .get(`/order/user/done-order/${customerId}`)
             .then((response) => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('setOrderInfor', response.data.data);
                 commit('setListDone', response.data.data);
+                commit('ERROR/setIsLoading', false, { root: true });
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             });
-    }
+    },
+    getOrderRatedUser({ commit }, customerId) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .get(`/order/user/rated-order/${customerId}`)
+            .then((response) => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('setOrderInfor', response.data.data);
+                commit('setListRated', response.data.data);
+                commit('ERROR/setIsLoading', false, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+
+            });
+    },
 };
 
 export default {

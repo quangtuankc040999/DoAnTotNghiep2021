@@ -6,7 +6,11 @@
           <tbody>
             <tr>
               <td style="width: 20%; font-weight: 400">
-                <img v-bind:src="productItem.product.image[0]" alt="" />
+                <img
+                  style="width: 100%"
+                  v-bind:src="productItem.product.image[0]"
+                  alt=""
+                />
               </td>
               <td style="width: 60%; font-weight: 400">
                 {{ productItem.product.title }}
@@ -69,25 +73,10 @@
       </div>
     </div>
     <div class="btn-container">
-      <v-btn
-        class="btn-post"
-        @click="postComment()"
+      <v-btn class="btn-post" @click="postComment(orderId)"
         >Gửi đánh giá
       </v-btn>
     </div>
-
-    <v-dialog v-model="dialog" hide-overlay persistent width="300">
-      <v-card color="primary" dark>
-        <v-card-text>
-          Please stand by
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
   </div>
 </template>
 
@@ -96,7 +85,7 @@ import axios from "axios";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Product-item-comment",
-  props: ["productItem", "indexProduct", "idProduct"],
+  props: ["productItem", "indexProduct", "idProduct", "orderId"],
 
   data() {
     return {
@@ -112,17 +101,33 @@ export default {
     };
   },
   computed: {
-    ...mapGetters({}),
+    ...mapGetters({
+      userInfoAuth: "AUTH/userInfo",
+    }),
   },
   methods: {
     ...mapActions({
       postCommentAction: "RATTING/postNewComment",
+      updateOrderAction: "PAYMENT/updateOrder",
     }),
-    postComment() {
-      this.postCommentAction(this.rattingRequest);
+    hideModal() {
+      this.$refs.modalRatting.value = null;
+      this.$refs.modalRatting.hide();
+    },
+     updateOrder(params) {
+      this.updateOrderAction(params);
+    },
+    postComment(orderId) {
+      this.postCommentAction(this.rattingRequest).then(() => {
+        this.updateOrder({
+          orderId: orderId,
+          body: { status: "Đã đánh giá", id: this.userInfoAuth._id },
+        });
+        this.hideModal();
+      });
     },
     deleteImg(index) {
-      for (let i = 0; i < this.rattingRequest.image.length; i++) {
+      for (let i = 0; i < this.rattingRequest.images.length; i++) {
         if (i == index) {
           this.rattingRequest.images.splice(index, 1);
         }
@@ -157,8 +162,7 @@ export default {
       }
     },
   },
-  watch: {
-  },
+  watch: {},
 };
 </script>
 
@@ -215,12 +219,17 @@ textarea {
 .img {
   display: flex;
   ul {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
     li {
-      position: relative;
       display: flex;
+      flex-direction: row;
+      list-style: none;
+      position: relative;
       img {
-        width: 150px;
-        height: 150px;
+        width: 150px !important;
+        height: 150px !important;
         margin: 5px;
       }
       .cover {

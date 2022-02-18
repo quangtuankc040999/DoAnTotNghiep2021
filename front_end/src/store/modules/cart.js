@@ -85,10 +85,11 @@ const actions = {
         commit('ERROR/setIsLoading', false, { root: true })
       });
   },
-  clearProductCart({ commit }, userId) {
+  clearProductCart({ commit, dispatch }, userId) {
     http
       .put(`/user/cart/clear/${userId}`)
       .catch((error) => {
+        dispatch('CART/userProductCart',userId, { root: true })
         commit('ERROR/setErrorMessage', error.response.data.message, {
           root: true,
         });

@@ -13,6 +13,7 @@ import Ratting from './modules/ratting'
 import Chat from './modules/chatRoom/chat'
 import Room from './modules/chatRoom/room'
 import Log from './modules/log'
+import OrderAdmin from './modules/admin/orderAdmin'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     RATTING: Ratting,
     CHAT: Chat,
     ROOM: Room,
-    LOG: Log
+    LOG: Log,
+    ORDERADMIN: OrderAdmin
   },
 });

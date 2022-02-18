@@ -9,6 +9,11 @@ router.get('/user/waitting-order/:customerId', orderController.getOrderWaittingU
 router.get('/user/delivery-order/:customerId', orderController.getOrderDeliveryUser)
 router.get('/user/cancel-order/:customerId', orderController.getOrderDeleteUser)
 router.get('/user/done-order/:customerId', orderController.getOrderDoneUser)
+router.get('/user/rated-order/:customerId', orderController.getOrderRatedUser)
+//
+router.get('/admin/waitting-order', orderController.getOrderWaittingAdmin)
+router.get('/admin/delivery-order', orderController.getOrderDeliveryAdmin)
+router.get('/admin/rated-order', orderController.getOrderRatedAdmin)
 
 
 module.exports = router;

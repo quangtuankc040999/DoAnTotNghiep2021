@@ -9,7 +9,7 @@
           >
         </v-avatar>
         <v-avatar color="red" v-else>
-          <img :src="avatar" alt="John" />
+          <img :src="comment.createdBy.avatar" alt="" />
         </v-avatar>
       </div>
       <div class="div2">
@@ -117,6 +117,7 @@ export default {
     font-size: 0.7rem;
   }
   ul {
+    padding-left: 0;
     list-style: none;
     display: flex;
   }

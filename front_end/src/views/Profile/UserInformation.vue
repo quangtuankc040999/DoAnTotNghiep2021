@@ -2,7 +2,7 @@
   <v-main>
     <div class="profile">
       <v-row>
-        <v-col cols="4" class="avatar">
+        <v-col cols="3" class="avatar">
           <v-row center>
             <img v-if="avatar" :src="avatar" />
             <img v-else-if="userInfo.avatar" :src="userInfo.avatar" alt="" />
@@ -28,7 +28,7 @@
             <v-btn class="save-btn" @click="saveAvt()"> Save </v-btn>
           </v-row>
         </v-col>
-        <v-col cols="7">
+        <v-col cols="9">
           <v-row>
             <h1>ACCOUNT SETTING</h1>
             <v-row>
@@ -69,12 +69,11 @@
               </v-col>
             </v-row>
             <v-row style="margin-bottom: 0px; height: 40px">
-              <v-col cols="5">
+              <v-col cols="1">
                 <v-btn class="save-btn" @click="changeInf()">
                   Save changes
                 </v-btn>
               </v-col>
-              <v-col cols="1" style="opacity: 0">-------------</v-col>
             </v-row>
           </v-row>
 
@@ -400,7 +399,7 @@ export default {
 .profile {
   width: 100%;
   margin: 20px 10px;
-  height: 100vh;
+  height: 100%;
 }
 .errors {
   color: red;
@@ -424,7 +423,6 @@ export default {
   margin: 5px 0;
 }
 .save-btn {
-  margin-top: 5px;
 }
 
 h1 {
@@ -435,6 +433,7 @@ label {
 }
 img,
 .v-avatar {
+  align-content: center;
   width: 220px !important;
   height: 200px !important;
   border-radius: 50%;

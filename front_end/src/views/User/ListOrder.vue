@@ -1,13 +1,14 @@
 <template>
   <div>
     <div class="list-order" v-if="orderInfor.length > 0">
-     <order-item
-      v-for="(order, index) in orderInfor"
+      <order-item
+        v-for="(order, index) in orderInfor"
         :key="index"
         :orderItem="order"
         :indexOrder="index"
         :idOrder="order._id"
-        class="order"/>
+        class="order"
+      />
     </div>
     <div class="order-empty" v-else>
       <img
@@ -20,7 +21,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-import orderItem from "../../components/User/OrderItem.vue"
+import orderItem from "../../components/User/OrderItem.vue";
 export default {
   data() {
     return {
@@ -43,10 +44,22 @@ export default {
       getDeliveryOrderAction: "PAYMENT/getOrderDeliveryUser",
       getCancelOrderAction: "PAYMENT/getOrderCancelUser",
       getDoneOrderAction: "PAYMENT/getOrderDoneUser",
+      getRatedOrderAction: "PAYMENT/getOrderRatedUser",
     }),
   },
   created() {
     this.getUserByToken();
+    if (this.$route.params.statusOrder == "waitting") {
+      this.getWaittingOrderAction(this.userInfoAuth._id);
+    } else if (this.$route.params.statusOrder == "delivery") {
+      this.getDeliveryOrderAction(this.userInfoAuth._id);
+    } else if (this.$route.params.statusOrder == "cancel") {
+      this.getCancelOrderAction(this.userInfoAuth._id);
+    } else if (this.$route.params.statusOrder == "rate") {
+      this.getDoneOrderAction(this.userInfoAuth._id);
+    } else if (this.$route.params.statusOrder == "rated") {
+      this.getRaredOrderAction(this.userInfoAuth._id);
+    }
   },
   watch: {
     $route() {
@@ -59,6 +72,8 @@ export default {
           this.getCancelOrderAction(this.userInfoAuth._id);
         } else if (this.$route.params.statusOrder == "rate") {
           this.getDoneOrderAction(this.userInfoAuth._id);
+        } else if (this.$route.params.statusOrder == "rated") {
+          this.getRaredOrderAction(this.userInfoAuth._id);
         }
       }
     },

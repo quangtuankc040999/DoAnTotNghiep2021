@@ -12,6 +12,7 @@ const Order = new Schema(
         status: { type: String, default: "Chờ xác nhận" },
         additionalInformation: { type: String },
         total: { type: Number },
+        note: {type: String, default: ""}
     },
     {
         timestamps: true,

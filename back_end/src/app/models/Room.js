@@ -13,6 +13,7 @@ const Room = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+    isChat:{type: Boolean, default: false}
   },
   {
     timestamps: true,

@@ -1,12 +1,22 @@
 <template>
   <div class="manage-product">
-    <v-btn text
-      @click="showModalProduct('add', '')"
-      style="float: right"
-      ><v-icon class="icon-add">mdi-plus-circle-outline </v-icon></v-btn
-    >
-     <p>Danh sách sản phẩm</p>
-     
+    <v-tooltip bottom>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          fab
+          small
+          dark
+          color="deep-purple lighten-2"
+          v-bind="attrs"
+          v-on="on"
+          @click="showModalProduct('add', '')"
+          style="float: right"
+          ><v-icon class="icon-add">mdi-plus</v-icon></v-btn
+        >
+      </template>
+      <span>Thêm sản phẩm</span>
+    </v-tooltip>
+
     <modal-product
       v-if="productById"
       :productRequest="productById"
@@ -21,9 +31,20 @@
       :modalType="action"
       ref="modalProduct"
     />
-   
+
     <div class="product-list">
+      <v-card-title>
+        <v-text-field
+          class="search"
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search ... "
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-card-title>
       <v-data-table
+        :search="search"
         :headers="headers"
         :items="productInfors"
         :items-per-page="5"
@@ -57,14 +78,33 @@
             <td class="price">
               {{ formatPrice(item.sale_price) }}
             </td>
-            <td>{{item.inventory}}</td>
+            <td>{{ item.inventory }}</td>
             <td>
-              <v-btn text @click="showModalProduct('edit', item._id)"
-                ><v-icon small>mdi-pencil </v-icon></v-btn
-              >
-              <v-btn text @click="deleteProduct(item._id)"
-                ><v-icon small>mdi-delete-outline </v-icon></v-btn
-              >
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    text
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="showModalProduct('edit', item._id)"
+                    ><v-icon small>mdi-pencil </v-icon></v-btn
+                  >
+                </template>
+                <span>Chỉnh sửa sản phẩm</span>
+              </v-tooltip>
+
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    text
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="deleteProduct(item._id)"
+                    ><v-icon small>mdi-delete-outline </v-icon></v-btn
+                  >
+                </template>
+                <span>Xoá sản phẩm</span>
+              </v-tooltip>
             </td>
           </tr>
         </template>
@@ -80,6 +120,7 @@ export default {
   name: "manage-product",
   data() {
     return {
+      search: "",
       headers: [
         {
           text: "Sản phẩm",
@@ -95,7 +136,7 @@ export default {
           align: "center",
         },
         { text: "Giá bán", value: "sale_price", width: "15%" },
-        { text: "Tồn kho",  width: "15%" },
+        { text: "Tồn kho", width: "15%" },
         { text: "Hành động", value: "", width: "15%" },
       ],
       imageEmpty:
@@ -122,6 +163,7 @@ export default {
   },
   computed: {
     ...mapGetters({
+      categoryInfor: "SIDEBAR/categoryInfo",
       productById: "PRODUCTS/productById",
       productInfors: "PRODUCTS/productInfor",
     }),
@@ -138,6 +180,7 @@ export default {
       getProductInforAction: "PRODUCTS/getProduct",
       clearState: "PRODUCTS/clearState",
       deleteProductAction: "PRODUCTACTION/deleteProduct",
+      getCategoryInfor: "SIDEBAR/getCategory",
     }),
     deleteProduct(productId) {
       this.deleteProductAction(productId);
@@ -157,11 +200,21 @@ export default {
   },
   created() {
     this.getAllProduct();
+    this.getCategoryInfor();
   },
 };
 </script>
 
 <style lang="scss" scoped>
+@import "../../../assets/style.scss";
+p {
+  font-size: 1rem;
+  color: $color !important;
+  font-weight: 700;
+  text-transform: uppercase !important;
+  padding-bottom: 10px;
+  border-bottom: rgba(177, 171, 171, 0.5) 1px solid;
+}
 img {
   padding: 5px;
   width: 150px;
@@ -180,7 +233,6 @@ td {
 .elevation-1 {
   width: 100%;
 }
-
 </style>
 <style scoped>
 .v-btn {
@@ -188,10 +240,20 @@ td {
   min-width: 40px !important;
   /* font-size: 2rem !important; */
 }
-.v-icon, .price {
+.v-icon,
+.price {
   font-size: 1.2rem !important;
 }
-.icon-add{
+.icon-add {
   font-size: 1.4rem !important;
+}
+.search{
+  /* position: fixed;
+  top: 0;
+  background-color: aquamarine;
+  margin: 0; */
+}
+.v-btn{
+  margin-top: 30px;
 }
 </style>

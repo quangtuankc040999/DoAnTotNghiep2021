@@ -1,5 +1,6 @@
 const Order = require('../models/Order')
-const apiResponse = require('../../utils/apiResponse')
+const apiResponse = require('../../utils/apiResponse');
+const Log = require('../models/Log');
 
 class OrderController {
     //create order
@@ -19,7 +20,8 @@ class OrderController {
                     customerPhone: order.customerPhone,
                     localization: order.localization,
                     status: order.status,
-                    additionalInformation: order.additionalInformation
+                    additionalInformation: order.additionalInformation,
+                    note: order.note
                 }
             });
         return apiResponse.successResponse(
@@ -27,12 +29,37 @@ class OrderController {
             'Update order successfully',
         );
     }
-    getOrderById = async(req, res) =>{
-        const order = await Order.findOne({_id: req.params.orderId});
+    getOrderById = async (req, res) => {
+        const order = await Order.findOne({ _id: req.params.orderId });
         return apiResponse.successResponseWithData(
             res,
             'Get successfully',
             order,
+        );
+    }
+    //admin 
+    getOrderWaittingAdmin = async (req, res) => {
+        const listOrderUserWaitting = await Order.find({status: 'Chờ xác nhận', createAt: -1 });
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            listOrderUserWaitting,
+        );
+    }
+    getOrderDeliveryAdmin = async (req, res) => {
+        const listOrderUserDelivery= await Order.find({status: 'Đã đóng gói, đang vận chuyển', createAt: -1 });
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            listOrderUserDelivery,
+        );
+    }
+    getOrderRatedAdmin = async (req, res) => {
+        const listOrderUserRated = await Order.find({status: 'Đã đánh giá', createAt: -1 });
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            listOrderUserRated
         );
     }
     // user
@@ -66,6 +93,14 @@ class OrderController {
             res,
             'Get successfully',
             listOrderUserDone,
+        );
+    }
+    getOrderRatedUser = async (req, res) => {
+        const listOrderUserRated = await Order.find({ customerId: req.params.customerId, status: 'Đã đánh giá' });
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            listOrderUserRated,
         );
     }
 }

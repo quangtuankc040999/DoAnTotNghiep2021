@@ -30,7 +30,7 @@
 export default {
   methods: {
     manageOrder() {
-      this.$router.push(`/profile/user/manage-order/`);
+      this.$router.push(`/profile/user/manage-order/waitting`);
     },
     manageAccount() {
       this.$router.push(`/profile/user/manage-account/`);

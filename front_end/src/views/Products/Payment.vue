@@ -268,16 +268,16 @@ export default {
         this.orderInput.customerId = this.userInfoAuth._id;
         this.orderInput.total = 15000 + this.totalPrice(this.productCarts);
         this.orderInput.product = this.productCarts;
-        for (let index in this.productCarts) {
-          this.getProductInforAction(this.productCarts[index].idProduct);
-          this.updateProductAction({
-            productId: this.productCarts[index].idProduct,
-            body: {
-              // inventory:
-              //   this.productById.inventory - this.productCarts[index].quantity,
-            },
-          });
-        }
+        // for (let index in this.productCarts) {
+        //   this.getProductInforAction(this.productCarts[index].idProduct);
+        //   this.updateProductAction({
+        //     productId: this.productCarts[index].idProduct,
+        //     body: {
+        //       inventory:
+        //         this.productById.inventory - this.productCarts[index].quantity,
+        //     },
+        //   });
+        // }
         this.clearCartAction(this.userInfoAuth._id);
         this.newOrderAction(this.orderInput);
       }
@@ -359,7 +359,7 @@ export default {
       getUserByToken: "AUTH/getUserByToken",
       getProductCartOfUserAction: "CART/userProductCart",
       newOrderAction: "PAYMENT/newOrder",
-      updateProductAction: "PRODUCTACTION/updateProduct",
+      updateProductAction: "PRODUCTACTION/buyProduct",
       getProductInforAction: "PRODUCTS/getProduct",
       clearCartAction: "CART/clearProductCart",
     }),

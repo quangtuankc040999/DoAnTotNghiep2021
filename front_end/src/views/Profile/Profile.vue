@@ -76,7 +76,7 @@ export default {
   width: 20%;
 }
 .router-view {
-  width: 75% !important;
+  width: 80% !important;
   border-left: 1px solid rgb(158, 147, 147, 0.5);
 }
 </style>

@@ -10,13 +10,14 @@
     scrollable
     v-if="orderItem.product"
   >
-    <p v-if="orderItem._id">Đánh giá đơn hàng {{ orderItem._id }}</p>
+    <p class="title" v-if="orderItem._id">Đánh giá đơn hàng {{ orderItem._id }}</p>
     <product-item-comment
       v-for="(product, index) in orderItem.product"
       :key="index"
       :productItem="product"
       :indexProduct="index"
       :idProduct="product._id"
+      :orderId="orderItem._id"
       class="product"
     ></product-item-comment>
   </b-modal>
@@ -54,4 +55,14 @@ export default {
   watch: {},
 };
 </script>
-
+<style lang="scss" scoped>
+@import "../../assets/style.scss";
+.title {
+  font-size: 1rem;
+  color: $color !important;
+  font-weight: 700;
+  text-transform: uppercase !important;
+  padding-bottom: 10px;
+  border-bottom: rgba(177, 171, 171, 0.5) 1px solid;
+}
+</style>

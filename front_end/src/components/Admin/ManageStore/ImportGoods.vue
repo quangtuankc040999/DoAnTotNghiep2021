@@ -1,7 +1,7 @@
 <template>
   <div class="import-goods">
     <div class="btn-file-container">
-      <v-btn @click="chooseFile">Chọn tệp</v-btn>
+      <v-btn @click="chooseFile" class="btn-choosefile">Chọn tệp</v-btn>
       <input type="text" id="file_name" placeholder="file" />
       <input
         type="file"
@@ -46,6 +46,19 @@
             <td>
               {{ item.quantity }}
             </td>
+            <td>
+              {{ item.total }}
+            </td>
+          </tr>
+        </template>
+        <template>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tổng chi:</td>
+            <td>10000000</td>
           </tr>
         </template>
       </v-data-table>
@@ -83,7 +96,12 @@ export default {
           value: "",
           width: "15%",
           align: "center",
-          sortable: false,
+        },
+        {
+          text: "Tổng nhập",
+          value: "",
+          width: "15%",
+          align: "center",
         },
       ],
       readExcelRecords: [],
@@ -137,18 +155,18 @@ export default {
       this.$refs.file_input.click();
     },
     importGoods() {
-      // for (let record of this.readExcelRecords) {
-      //   if (record.status == 1) {
-      //     this.updateProductAction({
-      //       productId: record._id,
-      //       body: { quantity: record.quantity },
-      //     });
-      //   }
-      // }
-      // this.createNewLogAction({
-      //   status: "Nhập hàng",
-      //   logContents: this.readExcelRecords,
-      // });
+      for (let record of this.readExcelRecords) {
+        if (record.status == 1) {
+          this.updateProductAction({
+            productId: record._id,
+            body: { quantity: record.quantity },
+          });
+        }
+      }
+      this.createNewLogAction({
+        status: "Nhập hàng",
+        logContents: this.readExcelRecords,
+      });
     },
     formatPrice(price) {
       return new Intl.NumberFormat("de-DE", {
@@ -159,12 +177,11 @@ export default {
     ...mapActions({
       getAllProduct: "PRODUCTS/getAllProduct",
       getProductInforAction: "PRODUCTS/getProduct",
-      updateProductAction: "PRODUCTACTION/updateProduct",
+      updateProductAction: "PRODUCTACTION/importProduct",
       createNewLogAction: "LOG/createNewLog",
     }),
   },
   created() {
-    // this.getAllProduct();
   },
 };
 </script>
@@ -189,14 +206,19 @@ td {
     }
   }
 }
-.btn-import {
-  position: fixed;
-  bottom: 0;
+.v-btn {
   background-color: $color !important ;
-  margin-top: 20px !important;
   text-align: center !important;
   font-weight: 700;
   color: white !important;
   bottom: 0;
+}
+.btn-import {
+  position: fixed;
+  bottom: 0;
+  margin-top: 20px !important;
+}
+.btn-choosefile{
+  
 }
 </style>

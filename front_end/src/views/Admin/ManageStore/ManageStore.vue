@@ -18,13 +18,13 @@ export default {
 
 <style lang="scss" scoped>
 .manage-store{
-    display: flex;
+    // display: flex;
     height: 100%;
     .sidebar-store{
-      width: 20% !important;
+      width: 100% !important;
     }
     .main-store{
-      width: 80% !important
+      width: 100% !important
     }
 }
 </style>

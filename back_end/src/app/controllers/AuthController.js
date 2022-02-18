@@ -26,6 +26,10 @@ class AuthController {
           user.firstName = req.body.firstName;
           user.lastName = req.body.lastName;
           user.email = req.body.email;
+          const userFind = await User.find({email: req.body.email})
+          if(userFind.length != 0 ){
+            return apiResponse.ErrorResponse(res, 'Email đã được đăng ký');
+          }
           user.password = await bcrypt.hash(req.body.password, salt);
           user.avatar = "";
           user.productCart = [];
@@ -48,7 +52,6 @@ class AuthController {
 
   login = [
     async (req, res) => {
-      console.log(req.body);
       const { email, password } = req.body;
       try {
         const errors = validationResult(req);

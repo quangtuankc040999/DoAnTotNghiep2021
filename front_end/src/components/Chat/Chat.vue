@@ -158,6 +158,7 @@ export default {
       // removeUnreadNotification: "NOTIFICATION/removeUnreadNotification",
       uploadFile: "CHAT/uploadFile",
       getRoomChatOfUserAction: "ROOM/getRoomChatUser",
+      updateRoomAction: "ROOM/updateRoom"
     }),
     sendMessage(e) {
       if (e.keyCode === 13) {
@@ -165,6 +166,7 @@ export default {
           idRoom: this.currentRoom._id,
           chat: { idRoom: this.currentRoom._id, message: this.message },
         });
+        this.updateRoomAction()
         this.message = "";
         document.getElementById("content").focus();
         // if (!this.validateBeforeSubmit() && !this.files.name) {
@@ -189,28 +191,35 @@ export default {
       }
     },
     sendMessageByClick() {
-      if (!this.validateBeforeSubmit() && !this.files.name) {
+      // if (!this.validateBeforeSubmit() && !this.files.name) {
+      //   document.getElementById("content").focus();
+      //   return;
+      // } else {
+      //   if (this.files.name) {
+      //     const formData = new FormData();
+      //     formData.append("file", this.files);
+      //     this.uploadFile({
+      //       idRoom: this.$route.params.id,
+      //       file: formData,
+      //     });
+      //     this.removeFile();
+      //   }
+      //   if (this.validateBeforeSubmit()) {
+      //     this.sendMessageAction({
+      //       idRoom: this.$route.params.id,
+      //       chat: { email: this.userInfo.email, message: this.message },
+      //     });
+      //     this.message = "";
+      //     document.getElementById("content").focus();
+      //   }
+      // }
+        this.sendMessageAction({
+          idRoom: this.currentRoom._id,
+          chat: { idRoom: this.currentRoom._id, message: this.message },
+        });
+        this.updateRoomAction()
+        this.message = "";
         document.getElementById("content").focus();
-        return;
-      } else {
-        if (this.files.name) {
-          const formData = new FormData();
-          formData.append("file", this.files);
-          this.uploadFile({
-            idRoom: this.$route.params.id,
-            file: formData,
-          });
-          this.removeFile();
-        }
-        if (this.validateBeforeSubmit()) {
-          this.sendMessageAction({
-            idRoom: this.$route.params.id,
-            chat: { email: this.userInfo.email, message: this.message },
-          });
-          this.message = "";
-          document.getElementById("content").focus();
-        }
-      }
     },
     validateBeforeSubmit() {
       let passedValidate = true;

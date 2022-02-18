@@ -1,47 +1,40 @@
 <template>
   <div class="sidebar-store">
-    <v-card  class="mx-auto" max-width="300" tile>
-      <v-list dense>
-        <v-list-item-group color="primary">
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title @click="toImportGoods"
-                >Nhập hàng</v-list-item-title
-              >
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-content>
-              <v-list-item-title @click="toViewLog">Log</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
+    <v-card>
+      <v-tabs color="deep-purple accent-4" right>
+        <v-tab>Nhập hàng</v-tab>
+        <v-tab>Log</v-tab>
+        <v-tab-item><import-goods/> </v-tab-item>
+        <v-tab-item><view-log/> </v-tab-item>
+      </v-tabs>
     </v-card>
   </div>
 </template>
 
 <script>
+import ImportGoods from './ImportGoods.vue';
+import ViewLog from './ViewLog.vue';
 export default {
+  components: { ImportGoods, ViewLog },
+  component: {
+    ImportGoods,
+    ViewLog
+  },
   data() {
     return {};
   },
   methods: {
-    toImportGoods() {
-      this.$router.push(`/admin/manage-store/in-goods`);
-    },
-     toViewLog() {
-      this.$router.push(`/admin/manage-store/view-log`);
-    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.sidebar-store{
+.sidebar-store {
   // padding-top: 20px;
-
 }
-.v-list-item-group{
+.v-list-item-group {
+}
+.v-tabs{
+  min-height: 100vh  !important;
 }
 </style>

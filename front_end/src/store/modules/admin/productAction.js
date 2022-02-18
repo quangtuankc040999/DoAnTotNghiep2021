@@ -25,9 +25,44 @@ const actions = {
 
             });
     },
-    updateProduct({ commit }, params) {
+    updateProduct({ commit,dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
         http
             .put(`/product/update/${params.productId}`, params.body, "Chỉnh sửa sản phẩm thành công")
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('ERROR/setIsLoading', false, { root: true });
+                dispatch('PRODUCTS/getAllProduct', null, {root: true})
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+            });
+    },
+    deleteProduct({ commit,dispatch }, productId) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .put(`/product/delete/${productId}`, null, 'Xoá sản phẩm thành công')
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('ERROR/setIsLoading', false, { root: true });
+                dispatch('PRODUCTS/getAllProduct', null, {root: true})
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+
+            });
+    },
+    importProduct({ commit }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+
+        http
+            .put(`/product/update/${params.productId}`, params.body, "Nhập hàng thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
             })
@@ -37,9 +72,9 @@ const actions = {
                 });
             });
     },
-    deleteProduct({ commit }, productId) {
+    outProduct({ commit }, params) {
         http
-            .put(`/product/delete/${productId}`)
+            .put(`/product/update/${params.productId}`, params.body, "Xuất kho thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
             })
@@ -48,7 +83,19 @@ const actions = {
                     root: true,
                 });
             });
-    }
+    },
+    buyProduct({ commit }, params) {
+        http
+            .put(`/product/update/${params.productId}`, params.body)
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+            });
+    },
 };
 
 export default {

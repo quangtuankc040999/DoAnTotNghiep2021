@@ -53,6 +53,20 @@
         </v-badge>
         Đánh giá
       </div>
+
+      <div class="status rated" @click="toListRated()">
+        <v-badge
+          bordered
+          color="error"
+          v-bind:value="listRated.length > 0 ? listRated.length : empty"
+          :content="listRated.length"
+          offset-x="10"
+          offset-y="10"
+        >
+          <v-icon large> mdi-check-circle  </v-icon>
+        </v-badge>
+        Đã hoàn thành
+      </div>
     </div>
     <router-view />
   </div>
@@ -77,16 +91,17 @@ export default {
       listDelivery: "PAYMENT/listDelivery",
       listCancel: "PAYMENT/listCancel",
       listDone: "PAYMENT/listDone",
+      listRated: "PAYMENT/listRated",
     }),
   },
   methods: {
     toListWaitting() {
       this.$router.push(`/profile/user/manage-order/waitting`);
-        this.getWaittingOrderAction(this.userInfoAuth._id);
+      this.getWaittingOrderAction(this.userInfoAuth._id);
     },
     toListDelivery() {
       this.$router.push(`/profile/user/manage-order/delivery`);
-         this.getDeliveryOrderAction(this.userInfoAuth._id);
+      this.getDeliveryOrderAction(this.userInfoAuth._id);
     },
     toListCancel() {
       this.$router.push(`/profile/user/manage-order/cancel`);
@@ -96,13 +111,18 @@ export default {
       this.$router.push(`/profile/user/manage-order/rate`);
       this.getDoneOrderAction(this.userInfoAuth._id);
     },
-  
+      toListRated() {
+      this.$router.push(`/profile/user/manage-order/rated`);
+      this.getRatedOrderAction(this.userInfoAuth._id);
+    },
+
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
       getWaittingOrderAction: "PAYMENT/getOrderWattingUser",
       getDeliveryOrderAction: "PAYMENT/getOrderDeliveryUser",
       getCancelOrderAction: "PAYMENT/getOrderCancelUser",
       getDoneOrderAction: "PAYMENT/getOrderDoneUser",
+      getRatedOrderAction: "PAYMENT/getOrderRatedUser",
     }),
   },
   created() {
@@ -111,6 +131,7 @@ export default {
     this.getDeliveryOrderAction(this.userInfoAuth._id);
     this.getCancelOrderAction(this.userInfoAuth._id);
     this.getDoneOrderAction(this.userInfoAuth._id);
+    this.getRatedOrderAction(this.userInfoAuth._id);
   },
 };
 </script>
@@ -118,6 +139,7 @@ export default {
 <style lang="scss" scoped>
 .manage-order {
   width: 100%;
+  min-height: 100vh;
   .bar {
     display: flex;
     flex-direction: row;

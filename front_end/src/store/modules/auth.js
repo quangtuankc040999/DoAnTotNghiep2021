@@ -46,7 +46,7 @@ const actions = {
         if (response.data.data.role.name == "User") {
           router.push("/")
         }
-        else if(response.data.data.role.name == "Admin"){
+        else if (response.data.data.role.name == "Admin") {
           router.push("/admin")
         }
       })
@@ -59,16 +59,22 @@ const actions = {
       });
   },
   register({ commit }, params) {
+    commit('ERROR/setIsLoading', true, { root: true });
+
     http
       .post('/auth/register', params, 'Đăng ký tài khoản mới thành công!')
       .then(() => {
         commit('ERROR/clearErrorMessage', null, { root: true });
+        commit('ERROR/setIsLoading', false, { root: true });
+
         router.push('/login');
       })
       .catch((error) => {
         commit('ERROR/setErrorMessage', error.response.data.message, {
           root: true,
         });
+        commit('ERROR/setIsLoading', false, { root: true });
+
       });
   },
   getUserByToken({ commit }) {

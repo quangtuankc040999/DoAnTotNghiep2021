@@ -22,8 +22,8 @@ import orderDetail from '../views/User/OrderDetail.vue'
 import userInformation from '../views/Profile/UserInformation.vue'
 import ChatPageAdmin from '../views/Admin/ChatAmin/ChatPageAdmin.vue'
 import ChatRoomAdmin from '../components/Admin/ChatAdmin/ChatAdmin.vue'
-import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
-import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
+// import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
+// import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
 import ForbbidenPage from '../views/403Page.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
@@ -190,18 +190,6 @@ const routes = [
         path: '/admin/manage-store/',
         name: manageStore,
         component: manageStore,
-        children: [
-          {
-            path: '/admin/manage-store/in-goods',
-            name: ImportGoods,
-            component: ImportGoods,
-          },
-          {
-            path: '/admin/manage-store/view-log',
-            name: ViewLog,
-            component: ViewLog,
-          },
-        ]
       },
     ]
   },

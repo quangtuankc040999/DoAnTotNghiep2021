@@ -19,7 +19,7 @@
       <div class="action" v-else>
         <ul>
           <v-btn text @click="to('profile')"
-            >Xin chào: {{ userInfoAuth.firstName }}{{ userInfoAuth.lastName }}
+            >Xin chào: {{ userInfoAuth.firstName }} {{ userInfoAuth.lastName }}
             <v-icon>mdi-account</v-icon></v-btn
           >
           <!-- <li @click="logout">Đăng xuất</li> -->

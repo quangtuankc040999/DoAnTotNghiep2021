@@ -135,7 +135,6 @@ class UserController {
       } else {
         const userId = req.params.id;
         const productCart = req.body
-        console.log(req.body);
         const user = await User.findByIdAndUpdate(userId,{$pull: {'productCart': { idProduct: productCart.idProduct }}});
         // const userFind = await User.findById(userId)
         // console.log(userFind,"=============dấday nè ==");
@@ -162,7 +161,7 @@ class UserController {
         );
       } else {
         const userId = req.params.id;
-        const user = await User.updateOne({userId},{'productCart': []});
+        const user = await User.findByIdAndUpdate(userId,{'productCart': []});
         if (!user) {
           apiResponse.ErrorResponse(res, 'Not found user');
         }

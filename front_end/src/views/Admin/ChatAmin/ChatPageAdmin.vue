@@ -1,6 +1,6 @@
 <template>
   <div class="chat-page">
-    <side-bar-chat :roomChats="roomChats" class="sidebar-chat" />
+    <side-bar-chat :roomChats="roomChats"  class="sidebar-chat" />
     <router-view class="chat-room"/>
   </div>
 </template>
@@ -19,11 +19,11 @@ export default {
   },
   methods: {
     ...mapActions({
-      getAllRoomChatAction: "ROOM/getAllRommChat",
+      // getAllRoomChatAction: "ROOM/getAllRommChat",
     }),
   },
   created() {
-    this.getAllRoomChatAction();
+    // this.getAllRoomChatAction();
   },
 };
 </script>

@@ -20,7 +20,7 @@
       </v-list-item>
 
       <v-divider></v-divider>
-         <v-list dense>
+      <v-list dense>
         <v-list-item link @click="manageProduct">
           <v-list-item-icon>
             <v-icon>mdi-view-dashboard-outline</v-icon>
@@ -47,7 +47,7 @@
       <v-list dense>
         <v-list-item link @click="manageStore">
           <v-list-item-icon>
-            <v-icon>mdi-storefront  </v-icon>
+            <v-icon>mdi-storefront </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -56,8 +56,8 @@
         </v-list-item>
       </v-list>
 
-       <v-list dense>
-        <v-list-item link>
+      <v-list dense>
+        <v-list-item link @click="manageOrder">
           <v-list-item-icon>
             <v-icon>mdi-order-bool-ascending </v-icon>
           </v-list-item-icon>
@@ -68,10 +68,10 @@
         </v-list-item>
       </v-list>
 
-          <v-list dense>
+      <v-list dense>
         <v-list-item link>
           <v-list-item-icon>
-            <v-icon>mdi-account-group  </v-icon>
+            <v-icon>mdi-account-group </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -79,7 +79,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-       <v-list dense>
+      <v-list dense>
         <v-list-item link @click="manageChat">
           <v-list-item-icon>
             <v-icon>mdi-forum </v-icon>
@@ -125,6 +125,7 @@ export default {
   computed: {
     ...mapGetters({
       rooms: "CHAT/rooms",
+      roomChats: "ROOM/roomChat",
       // notifications: 'NOTIFICATION/notifications',
       userInfoAuth: "AUTH/userInfo",
       // userRole: 'AUTH/userRole',
@@ -134,19 +135,24 @@ export default {
     manageLogout() {
       this.logoutAction();
     },
+    manageOrder() {
+      this.$router.push(`/admin/manage-order/`);
+    },
     manageProduct() {
       this.$router.push(`/admin/manage-product/`);
     },
-     manageStore() {
+    manageStore() {
       this.$router.push(`/admin/manage-store/`);
     },
     manageChat() {
-      this.$router.push(`/admin/manage-chat/`);
+      this.$router.push(`/admin/manage-chat/${this.roomChats[0]._id}`);
     },
     ...mapActions({
       getUserByToken: "AUTH/getUserByToken",
       getUser: "USER/getUser",
       logoutAction: "AUTH/logout",
+      getAllRoomChatAction: "ROOM/getAllRommChat",
+
       //     // getAllChatByIdRoom: 'CHAT/getAllChatByIdRoom',
       //     // addCurrentRoom: 'CHAT/addCurrentRoom',
       //     // removeUnreadNotification: 'NOTIFICATION/removeUnreadNotification',
@@ -169,6 +175,8 @@ export default {
   },
   created() {
     this.getUserByToken();
+    this.getAllRoomChatAction();
+
   },
   // watch: {},
 };

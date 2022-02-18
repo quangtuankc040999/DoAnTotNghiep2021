@@ -1,13 +1,15 @@
 <template>
   <div class="manage-order">
-    Manage - Order
+    <sibar-order/>
   </div>
 </template>
 
 <script>
+import SibarOrder from '../../components/Admin/ManageOrder/SibarOrder.vue'
 export default {
   name: "manage-order",
   components: {
+    SibarOrder
   },
 };
 </script>
