@@ -1,6 +1,6 @@
 import http from '../../../service/api.js';
 const state = {
-    orderById: null,
+    orderById: {},
     listOrder: [],
     listWaitting: [],
     listDelivery: [],
@@ -25,6 +25,9 @@ const getters = {
     },
 };
 const mutations = {
+    setOrderById(state, orderById){
+        state.orderById = orderById;
+    },
     setOrderInfor(state, orderInfor) {
         state.listOrder = orderInfor;
     },
@@ -39,6 +42,21 @@ const mutations = {
     },
 };
 const actions = {
+    getOrderById({ commit }, orderId) {
+        http
+            .get(`/order/user/${orderId}`)
+            .then((response) => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('setOrderById', response.data.data);
+
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+            });
+    },
     acceptOrder({ commit, dispatch }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
         http

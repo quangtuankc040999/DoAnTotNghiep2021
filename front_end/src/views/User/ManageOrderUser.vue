@@ -126,7 +126,9 @@ export default {
     }),
   },
   created() {
-    this.getUserByToken();
+   if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     this.getWaittingOrderAction(this.userInfoAuth._id);
     this.getDeliveryOrderAction(this.userInfoAuth._id);
     this.getCancelOrderAction(this.userInfoAuth._id);

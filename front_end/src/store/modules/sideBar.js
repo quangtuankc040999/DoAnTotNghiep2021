@@ -1,6 +1,6 @@
 import http from '../../service/api.js';
 const state = {
-  categoryInfo: null,
+  categoryInfo: [],
 };
 
 const getters = {

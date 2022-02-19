@@ -390,7 +390,9 @@ export default {
     },
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     this.getUser(this.userInfoAuth._id);
   },
 };

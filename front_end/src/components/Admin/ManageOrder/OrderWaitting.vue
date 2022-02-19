@@ -1,5 +1,6 @@
 <template>
   <div class="order-waiting">
+    <modal-cancel-order v-if="orderById" :orderById="orderById" ref="modalCancelOrder" />
     <div class="order-list">
       <v-text-field
         class="search"
@@ -57,12 +58,9 @@
                 <span>Đã đóng gói</span>
               </v-tooltip>
 
-               <v-tooltip bottom>
+              <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    text
-                    v-bind="attrs"
-                    v-on="on"
+                  <v-btn text v-bind="attrs" v-on="on" @click="showModalCancel(item._id)"
                     ><v-icon>mdi-close-box </v-icon></v-btn
                   >
                 </template>
@@ -79,11 +77,13 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 import VueTimeCusNoTime from "../../VueTimeCusNoTime.vue";
+import ModalCancelOrder from "../../Modal/ModalCancelOrder.vue";
 export default {
   name: "order-watiing",
-  components: { VueTimeCusNoTime },
+  components: { VueTimeCusNoTime, ModalCancelOrder },
   data() {
     return {
+      idOrder: "",
       search: "",
       headers: [
         {
@@ -134,9 +134,14 @@ export default {
   computed: {
     ...mapGetters({
       listOrderWaiting: "ORDERADMIN/listWaitting",
+      orderById: "ORDERADMIN/orderById"
     }),
   },
   methods: {
+    showModalCancel(idOrder) {
+      this.getOrderByIdAction(idOrder)
+      this.$refs.modalCancelOrder.show();
+    },
     updateOrder(params) {
       this.updateOrderAction(params);
       this.createNewLogAction({
@@ -157,10 +162,10 @@ export default {
       }).format(price);
     },
     ...mapActions({
+      getOrderByIdAction: "ORDERADMIN/getOrderById",
       updateProductAction: "PRODUCTACTION/outProduct",
       createNewLogAction: "LOG/createNewLogXuat",
       updateOrderAction: "ORDERADMIN/acceptOrder",
-      buyProductAction: "PRODUCTACTION/buyProduct",
       listOrderWaitingAction: "ORDERADMIN/getAllOrderWatting",
     }),
   },

@@ -48,7 +48,9 @@ export default {
     }),
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     if (this.$route.params.statusOrder == "waitting") {
       this.getWaittingOrderAction(this.userInfoAuth._id);
     } else if (this.$route.params.statusOrder == "delivery") {

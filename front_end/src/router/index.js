@@ -9,6 +9,9 @@ import Contact from '../views/Contact/Contact.vue'
 import Profile from '../views/Profile/Profile.vue'
 import ProductDetail from '../views/Products/ProductDetail.vue'
 import ListProduct from '../views/Products/ListProduct.vue'
+import ListProductByPrice from '../views/Products/ListProductByPrice.vue'
+import ListProductByBrand from '../views/Products/ListProductByBrand.vue'
+import ListProductByName from '../views/Products/ListProductByName.vue'
 import Cart from '../views/Products/Cart.vue'
 import Payment from '../views/Products/Payment.vue'
 import Admin from '../views/Admin/Admin.vue'
@@ -53,6 +56,21 @@ const routes = [
     },
     children: [
       {
+        path: '/products/search/',
+        name: ListProductByName,
+        component: ListProductByName,
+      },
+      {
+        path: '/products/brand/',
+        name: ListProductByBrand,
+        component: ListProductByBrand,
+      },
+      {
+        path: '/products/price/',
+        name: ListProductByPrice,
+        component: ListProductByPrice,
+      },
+      {
         path: '/products/product-detail/:id',
         name: ProductDetail,
         component: ProductDetail,
@@ -72,6 +90,7 @@ const routes = [
         name: ListProduct,
         component: ListProduct,
       },
+
     ]
   },
   {
@@ -219,15 +238,20 @@ router.beforeEach((to, from, next) => {
       if (user.role != 'User') {
         next('/')
       }
+      if (user.role == 'Admin') {
+        next('/admin')
+      }
     } else {
       next();
     }
     next();
   } else if (to.matched.some((record) => record.meta.guest)) {
     if (!token) {
-      console.log('guest token null');
       next();
     } else {
+      if (user.role == 'Admin') {
+        next('/admin')
+      }
       next()
     }
   }

@@ -1,0 +1,11 @@
+const express = require('express');
+const router = express.Router();
+const productController = require('../../app/controllers/ProductController');
+router.put('/product-search-name', productController.getAllProductLikeNameNoPanigation);
+router.get('/category/:categoryName/:page', productController.getProductByCategoryName);
+router.get('/category/:categoryName/:categoryDetail/:page', productController.getProductByCategoryNameAndCategoryDetail);
+router.get('/all/:page', productController.getAllProductPagination);
+router.put('/product-price/:page', productController.getAllProductByPrice);
+router.put('/product-brand/:page', productController.getAllProductByBrand);
+router.put('/product-search-name/:page', productController.getAllProductLikeName);
+module.exports = router;

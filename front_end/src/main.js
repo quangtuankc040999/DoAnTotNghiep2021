@@ -16,8 +16,10 @@ import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 import Toasted from 'vue-toasted';
 import VueChatScroll from 'vue-chat-scroll';
 import VueHorizontalList from 'vue-horizontal-list';
+import 'vue-range-component/dist/vue-range-slider.css'
+import VueRangeSlider from 'vue-range-component'
 
-
+Vue.use(VueRangeSlider)
 Vue.use(BootstrapVue, IconsPlugin, BootstrapVueIcons)
 Vue.use(VueJWT)
 Vue.use(VueClazyLoad);

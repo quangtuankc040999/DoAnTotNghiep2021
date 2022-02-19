@@ -8,12 +8,13 @@ const getters = {
 const mutations = {
 };
 const actions = {
-    addProduct({ commit }, params) {
+    addProduct({ commit, dispatch }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
         http
             .post(`/product/`, params, "Thêm sản phẩm thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
+                dispatch('PRODUCTS/getAllProduct', null, {root:true})
                 commit('ERROR/setIsLoading', false, { root: true });
 
             })

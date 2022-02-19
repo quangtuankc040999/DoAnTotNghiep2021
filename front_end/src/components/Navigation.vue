@@ -6,10 +6,24 @@
       </div>
       <div class="search-box">
         <v-text-field
+          @click="hoverOut"
+          v-on:keyup="searchProduct"
           label="Tìm kiếm"
+          v-model="search"
           prepend-inner-icon="mdi-magnify "
         ></v-text-field>
+        <div class="search-dropdown" v-if="productInforSearch.length > 0">
+          <ul class="search-dropdown__list">
+            <li v-for="(product, index) in productInforSearch" :key="index">
+              <img v-bind:src="product.image[0]" alt="" />
+              <div v-if="product" @click="toProductDetail(product._id)">
+                {{ product.title }}
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
+
       <div class="action" v-if="!userInfoAuth">
         <ul>
           <v-btn text @click="to('login')"> Đăng nhập </v-btn>
@@ -22,21 +36,20 @@
             >Xin chào: {{ userInfoAuth.firstName }} {{ userInfoAuth.lastName }}
             <v-icon>mdi-account</v-icon></v-btn
           >
-          <!-- <li @click="logout">Đăng xuất</li> -->
         </ul>
       </div>
       <div v-if="productCart.length > 0" class="cart">
         <div class="cart-label">
           Giỏ hàng/{{ formatPrice(totalPrice(productCart)) }}
           <v-badge
-          v-if="totalQuantity(productCart) <= 9"
+            v-if="totalQuantity(productCart) <= 9"
             bordered
             color="red darken-1"
             v-bind:content="totalQuantity(productCart)"
             offset-x="10"
             offset-y="10"
           >
-            <v-icon>mdi-cart  </v-icon>
+            <v-icon>mdi-cart </v-icon>
           </v-badge>
           <v-badge
             v-if="totalQuantity(productCart) > 9"
@@ -46,20 +59,18 @@
             offset-x="10"
             offset-y="10"
           >
-            <v-icon>mdi-cart  </v-icon>
+            <v-icon>mdi-cart </v-icon>
           </v-badge>
 
           <div class="cart-dropdown">
             <ul class="cart-dropdown__list">
               <li v-for="(product, index) in productCart" :key="index">
                 <img v-bind:src="product.product.image[0]" alt="" />
-                <div v-if="product.product">
-                  <router-link
-                    class="product-cart"
-                    :to="`/products/product-detail/${product.product._id}`"
-                  >
-                    {{ product.product.title }}
-                  </router-link>
+                <div
+                  v-if="product.product"
+                  @click="toProductDetail(product.product._id)"
+                >
+                  {{ product.product.title }}
                   <br />
                   {{ product.quantity }} *
                   {{ formatPrice(product.product.sale_price) }}
@@ -84,7 +95,7 @@
         <div class="cart-label">
           <v-btn text @click="to('cart')">
             Giỏ hàng/0đ
-            <v-icon>mdi-cart  </v-icon>
+            <v-icon>mdi-cart </v-icon>
           </v-btn>
         </div>
       </div>
@@ -97,6 +108,8 @@
               active-class="deep-purple--text text--accent-4"
             >
               <input
+                v-on:keyup="searchProductBar"
+                v-model="searchBar"
                 class="input-search"
                 type="text"
                 placeholder="Tìm kiếm"
@@ -147,6 +160,8 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   data: () => ({
+    search: "",
+    searchBar: "",
     drawer: false,
     group: null,
     showCart: false,
@@ -156,33 +171,77 @@ export default {
     group() {
       this.drawer = false;
     },
+    search() {
+      console.log(this.search);
+      if (this.search != "") {
+        this.searchMethod();
+      } else {
+        this.clearProductInforSearch();
+      }
+    },
   },
   computed: {
     ...mapGetters({
+      productInforSearch: "PRODUCTS/productInforSearch",
       productCart: "CART/productCart",
       userInfo: "USER/userInfo",
       userInfoAuth: "AUTH/userInfo",
     }),
   },
   methods: {
+    hoverOut() {
+      this.clearProductInforSearch();
+    },
+    toProductDetail(id) {
+      this.clearProductInforSearch();
+      this.$router.push(`/products/product-detail/${id}`);
+    },
+    searchMethod() {
+      this.getAllProductLikeNameNoPaginationAction({ title: this.search });
+    },
+    searchProduct(e) {
+      if (e.keyCode === 13) {
+        this.clearProductInforSearch();
+        this.$router.push({
+          path: `/products/search/`,
+          query: { title: this.search },
+        });
+      }
+    },
+
+      searchProductBar(e) {
+      if (e.keyCode === 13) {
+        this.clearProductInforSearch();
+        this.$router.push({
+          path: `/products/search/`,
+          query: { title: this.searchBar },
+        });
+      }
+    },
+
     to(page) {
       if (page && page == "profile") {
+        this.clearProductInforSearch();
         this.$router.push("/profile/user/manage-account/");
       } else if (page && page == "login") {
         this.$router.push("/login");
       } else if (page && page == "signup") {
         this.$router.push("/signup");
       } else if (page && page == "cart") {
+        this.clearProductInforSearch();
         this.$router.push("/cart");
       }
     },
 
     ...mapActions({
+      getAllProductLikeNameNoPaginationAction:
+        "PRODUCTS/getAllProductLikeNameNoPagination",
       getUserByToken: "AUTH/getUserByToken",
       getUser: "USER/getUser",
       logoutAction: "AUTH/logout",
       userProductCartAction: "CART/userProductCart",
       getUserAction: "USER/getUser",
+      clearProductInforSearch: "PRODUCTS/clearProductInforSearch",
     }),
 
     formatPrice(price) {
@@ -209,7 +268,9 @@ export default {
     },
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     if (this.userInfoAuth) {
       this.getUserAction(this.userInfoAuth._id);
     }
@@ -244,6 +305,7 @@ export default {
 }
 .search-box {
   width: 20%;
+  margin-bottom: 2px !important;
 }
 .action {
   width: 20%;
@@ -425,5 +487,58 @@ a {
   width: 90%;
   font-weight: 300;
   border-radius: 20px;
+}
+.search-box {
+  position: relative;
+  .search-dropdown {
+    background: white;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    color: rgb(10, 10, 10);
+    font-size: 1rem;
+    font-weight: 300;
+    overflow: auto;
+    padding: 0 0.4rem;
+    position: absolute;
+    top: 50px !important;
+    left: -10px !important;
+    z-index: 1000;
+    right: 0 !important;
+    width: 24rem;
+    flex-direction: column;
+    align-items: center;
+    .search-dropdown__list {
+      overflow-y: auto;
+      list-style: none;
+      display: flex;
+      height: 300px;
+      flex-direction: column;
+      li {
+        width: 90%;
+        margin: 0.4rem 0;
+        display: flex;
+        align-items: center;
+        img {
+          height: 100%;
+          width: 40%;
+          margin-right: 10px;
+          margin-left: 0;
+        }
+        div {
+          width: 60%;
+        }
+        .product-cart {
+          color: rgb(0, 0, 0) !important;
+        }
+        .product-cart:hover {
+          text-decoration: none;
+        }
+      }
+      li:hover {
+        background-color: rgb(216, 216, 216);
+      }
+    }
+  }
 }
 </style>

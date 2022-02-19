@@ -365,7 +365,9 @@ export default {
     }),
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     this.getProductCartOfUserAction(this.userInfoAuth._id);
   },
   watch: {

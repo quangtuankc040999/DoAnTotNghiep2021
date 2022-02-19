@@ -174,7 +174,9 @@ export default {
     //   handleClickProjectManagement() {},
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     this.getAllRoomChatAction();
 
   },

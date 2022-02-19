@@ -5,9 +5,9 @@
     hide-footer
     size="lg md"
     class="col-lg-6"
-    title="Product Modal"
     hide-header-close
     scrollable
+    @hide="doWhenHide"
   >
     <div class="add">
       <h5>Thông tin chung</h5>
@@ -28,11 +28,16 @@
       </div>
       <!-- Brand group -->
       <div class="brand group">
-        <input
-          type="text"
-          v-model="productRequest.brand"
-          placeholder="Thương hiệu"
-        />
+        <select type="text" v-model="productRequest.brand">
+          <option value="" selected>Thương hiệu</option>
+          <option
+            v-for="brand in brands"
+            :key="brand.value"
+            :value="brand.value"
+          >
+            {{ brand.text }}
+          </option>
+        </select>
         <div class="errors">
           <p v-show="showErrors.emptyBrand" class="error">
             Vui lòng nhập thương hiệu sản phẩm
@@ -119,17 +124,7 @@
       <!-- End start price -->
       <label for="">Giảm giá </label>
       <div class="discount">
-        <input
-          type="number"
-          v-model="productRequest.discount"
-          @click="
-            calSalePrice(
-              productRequest,
-              productRequest.starting_price,
-              productRequest.discount
-            )
-          "
-        />
+        <input type="number" v-model="productRequest.discount" />
         <div class="errors">
           <p v-show="showErrors.maxDiscount" class="error">
             Giảm giá không thể quá 100%
@@ -138,7 +133,18 @@
       </div>
       <label for="">Giá bán: </label>
       <div class="sale-price">
-        <input type="number" v-model="productRequest.sale_price" readonly />
+        <input
+          type="number"
+          @click="
+            calSalePrice(
+              productRequest,
+              productRequest.starting_price,
+              productRequest.discount
+            )
+          "
+          v-model="productRequest.sale_price"
+          readonly
+        />
       </div>
       <h5>Mô tả sản phẩm</h5>
       <div class="description group">
@@ -217,6 +223,32 @@ export default {
   props: ["productRequest", "modalType", "idProduct"],
   data() {
     return {
+      brands: [
+        {
+          text: "Gan",
+          value: "Gan",
+        },
+        {
+          text: "QiYi",
+          value: "QiYi",
+        },
+        {
+          text: "MoYu",
+          value: "MoYu",
+        },
+        {
+          text: "DaYan",
+          value: "DaYan",
+        },
+        {
+          text: "Yuxin",
+          value: "Yuxin",
+        },
+        {
+          text: "Rubik's",
+          value: "Rubik's",
+        },
+      ],
       showErrors: {},
       categoryDetails: [],
       selectedCategoryName: {
@@ -235,6 +267,19 @@ export default {
     }),
   },
   methods: {
+    doWhenHide() {
+      this.productRequest.title = "";
+      this.productRequest.brand = "";
+      this.productRequest.product_key = "";
+      this.selectedCategoryNam = "";
+      this.selectedCategoryDetail = "";
+      this.productRequest.starting_price = "";
+      this.productRequest.discount = "";
+      this.productRequest.sale_price = "";
+      this.productRequest.description = "";
+      this.productRequest.image = [];
+      this.showErrors = {};
+    },
     calSalePrice(productRequest, startingPrice, discount) {
       productRequest.sale_price =
         startingPrice - (discount / 100) * startingPrice;
@@ -350,10 +395,10 @@ export default {
         if (this.modalType == "add") {
           this.addProductAction(this.productRequest)
             .then(() => {
-              this.hideModal()
+              this.hideModal();
             })
             .catch((e) => {
-              console.log(e)
+              console.log(e);
             });
         } else if (this.modalType == "edit") {
           this.updateProductAction({
@@ -361,10 +406,10 @@ export default {
             body: this.productRequest,
           })
             .then(() => {
-              this.hideModal()
+              this.hideModal();
             })
             .catch((e) => {
-              console.log(e)
+              console.log(e);
             });
         }
       }

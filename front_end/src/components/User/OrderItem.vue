@@ -1,6 +1,11 @@
 <template>
   <div class="order-item">
     <modalRatting :orderItem="orderItem" ref="modalRatting" />
+    <modal-cancel-order
+      v-if="orderItem"
+      :orderById="orderItem"
+      ref="modalCancelOrder"
+    />
     <div class="order-head">
       <p @click="toOrderDetail(orderItem._id)">
         Mã đơn hàng: {{ orderItem._id }}
@@ -38,9 +43,7 @@
       <v-btn
         v-if="orderItem.status == 'Chờ xác nhận'"
         class="btn"
-        @click="
-          updateOrder({ orderId: orderItem._id, body: { status: 'Đã huỷ', id: userInfoAuth._id } })
-        "
+        @click="showModalCancel()"
         >Huỷ đơn hàng</v-btn
       >
       <v-btn
@@ -49,7 +52,7 @@
         @click="
           updateOrder({
             orderId: orderItem._id,
-            body: { status: 'Đã hoàn thành',id: userInfoAuth._id },
+            body: { status: 'Đã hoàn thành', id: userInfoAuth._id },
           })
         "
         >Đã nhận được hàng</v-btn
@@ -67,10 +70,11 @@
 </template>
 <script>
 import modalRatting from "./ModalRatting.vue";
+import modalCancelOrder from "../../components/Modal/ModalCancelOrder.vue";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "order-item",
-  components: { modalRatting },
+  components: { modalRatting, modalCancelOrder },
   data() {
     return {};
   },
@@ -84,7 +88,9 @@ export default {
     showModalRatting() {
       this.$refs.modalRatting.show();
     },
-
+    showModalCancel() {
+      this.$refs.modalCancelOrder.show();
+    },
     toOrderDetail(orderId) {
       this.$router.push(`/profile/user/manage-order/detail/${orderId}`);
     },
@@ -110,7 +116,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-img{
+img {
   width: 100%;
   height: 100%;
 }

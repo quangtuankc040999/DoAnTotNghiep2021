@@ -229,7 +229,9 @@ export default {
     },
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     if (this.userInfoAuth) {
       this.getUserAction(this.userInfoAuth._id);
       this.getProductCartOfUserAction(this.userInfoAuth._id);

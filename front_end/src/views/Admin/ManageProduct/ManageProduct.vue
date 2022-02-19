@@ -59,6 +59,7 @@
 
         <template v-slot:item="{ item }">
           <tr>
+            <td>{{item._id}}</td>
             <td>{{ item.title }}</td>
             <td>
               <img v-if="item.image.length != 0" :src="item.image[0]" />
@@ -123,6 +124,12 @@ export default {
       search: "",
       headers: [
         {
+          text: "Mã sản phẩm",
+          align: "start",
+          value: "title",
+          width: "20%",
+        },
+        {
           text: "Sản phẩm",
           align: "start",
           value: "title",
@@ -136,8 +143,8 @@ export default {
           align: "center",
         },
         { text: "Giá bán", value: "sale_price", width: "15%" },
-        { text: "Tồn kho", width: "15%" },
-        { text: "Hành động", value: "", width: "15%" },
+        { text: "Tồn kho", width: "10%" },
+        { text: "Hành động", value: "", width: "10%" },
       ],
       imageEmpty:
         "https://thegioirubik.com/wp-content/uploads/woocommerce-placeholder.png",

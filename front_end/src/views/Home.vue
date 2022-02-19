@@ -149,7 +149,7 @@ export default {
       getAllProduct: "PRODUCTS/getAllProduct",
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
-      getUserAction: "USER/getUser"
+      getUserAction: "USER/getUser",
     }),
     getProductsByCategoryDetail(category, categoryDetail) {
       this.$router.push(`/products/${category}/${categoryDetail}`);
@@ -162,9 +162,11 @@ export default {
     },
   },
   created() {
-    this.getUserByToken();
+    if (localStorage.getItem("token")) {
+      this.getUserByToken();
+    }
     if (this.userInfoAuth) {
-      this.getUserAction(this.userInfoAuth._id)
+      this.getUserAction(this.userInfoAuth._id);
       this.getProductCart(this.userInfoAuth._id);
     }
     this.getAllProduct();

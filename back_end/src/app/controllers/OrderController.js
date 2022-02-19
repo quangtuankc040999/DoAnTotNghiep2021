@@ -31,6 +31,9 @@ class OrderController {
     }
     getOrderById = async (req, res) => {
         const order = await Order.findOne({ _id: req.params.orderId });
+        if (!order) {
+            apiResponse.ErrorResponse(res, 'Không tìm thấy đơn hàng');
+        }
         return apiResponse.successResponseWithData(
             res,
             'Get successfully',
@@ -39,7 +42,7 @@ class OrderController {
     }
     //admin 
     getOrderWaittingAdmin = async (req, res) => {
-        const listOrderUserWaitting = await Order.find({status: 'Chờ xác nhận', createAt: -1 });
+        const listOrderUserWaitting = await Order.find({ status: 'Chờ xác nhận', createAt: -1 });
         return apiResponse.successResponseWithData(
             res,
             'Get successfully',
@@ -47,7 +50,7 @@ class OrderController {
         );
     }
     getOrderDeliveryAdmin = async (req, res) => {
-        const listOrderUserDelivery= await Order.find({status: 'Đã đóng gói, đang vận chuyển', createAt: -1 });
+        const listOrderUserDelivery = await Order.find({ status: 'Đã đóng gói, đang vận chuyển', createAt: -1 });
         return apiResponse.successResponseWithData(
             res,
             'Get successfully',
@@ -55,7 +58,7 @@ class OrderController {
         );
     }
     getOrderRatedAdmin = async (req, res) => {
-        const listOrderUserRated = await Order.find({status: 'Đã đánh giá', createAt: -1 });
+        const listOrderUserRated = await Order.find({ status: 'Đã đánh giá', createAt: -1 });
         return apiResponse.successResponseWithData(
             res,
             'Get successfully',

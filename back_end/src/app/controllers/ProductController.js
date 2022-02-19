@@ -71,22 +71,7 @@ class ProductController {
         );
 
     }
-    getProductByCategoryName = async (req, res) => {
-        const listProduct = await Product.find({ category_name: req.params.categoryName, is_deleted: false });
-        return apiResponse.successResponseWithData(
-            res,
-            'Get successfully',
-            listProduct,
-        );
-    }
-    getProductByCategoryNameAndCategoryDetail = async (req, res) => {
-        const listProduct = await Product.find({ category_name: req.params.categoryName, category_detail: req.params.categoryDetail, is_deleted: false });
-        return apiResponse.successResponseWithData(
-            res,
-            'Get successfully',
-            listProduct,
-        );
-    }
+
     getProductByBrand = async (req, res) => {
         const listProduct = await Product.find({ brand: req.params.brandName, is_deleted: false });
         return apiResponse.successResponseWithData(
@@ -111,6 +96,113 @@ class ProductController {
             product
         );
     }
+
+
+    getProductByCategoryName = async (req, res) => {
+        let limit = 9
+        const listProduct = await Product.find({ category_name: req.params.categoryName, is_deleted: false }).limit(limit).skip(limit * (req.params.page - 1));
+        const numberRecord = await Product.find({ category_name: req.params.categoryName, is_deleted: false }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            data,
+        );
+    }
+    getProductByCategoryNameAndCategoryDetail = async (req, res) => {
+        let limit = 9
+        const listProduct = await Product.find({ category_name: req.params.categoryName, category_detail: req.params.categoryDetail, is_deleted: false }).limit(limit).skip(limit * (req.params.page - 1));
+        const numberRecord = await Product.find({ category_name: req.params.categoryName, category_detail: req.params.categoryDetail, is_deleted: false }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get successfully',
+            data,
+        );
+    }
+    getAllProductPagination = async (req, res) => {
+        let limit = 9
+        const listProduct = await Product.find({ is_deleted: false }).limit(limit).skip(limit * (req.params.page - 1));
+        const numberRecord = await Product.find({ is_deleted: false }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            data
+        );
+    }
+    getAllProductByPrice = async (req, res) => {
+        let limit = 9
+        const listProduct = await Product.find({
+            is_deleted: false,
+            sale_price: { $gt: req.body.minPrice, $lt: req.body.maxPrice }
+
+        }).limit(limit).skip(limit * (req.params.page - 1));
+
+        const numberRecord = await Product.find({ is_deleted: false, sale_price: { $gt: req.body.minPrice, $lt: req.body.maxPrice } }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            data
+        );
+    }
+    getAllProductByBrand = async (req, res) => {
+        let limit = 9
+        const listProduct = await Product.find({
+            is_deleted: false,
+            brand: req.body.brand
+        }).limit(limit).skip(limit * (req.params.page - 1));
+        const numberRecord = await Product.find({
+            is_deleted: false,
+            brand: req.body.brand
+        }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            data
+        );
+    }
+    getAllProductLikeName = async (req, res) => {
+        let limit = 9
+        let title = req.body.title;
+        const listProduct = await Product.find({
+            is_deleted: false,
+            title: { $regex: ".*" + title + ".*" }
+        }).limit(limit).skip(limit * (req.params.page - 1));
+        const numberRecord = await Product.find({
+            is_deleted: false,
+            title: { $regex: ".*" + title + ".*" }
+        }).count()
+        let numberPages = Math.ceil(numberRecord / limit)
+        let data = { "listProduct": listProduct, "numberPages": numberPages, "numberRecords": numberRecord }
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            data
+        );
+    }
+
+    getAllProductLikeNameNoPanigation = async (req, res) => {
+        let title = req.body.title;
+        const listProduct = await Product.find({
+            is_deleted: false,
+            title: { $regex: ".*" + title + ".*" }
+        });
+        return apiResponse.successResponseWithData(
+            res,
+            'Get Product successfully',
+            listProduct
+        );
+    }
+
+
 
 }
 module.exports = new ProductController;
