@@ -137,6 +137,11 @@
                   <v-list-item-title>Liên hệ</v-list-item-title>
                 </v-list-item>
               </router-link>
+              <router-link v-if="userInfoAuth" to="/play-rubik"
+                ><v-list-item>
+                  <v-list-item-title>Play</v-list-item-title>
+                </v-list-item>
+              </router-link>
 
               <router-link v-if="!userInfoAuth" to="/login"
                 ><v-list-item>
@@ -209,7 +214,7 @@ export default {
       }
     },
 
-      searchProductBar(e) {
+    searchProductBar(e) {
       if (e.keyCode === 13) {
         this.clearProductInforSearch();
         this.$router.push({

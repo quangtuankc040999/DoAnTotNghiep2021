@@ -25,6 +25,7 @@ import orderDetail from '../views/User/OrderDetail.vue'
 import userInformation from '../views/Profile/UserInformation.vue'
 import ChatPageAdmin from '../views/Admin/ChatAmin/ChatPageAdmin.vue'
 import ChatRoomAdmin from '../components/Admin/ChatAdmin/ChatAdmin.vue'
+import PlayView from '../views/PlayRubik/PlayView.vue'
 // import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
 // import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
 import ForbbidenPage from '../views/403Page.vue'
@@ -76,12 +77,12 @@ const routes = [
         component: ProductDetail,
       },
       {
-        path: '/products/:categoryName',
+        path: '/products/list/:categoryName',
         name: ListProduct,
         component: ListProduct,
       },
       {
-        path: '/products/:categoryName/:categoryDetail',
+        path: '/products/list-detail/:categoryName/:categoryDetail',
         name: ListProduct,
         component: ListProduct,
       },
@@ -118,6 +119,14 @@ const routes = [
     component: Blog,
     meta: {
       guest: true
+    },
+  },
+  {
+    path: '/play-rubik',
+    name: PlayView,
+    component: PlayView,
+    meta: {
+      requiresAuth: true,
     },
   },
   {

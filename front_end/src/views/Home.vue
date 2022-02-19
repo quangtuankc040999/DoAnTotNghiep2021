@@ -152,10 +152,10 @@ export default {
       getUserAction: "USER/getUser",
     }),
     getProductsByCategoryDetail(category, categoryDetail) {
-      this.$router.push(`/products/${category}/${categoryDetail}`);
+      this.$router.push(`/products/list-detail/${category}/${categoryDetail}`);
     },
     getProductsByCategoryName(category) {
-      this.$router.push(`/products/${category}`);
+      this.$router.push(`/products/list/${category}`);
     },
     getProductsById(productId) {
       this.$router.push(`/products/product-detail/${productId}`);

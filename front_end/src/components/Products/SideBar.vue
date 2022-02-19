@@ -117,14 +117,14 @@ export default {
     }),
     getProductsByCategoryName(category) {
       // this.getProductsByCategoryNameAction(category);
-      this.$router.push(`/products/${category}`);
+      this.$router.push(`/products/list/${category}`);
     },
     getProductsByCategoryDetail(category, categoryDetail) {
       // this.getProductByCategoryDetailAction({
       //   category: category,
       //   categoryDetail: categoryDetail,
       // });
-      this.$router.push(`/products/${category}/${categoryDetail}`);
+      this.$router.push(`/products/list-detail/${category}/${categoryDetail}`);
     },
     toFilter() {
       this.$router.push({
