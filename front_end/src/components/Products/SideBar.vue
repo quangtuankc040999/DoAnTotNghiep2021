@@ -2,14 +2,16 @@
   <div class="side-bar">
     <p>LỌC SẢN PHẨM THEO GIÁ</p>
     <div class="get-border"></div>
-    <vue-range-slider
+    <!-- <vue-range-slider
       ref="slider"
       :tooltip="'hover'"
       :min="0"
       :max="2000000"
       :step="10000"
       v-model="dots"
-    ></vue-range-slider>
+    ></vue-range-slider> -->
+    <v-range-slider  max="2000000" min="0" step="10000" v-model="dots">
+    </v-range-slider>
 
     <div class="view-price">
       <span>Giá: {{ formatPrice(minPrice) }}-{{ formatPrice(maxPrice) }}</span>
@@ -128,13 +130,13 @@ export default {
     },
     toFilter() {
       this.$router.push({
-        path: `/products/price/`,
+        path: `/filter/price/`,
         query: { min_price: this.minPrice, max_price: this.maxPrice },
       });
     },
     toFilterBrand() {
       this.$router.push({
-        path: `/products/brand/`,
+        path: `/filter/brand/`,
         query: { brand: this.brand },
       });
     },
@@ -188,11 +190,11 @@ p {
   margin-top: 20px;
 }
 .view-price {
-  margin-top: 10px;
+  margin-top: -5px;
   margin-bottom: 5px;
   span {
     width: 100% !important;
-    font-size: 0.7em;
+    font-size:.8em;
     color: $color;
     float: right;
   }

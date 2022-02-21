@@ -29,6 +29,7 @@ import PlayView from '../views/PlayRubik/PlayView.vue'
 // import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
 // import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
 import ForbbidenPage from '../views/403Page.vue'
+import SinglePlay from '../components/PlayRubik/Single-play.vue'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -57,17 +58,17 @@ const routes = [
     },
     children: [
       {
-        path: '/products/search/',
+        path: '/filter/search/',
         name: ListProductByName,
         component: ListProductByName,
       },
       {
-        path: '/products/brand/',
+        path: '/filter/brand/',
         name: ListProductByBrand,
         component: ListProductByBrand,
       },
       {
-        path: '/products/price/',
+        path: '/filter/price/',
         name: ListProductByPrice,
         component: ListProductByPrice,
       },
@@ -87,7 +88,7 @@ const routes = [
         component: ListProduct,
       },
       {
-        path: '/products',
+        path: '/products/all-product',
         name: ListProduct,
         component: ListProduct,
       },
@@ -128,6 +129,13 @@ const routes = [
     meta: {
       requiresAuth: true,
     },
+    children: [
+      {
+        path: '/play-rubik/single-player',
+        name: SinglePlay,
+        component: SinglePlay,
+      },
+    ]
   },
   {
     path: '/contact',

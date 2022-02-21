@@ -16,6 +16,7 @@
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.6.5",
     "jwt-decode": "^3.1.2",
+    "kube-skrambler": "^1.3.0",
     "mdi": "^2.2.43",
     "path-to-regexp": "^6.2.0",
     "read-excel-file": "^5.2.28",

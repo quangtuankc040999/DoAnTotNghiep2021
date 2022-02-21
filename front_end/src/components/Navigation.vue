@@ -126,7 +126,7 @@
                 </v-list-item>
               </router-link>
 
-              <router-link to="/products"
+              <router-link to="/products/all-product"
                 ><v-list-item>
                   <v-list-item-title>Sản phẩm</v-list-item-title>
                 </v-list-item>
@@ -137,7 +137,7 @@
                   <v-list-item-title>Liên hệ</v-list-item-title>
                 </v-list-item>
               </router-link>
-              <router-link v-if="userInfoAuth" to="/play-rubik"
+              <router-link v-if="userInfoAuth" to="/play-rubik/single-player"
                 ><v-list-item>
                   <v-list-item-title>Play</v-list-item-title>
                 </v-list-item>
@@ -173,11 +173,13 @@ export default {
   }),
 
   watch: {
+    $route(){
+      this.clearProductInforSearch();
+    },
     group() {
       this.drawer = false;
     },
     search() {
-      console.log(this.search);
       if (this.search != "") {
         this.searchMethod();
       } else {
@@ -208,7 +210,7 @@ export default {
       if (e.keyCode === 13) {
         this.clearProductInforSearch();
         this.$router.push({
-          path: `/products/search/`,
+          path: `/filter/search/`,
           query: { title: this.search },
         });
       }
@@ -218,7 +220,7 @@ export default {
       if (e.keyCode === 13) {
         this.clearProductInforSearch();
         this.$router.push({
-          path: `/products/search/`,
+          path: `/filter/search/`,
           query: { title: this.searchBar },
         });
       }
