@@ -120,7 +120,7 @@
                 </v-list-item>
               </router-link>
 
-              <router-link to="/blog"
+              <router-link to="/blog/main-page"
                 ><v-list-item>
                   <v-list-item-title>Blog</v-list-item-title>
                 </v-list-item>

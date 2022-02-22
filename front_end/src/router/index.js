@@ -30,6 +30,10 @@ import PlayView from '../views/PlayRubik/PlayView.vue'
 // import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
 import ForbbidenPage from '../views/403Page.vue'
 import SinglePlay from '../components/PlayRubik/Single-play.vue'
+import CreatePostBlogs from '../views/Blog/CreatePost.vue'
+import BlogHome from '../views/Blog/BlogHome.vue'
+import BlogPreview from '../views/Blog/BlogPreview'
+import BlogDetail from '../views/Blog/BlogDetail'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
 const routes = [
@@ -116,11 +120,33 @@ const routes = [
 
   {
     path: '/blog',
-    name: Blog,
-    component: Blog,
+    name: BlogHome,
+    component: BlogHome,
     meta: {
-      guest: true
+      guest: true,
     },
+    children: [
+      {
+        path: '/blog/create-blog',
+        name: CreatePostBlogs,
+        component: CreatePostBlogs,
+      },
+      {
+        path: '/blog/blog-preview',
+        name: BlogPreview,
+        component: BlogPreview,
+      },
+      {
+        path: '/blog/main-page',
+        name: Blog,
+        component: Blog,
+      },
+      {
+        path: '/blog/detail/:blogId',
+        name: BlogDetail,
+        component: BlogDetail,
+      },
+    ]
   },
   {
     path: '/play-rubik',

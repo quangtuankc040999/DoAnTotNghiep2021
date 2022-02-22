@@ -5,7 +5,20 @@ module.exports = {
 
   pluginOptions: {
     vuetify: {
-			// https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
-		}
-  }
+      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vuetify-loader
+    }
+  },
+
+  chainWebpack: (config) => {
+    const svgRule = config.module.rule("svg");
+
+    svgRule.uses.clear();
+
+    svgRule
+      .use("babel-loader")
+      .loader("babel-loader")
+      .end()
+      .use("vue-svg-loader")
+      .loader("vue-svg-loader");
+  },
 }

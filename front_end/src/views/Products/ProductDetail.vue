@@ -101,7 +101,8 @@
     </div>
     <div class="description">
       <p class="description-title">Thông tin sản phẩm</p>
-      <p class="description-content">{{ productById.description }}</p>
+       <div class="post-content ql-editor" v-html="productById.description"></div>
+
     </div>
     <p class="comment-title">Đánh giá sản phẩm</p>
     <div v-if="listCommentProduct">

@@ -18,8 +18,10 @@ import VueChatScroll from 'vue-chat-scroll';
 import VueHorizontalList from 'vue-horizontal-list';
 import 'vue-range-component/dist/vue-range-slider.css'
 import VueRangeSlider from 'vue-range-component'
+import Vue2Editor from "vue2-editor";
 
 Vue.use(VueRangeSlider)
+Vue.use(Vue2Editor)
 Vue.use(BootstrapVue, IconsPlugin, BootstrapVueIcons)
 Vue.use(VueJWT)
 Vue.use(VueClazyLoad);

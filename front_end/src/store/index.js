@@ -14,6 +14,8 @@ import Chat from './modules/chatRoom/chat'
 import Room from './modules/chatRoom/room'
 import Log from './modules/log'
 import OrderAdmin from './modules/admin/orderAdmin'
+import Blogs from './modules/blogs'
+import CommentBlog from './modules/commentBlogs'
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -31,6 +33,8 @@ export default new Vuex.Store({
     CHAT: Chat,
     ROOM: Room,
     LOG: Log,
-    ORDERADMIN: OrderAdmin
+    ORDERADMIN: OrderAdmin,
+    BLOGS: Blogs,
+    COMMENTBLOG: CommentBlog
   },
 });

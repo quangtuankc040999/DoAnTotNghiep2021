@@ -7,6 +7,8 @@ const chatRouter = require('./modules/chat');
 const roomRouter = require('./modules/room');
 const logRouter = require('./modules/log')
 const fillterRouter = require('./modules/filter')
+const blogRouter = require('./modules/blog')
+const commentRouter = require('./modules/commentBlog')
 function route(app) {
   app.use('/auth', authRouter);
   app.use('/category', categoryRouter)
@@ -17,5 +19,7 @@ function route(app) {
   app.use('/room', roomRouter)
   app.use('/log', logRouter)
   app.use('/fillter-product', fillterRouter)
+  app.use('/blog', blogRouter)
+  app.use('/comment-blog', commentRouter)
 }
 module.exports = route;
