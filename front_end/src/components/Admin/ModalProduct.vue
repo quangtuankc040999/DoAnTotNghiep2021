@@ -147,8 +147,13 @@
         />
       </div>
       <h5>Mô tả sản phẩm</h5>
-      <div class="description group">
-        <textarea v-model="productRequest.description" rows="4" />
+      <div class="description group editor">
+        <vue-editor
+          :editorOptions="editorSettings"
+          v-model="productRequest.description"
+          useCustomImageHandler
+          @image-added="imageHandler"
+        />
         <div class="errors">
           <p v-show="showErrors.emptyDescription" class="error">
             Vui lòng nhập mô tả sản phẩm
@@ -285,6 +290,20 @@ export default {
         startingPrice - (discount / 100) * startingPrice;
     },
 
+    imageHandler(file, Editor, cursorLocation, resetUploader) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "wfcqkljk");
+      axios
+        .post(
+          "https://api.cloudinary.com/v1_1/dj5xafymg/image/upload",
+          formData
+        )
+        .then((response) => {
+          Editor.insertEmbed(cursorLocation, "image", response.data.url);
+          resetUploader();
+        });
+    },
     deleteImg(index) {
       for (let i = 0; i < this.productRequest.image.length; i++) {
         if (i == index) {
@@ -470,6 +489,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .editor {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+
+    .quillWrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .ql-container {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: scroll;
+    }
+
+    .ql-editor {
+      padding: 20px 16px 30px;
+    }
+  }
 .errors {
   p {
     text-align: start;

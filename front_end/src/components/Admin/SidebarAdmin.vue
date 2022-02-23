@@ -69,7 +69,7 @@
       </v-list>
 
       <v-list dense>
-        <v-list-item link>
+        <v-list-item link  @click="manageUser">
           <v-list-item-icon>
             <v-icon>mdi-account-group </v-icon>
           </v-list-item-icon>
@@ -134,6 +134,9 @@ export default {
   methods: {
     manageLogout() {
       this.logoutAction();
+    },
+    manageUser(){
+      this.$router.push(`/admin/manage-user/`);
     },
     manageOrder() {
       this.$router.push(`/admin/manage-order/`);

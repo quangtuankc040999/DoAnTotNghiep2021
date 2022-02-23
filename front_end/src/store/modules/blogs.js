@@ -87,6 +87,41 @@ const actions = {
         }
 
     },
+    updateBlog({ commit, dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .put(`/blog/update/${params.blogId}`, params.body, "Thành công")
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                dispatch("BLOGS/getAllBlogsAdmin", null, {root: true})
+                commit('ERROR/setIsLoading', false, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+            });
+    },
+    deleteBlog({ commit, dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .put(`/blog/delete/${params.blogId}`, params.body, "Thành công")
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                dispatch("BLOGS/getAllBlogsAdmin", null, {root: true})
+                commit('ERROR/setIsLoading', false, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+            });
+    },
+
+
+
     getAllBlogsPagination({ commit }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
         http.get(`/blog/all/${params.page}`).then((response) => {
@@ -143,6 +178,19 @@ const actions = {
             });
     },
 
+    getAllBlogsAdmin({ commit }) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http.get(`/blog/admin`).then((response) => {
+            commit('setListBlogs', response.data.data)
+            commit('ERROR/setIsLoading', false, { root: true })
+        })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                })
+                commit('ERROR/setIsLoading', false, { root: true })
+            });
+    }
 
 
 };

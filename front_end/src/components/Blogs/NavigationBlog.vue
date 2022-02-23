@@ -86,7 +86,7 @@ header {
     transition: 0.3s color ease;
 
     &:hover {
-      color: #1eb8b8;
+      color: #050047;
     }
   }
   nav {

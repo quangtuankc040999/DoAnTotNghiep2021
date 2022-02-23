@@ -14,7 +14,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+
 .manage-order{
   width: 100%;
 }

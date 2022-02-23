@@ -6,13 +6,12 @@
       <router-view class="router-view" />
     </div>
     <footerRubik />
-    <chat-page
-      v-show="isShow"
-      class="chat"
-    />
     <v-btn @click="toggleShowChat" v-show="!isShow">
-      <v-icon>mdi-forum</v-icon>Chat</v-btn
+      <v-icon large>mdi-forum</v-icon></v-btn
     >
+    <transition name="chat-page">
+      <chat-page v-show="isShow" class="chat" />
+    </transition>
   </div>
 </template>
 
@@ -32,27 +31,26 @@ export default {
     ChatPage,
   },
   data() {
-    return {
-    };
+    return {};
   },
-  computed:{
+  computed: {
     ...mapGetters({
       isShow: "CHAT/isShowChat",
-      roomChatOfUser: "ROOM/roomChatOfUser"
-    })
+      roomChatOfUser: "ROOM/roomChatOfUser",
+    }),
   },
   methods: {
     ...mapActions({
       toggleShowChatAction: "CHAT/toggleShowChat",
-      getRoomChatOfUserAction: "ROOM/getRoomChatUser"
+      getRoomChatOfUserAction: "ROOM/getRoomChatUser",
     }),
     toggleShowChat() {
       this.toggleShowChatAction(true);
     },
   },
-  created(){
-    this.getRoomChatOfUserAction()
-  }
+  created() {
+    this.getRoomChatOfUserAction();
+  },
 };
 </script>
 
@@ -79,12 +77,38 @@ export default {
   width: 80% !important;
   border-left: 1px solid rgb(158, 147, 147, 0.5);
 }
+.v-btn {
+  &:hover {
+    transform: rotateZ(-20deg) scale(1.1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+      0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+}
+  .chat-page-enter-active,
+  .chat-page-leave-active {
+    transition: all 1s ease;
+  }
+
+  .chat-page-enter {
+    transform: translateY(300px);
+  }
+
+  .chat-page-enter-to {
+    transform: translateY(0);
+  }
+
+  .chat-page-leave-to {
+    transform: translateY(400px);
+  }
 </style>
 <style scoped>
 .v-btn {
   position: fixed;
-  bottom: 0;
-  right: 0;
+  height: 60px !important;
+  width: 60px !important;
+  bottom: 40px;
+  border-radius: 50%;
+  right: 40px;
   background-color: rgb(212, 91, 91) !important;
   color: whitesmoke !important;
 }

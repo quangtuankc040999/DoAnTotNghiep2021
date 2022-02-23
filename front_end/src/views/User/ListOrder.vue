@@ -60,7 +60,7 @@ export default {
     } else if (this.$route.params.statusOrder == "rate") {
       this.getDoneOrderAction(this.userInfoAuth._id);
     } else if (this.$route.params.statusOrder == "rated") {
-      this.getRaredOrderAction(this.userInfoAuth._id);
+      this.getRatedOrderAction(this.userInfoAuth._id);
     }
   },
   watch: {
@@ -75,7 +75,7 @@ export default {
         } else if (this.$route.params.statusOrder == "rate") {
           this.getDoneOrderAction(this.userInfoAuth._id);
         } else if (this.$route.params.statusOrder == "rated") {
-          this.getRaredOrderAction(this.userInfoAuth._id);
+          this.getRatedOrderAction(this.userInfoAuth._id);
         }
       }
     },

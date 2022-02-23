@@ -6,12 +6,17 @@
       /></v-avatar>
       <v-avatar v-else color="teal lighten-1">
         <span class="white--text text-h6"
-          >{{ userInfoAuth.firstName.charAt(0)
-          }}{{ userInfoAuth.lastName.charAt(0) }}</span
+          >{{ comment.author.firstName.charAt(0)
+          }}{{ comment.author.lastName.charAt(0) }}</span
         >
       </v-avatar>
     </div>
     <div class="comment">
+      <p v-if="userInfo._id === comment.author._id" style="font-size: 10px">
+        <v-chip class="ma-1" color="grey lighten-1" small >
+          Tác giả
+        </v-chip>
+      </p>
       <p>{{ comment.content }}</p>
       <h6><vue-time-cus :time="comment.createdAt" /></h6>
     </div>
@@ -19,11 +24,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import vueTimeCus from "../../components/VueTimeCusNoTime.vue";
 export default {
   props: ["comment"],
   components: {
     vueTimeCus,
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: "AUTH/userInfo",
+    }),
   },
 };
 </script>
@@ -34,6 +45,9 @@ export default {
   margin: 15px 0 !important;
   display: flex;
   width: 100% !important;
+  .avatar {
+    margin: auto 0;
+  }
   .comment {
     display: flex;
     flex-direction: column;

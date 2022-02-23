@@ -1,11 +1,10 @@
 <template>
   <v-main>
-    <div class="profile">
+    <div class="profile" v-if="userInfo">
       <v-row>
         <v-col cols="3" class="avatar">
           <v-row center>
-            <img v-if="avatar" :src="avatar" />
-            <img v-else-if="userInfo.avatar" :src="userInfo.avatar" alt="" />
+            <img v-if="userInfo.avatar" :src="userInfo.avatar" alt="" />
             <v-avatar v-else color="teal lighten-1">
               <span class="white--text text-h2"
                 >{{ userInfo.firstName.charAt(0)

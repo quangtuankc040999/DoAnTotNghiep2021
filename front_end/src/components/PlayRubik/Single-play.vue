@@ -383,7 +383,7 @@ table td {
 }
 #container {
   background-color: rgb(206, 206, 206);
-  background-image: url("https://c.pxhere.com/photos/72/f0/color_cube_levitating_rubik's_cube_rubik-1390878.jpg!s2");
+  background-image: url("https://img5.thuthuatphanmem.vn/uploads/2021/11/22/hinh-anh-rubik_040951176.jpg");
   background-size: cover;
   // background: radial-gradient(circle at 100%, #333, #333 50%, #eee 75%, #333 75%);
 

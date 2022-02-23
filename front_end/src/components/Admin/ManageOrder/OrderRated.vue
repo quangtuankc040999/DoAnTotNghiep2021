@@ -42,7 +42,7 @@
                     text
                     v-bind="attrs"
                     v-on="on"
-                    ><v-icon>mdi-eye </v-icon></v-btn
+                    ><v-icon small>mdi-eye </v-icon></v-btn
                   >
                 </template>
                 <span>Xem bình luận</span>

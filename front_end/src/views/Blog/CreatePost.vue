@@ -30,7 +30,7 @@
           label="Chọn chủ đề"
         ></v-select>
         <div class="upload-file">
-          <label for="blog-photo">Chọn ảnh bìa</label>
+          <label for="blog-photo">Ảnh bìa</label>
           <input
             type="file"
             ref="blogPhoto"
@@ -260,7 +260,7 @@ export default {
     // }
 
     .upload-file {
-      flex: 1;
+      flex: 1.5;
       margin-left: 16px;
       position: relative;
       display: flex;

@@ -21,6 +21,39 @@ class BlogController {
             'Add new blog successfully',
         );
     }
+    updateBlog = async (req, res) => {
+        const blog = req.body;
+        await Blog.findByIdAndUpdate(req.params.blogId,
+            {
+                $set: {
+                    blogTitle: blog.blogTitle,
+                    blogTopic: blog.blogTopic,
+                    blogCoverPhoto: blog.blogCoverPhoto,
+                    blogHTML : blog.blogHTML,
+                    isCensored: blog.isCensored,
+                }
+            });
+
+        return apiResponse.successResponse(
+            res,
+            'Update blogs successfully',
+        );
+    }
+    deleteBlog = async (req, res) => {
+        await Blog.findByIdAndUpdate(req.params.blogId,
+            {
+                $set: {
+                   isDeleted: true
+                }
+            });
+
+        return apiResponse.successResponse(
+            res,
+            'Delete blogs successfully',
+        );
+    }
+
+
     getBlogById = async (req, res) => {
         const blog = await Blog.findById(req.params.blogId).populate("author");
         if (blog) {
@@ -37,7 +70,7 @@ class BlogController {
         }
     }
     getLastestBlog = async (req, res) => {
-        const blog = await Blog.find().sort({ createdAt: 1 }).populate("author").limit(5);
+        const blog = await Blog.find({ isCensored: true, isDeleted: false }).sort({ createdAt: 1 }).populate("author").limit(5);
         if (blog) {
             return apiResponse.successResponseWithData(
                 res,
@@ -53,7 +86,7 @@ class BlogController {
     }
     getByTopic = async (req, res) => {
         const blogTopic = req.body.blogTopic
-        const blog = await Blog.find({ blogTopic: blogTopic }).populate("author").limit(5);
+        const blog = await Blog.find({ blogTopic: blogTopic, isCensored: true, isDeleted: false }).populate("author").limit(5);
         if (blog) {
             return apiResponse.successResponseWithData(
                 res,
@@ -71,7 +104,7 @@ class BlogController {
     getAllBlog = async (req, res) => {
         let limit = 4;
         const listBlogs = await Blog.find({
-            isDeleted: false,
+            isDeleted: false, isCensored: true
         }).limit(limit).skip(limit * (req.params.page - 1)).populate("author");
         const numberRecord = await Blog.find({
             isDeleted: false,
@@ -83,6 +116,21 @@ class BlogController {
             'Get Product successfully',
             data
         );
+    }
+    getAllBLogAdmin = async (req, res) => {
+        const listBlog = await Blog.find({ isCensored: false, isDeleted: false }).populate("author");
+        if (listBlog) {
+            return apiResponse.successResponseWithData(
+                res,
+                'Get product successfully',
+                listBlog
+            );
+        } else {
+            return apiResponse.ErrorResponse(
+                res,
+                'No find blogs',
+            );
+        }
     }
 }
 module.exports = new BlogController();

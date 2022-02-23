@@ -52,7 +52,7 @@
                         },
                       })
                     "
-                    ><v-icon>mdi-package-variant-closed </v-icon></v-btn
+                    ><v-icon small>mdi-package-variant-closed </v-icon></v-btn
                   >
                 </template>
                 <span>Đã đóng gói</span>
@@ -61,7 +61,7 @@
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn text v-bind="attrs" v-on="on" @click="showModalCancel(item._id)"
-                    ><v-icon>mdi-close-box </v-icon></v-btn
+                    ><v-icon small>mdi-close-box </v-icon></v-btn
                   >
                 </template>
                 <span>Từ chối đơn hàng</span>
@@ -175,5 +175,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.v-btn{
+  min-width: 20px !important;
+}
 </style>
