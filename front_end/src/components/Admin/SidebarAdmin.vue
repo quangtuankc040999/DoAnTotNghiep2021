@@ -155,26 +155,7 @@ export default {
       getUser: "USER/getUser",
       logoutAction: "AUTH/logout",
       getAllRoomChatAction: "ROOM/getAllRommChat",
-
-      //     // getAllChatByIdRoom: 'CHAT/getAllChatByIdRoom',
-      //     // addCurrentRoom: 'CHAT/addCurrentRoom',
-      //     // removeUnreadNotification: 'NOTIFICATION/removeUnreadNotification',
     }),
-
-    //   clearMessage() {
-    //     this.messages = 0;
-    //   },
-
-    //   handleClickChatRoom() {
-    //     this.$router.push(`/chatroom/`);
-    //   },
-    //   handleClickChatRoomItem(room) {
-    //     this.removeUnreadNotification(room._id);
-    //     this.$router.push(`/chatroom/${room._id}`);
-    //     this.mini = true;
-    //   },
-
-    //   handleClickProjectManagement() {},
   },
   created() {
     if (localStorage.getItem("token")) {

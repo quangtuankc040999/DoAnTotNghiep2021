@@ -242,11 +242,6 @@ export default {
       this.files = {};
     },
   },
-  async created() {
-    await this.getRoomChatOfUserAction();
-    // await this.getAllChatByIdRoom(this.currentRoom._id);
-    // this.addCurrentRoom(this.$route.params.id);
-  },
   components: {
     ChatCard,
     VEmojiPicker,

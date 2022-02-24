@@ -139,14 +139,12 @@ export default {
       message: "",
       showGroup: false,
       showDialog: false,
-      files: {},
     };
   },
   computed: {
     ...mapGetters({
       chats: "CHAT/chats",
       userInfo: "AUTH/userInfo",
-      validateText: "VALIDATION/validateText",
       currentRoom: "ROOM/roomChatOfUser",
     }),
   },
@@ -155,12 +153,25 @@ export default {
       getAllChatByIdRoom: "CHAT/getAllChatByIdRoom",
       sendMessageAction: "CHAT/sendMessage",
       addCurrentRoom: "CHAT/addCurrentRoom",
-      // removeUnreadNotification: "NOTIFICATION/removeUnreadNotification",
-      uploadFile: "CHAT/uploadFile",
       getRoomChatOfUserAction: "ROOM/getRoomChatUser",
     }),
     sendMessage(e) {
       if (e.keyCode === 13) {
+        if (this.message !== "") {
+          this.sendMessageAction({
+            idRoom: this.$route.params.idChatRoom,
+            chat: {
+              idRoom: this.$route.params.idChatRoom,
+              message: this.message,
+            },
+          });
+          this.message = "";
+          document.getElementById("content").focus();
+        }
+      }
+    },
+    sendMessageByClick() {
+      if (this.message !== "") {
         this.sendMessageAction({
           idRoom: this.$route.params.idChatRoom,
           chat: {
@@ -170,70 +181,7 @@ export default {
         });
         this.message = "";
         document.getElementById("content").focus();
-        // if (!this.validateBeforeSubmit() && !this.files.name) {
-        //   document.getElementById("content").focus();
-        //   return;
-        // } else {
-        //   if (this.files.name) {
-        //     const formData = new FormData();
-        //     formData.append("file", this.files);
-        //     this.uploadFile({
-        //       idRoom: this.$route.params.id,
-        //       file: formData,
-        //     });
-        //     this.removeFile();
-        //   }
-        //   if (this.validateBeforeSubmit()) {
-
-        //     this.message = "";
-        //     document.getElementById("content").focus();
-        //   }
-        // }
       }
-    },
-    sendMessageByClick() {
-       this.sendMessageAction({
-          idRoom: this.$route.params.idChatRoom,
-          chat: {
-            idRoom: this.$route.params.idChatRoom,
-            message: this.message,
-          },
-        });
-        this.message = "";
-        document.getElementById("content").focus();
-      // if (!this.validateBeforeSubmit() && !this.files.name) {
-      //   document.getElementById("content").focus();
-      //   return;
-      // } else {
-      //   if (this.files.name) {
-      //     const formData = new FormData();
-      //     formData.append("file", this.files);
-      //     this.uploadFile({
-      //       idRoom: this.$route.params.id,
-      //       file: formData,
-      //     });
-      //     this.removeFile();
-      //   }
-      //   if (this.validateBeforeSubmit()) {
-      //     this.sendMessageAction({
-      //       idRoom: this.$route.params.id,
-      //       chat: { email: this.userInfo.email, message: this.message },
-      //     });
-      //     this.message = "";
-      //     document.getElementById("content").focus();
-      //   }
-      //}
-    },
-    validateBeforeSubmit() {
-      let passedValidate = true;
-      const errors = this.validateText(this.message);
-      if (errors) {
-        passedValidate = false;
-      }
-      return passedValidate;
-    },
-    removeNotification() {
-      // this.removeUnreadNotification(this.currentRoom._id);
     },
     toogleDialogEmoji() {
       this.showDialog = !this.showDialog;
@@ -246,9 +194,7 @@ export default {
     },
   },
   async created() {
-    // await this.getRoomChatOfUserAction();
     await this.getAllChatByIdRoom(this.$route.params.idChatRoom);
-    // this.addCurrentRoom(this.$route.params.id);
   },
   components: {
     ChatCard,
@@ -256,15 +202,11 @@ export default {
   },
   watch: {
     message() {
-      this.removeNotification();
       this.showDialog = false;
-    },
-    files() {
-      console.log(this.files);
     },
     $route() {
       if (this.$route.params.idChatRoom) {
-         this.getAllChatByIdRoom(this.$route.params.idChatRoom);
+        this.getAllChatByIdRoom(this.$route.params.idChatRoom);
       }
     },
   },

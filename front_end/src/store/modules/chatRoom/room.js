@@ -1,5 +1,4 @@
 import http from '../../../service/api.js';
-// import router from '../../../router/index.js';
 const state = {
     roomChatOfUser: {},
     roomChat: []
@@ -26,9 +25,9 @@ const actions = {
       http.get(`/room/`)
         .then((response) => {
             commit('setRoomChatOfUser', response.data.data)
-            commit('ERROR/clearErrorMessage', null, { root: true });
-            dispatch('CHAT/getAllChatByIdRoom',response.data.data._id, { root: true })
+            dispatch('CHAT/getAllChatByIdRoom', response.data.data._id, { root: true });
             dispatch('CHAT/getAllNotification', response.data.data._id, { root: true });
+            commit('ERROR/clearErrorMessage', null, { root: true });
         })
         .catch((error) => {
             commit('ERROR/setErrorMessage', error.response.data.message, {
@@ -37,10 +36,11 @@ const actions = {
         });
     },
 
-    getAllRommChat({commit}){
+    getAllRommChat({commit, dispatch}){
         http.get(`/room/all-room`)
           .then((response) => {
               commit('setRoomChat', response.data.data)
+              dispatch("CHAT/getAllNotificationAdmin", null, {root: true})
               commit('ERROR/clearErrorMessage', null, { root: true });
           })
           .catch((error) => {

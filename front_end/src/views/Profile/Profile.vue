@@ -58,9 +58,11 @@ export default {
       toggleShowChatAction: "CHAT/toggleShowChat",
       getRoomChatOfUserAction: "ROOM/getRoomChatUser",
       updateNotificationAction: "CHAT/updateNotification",
+      getAllChatByIdRoom: "CHAT/getAllChatByIdRoom",
     }),
     toggleShowChat() {
       this.toggleShowChatAction(true);
+      this.getAllChatByIdRoom(this.roomChatOfUser._id);
       this.updateNotificationAction(this.roomChatOfUser._id);
     },
   },

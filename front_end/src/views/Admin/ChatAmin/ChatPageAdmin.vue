@@ -7,7 +7,7 @@
 
 <script>
 import SideBarChat from "../../../components/Admin/ChatAdmin/SidebarChat.vue";
-import { mapActions, mapGetters } from 'vuex'
+import {  mapGetters } from 'vuex'
 export default {
   components: {
     SideBarChat,
@@ -16,14 +16,6 @@ export default {
     ...mapGetters({
       roomChats: "ROOM/roomChat",
     }),
-  },
-  methods: {
-    ...mapActions({
-      // getAllRoomChatAction: "ROOM/getAllRommChat",
-    }),
-  },
-  created() {
-    // this.getAllRoomChatAction();
   },
 };
 </script>

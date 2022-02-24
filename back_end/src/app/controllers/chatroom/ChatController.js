@@ -62,25 +62,36 @@ class ChatController {
   getAllNotifications = async (req, res) => {
     const room = await Room.findById(req.params.idRoom)
     const user = await User.findById(host(req, res));
-    const notifications = await Notification.find({ isRead: false, room: room, createdBy: { $not: user } }).sort({ createdAt: 1 });
+    const notifications = await Notification.find({ isRead: false, room: room, createdBy: { $ne: user } }).sort({ createdAt: 1 });
     return apiResponse.successResponseWithData(
       res,
       'Get all notifications successfully',
+      notifications
     );
   };
   updateNotification = async (req, res) => {
     const room = await Room.findById(req.params.idRoom)
     const user = await User.findById(host(req, res));
-    const notifications = await Notification.findOneAndUpdate({ room: room, createdBy: { $not: user } }, {
-      $set: {
-        isRead: true
-      }
-    }).sort({ createdAt: 1 });
+    const notifications = await Notification.find({ room: room, createdBy: { $ne: user } });
+    for (let no of notifications) {
+      await Notification.findByIdAndUpdate(no._id, { isRead: true })
+    }
     return apiResponse.successResponse(
       res,
       'Update all notifications successfully',
     );
   };
+  // -------------
+  getAllNotificationsAdmin = async (req, res) => {
+    const user = await User.findById(host(req, res));
+    const notifications = await Notification.find({ isRead: false, createdBy: { $ne: user } }).sort({ createdAt: 1 });
+    return apiResponse.successResponseWithData(
+      res,
+      'Get all notifications successfully',
+      notifications
+    );
+  };
+
 
   updateChat = async (req, res) => {
     const chat = await Chat.findByIdAndUpdate(req.params.id, req.body.chat);
