@@ -4,7 +4,10 @@
       <template v-for="item in roomChats" class="room-sidebar">
         <v-list-item :key="item.title" @click="toRoomChat(item._id)">
           <v-list-item-avatar>
-            <v-img v-if="item.member.avatar.length != 0" :src="item.member.avatar"></v-img>
+            <v-img
+              v-if="item.member.avatar.length != 0"
+              :src="item.member.avatar"
+            ></v-img>
             <v-avatar v-else size="45" color="red lighten-1" class="img">
               <span class="white--text"
                 >{{ item.member.firstName.charAt(0)
@@ -28,10 +31,14 @@
 </template>
 
 <script>
-// import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 export default {
   props: ["roomChats"],
   data: () => ({}),
+  computed: {
+    ...mapGetters({
+    }),
+  },
   methods: {
     toRoomChat(idRoom) {
       this.$router.push(`/admin/manage-chat/${idRoom}`);

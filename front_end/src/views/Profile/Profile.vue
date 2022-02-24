@@ -1,14 +1,27 @@
 <template>
   <div>
     <navigation />
+
     <div class="container">
       <side-bar-user class="side-bar" />
       <router-view class="router-view" />
     </div>
     <footerRubik />
+
     <v-btn @click="toggleShowChat" v-show="!isShow">
-      <v-icon large>mdi-forum</v-icon></v-btn
-    >
+      <v-badge
+        v-if="notifications"
+        bordered
+        color="red darken-1"
+        :content="notifications.length"
+        :value="notifications.length"
+        offset-x="-25"
+        offset-y="-15"
+      >
+      </v-badge>
+      <v-icon large>mdi-forum</v-icon>
+    </v-btn>
+
     <transition name="chat-page">
       <chat-page v-show="isShow" class="chat" />
     </transition>
@@ -37,15 +50,18 @@ export default {
     ...mapGetters({
       isShow: "CHAT/isShowChat",
       roomChatOfUser: "ROOM/roomChatOfUser",
+      notifications: "CHAT/notifications",
     }),
   },
   methods: {
     ...mapActions({
       toggleShowChatAction: "CHAT/toggleShowChat",
       getRoomChatOfUserAction: "ROOM/getRoomChatUser",
+      updateNotificationAction: "CHAT/updateNotification",
     }),
     toggleShowChat() {
       this.toggleShowChatAction(true);
+      this.updateNotificationAction(this.roomChatOfUser._id);
     },
   },
   created() {
@@ -84,22 +100,22 @@ export default {
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
 }
-  .chat-page-enter-active,
-  .chat-page-leave-active {
-    transition: all 1s ease;
-  }
+.chat-page-enter-active,
+.chat-page-leave-active {
+  transition: all 1s ease;
+}
 
-  .chat-page-enter {
-    transform: translateY(300px);
-  }
+.chat-page-enter {
+  transform: translateY(300px);
+}
 
-  .chat-page-enter-to {
-    transform: translateY(0);
-  }
+.chat-page-enter-to {
+  transform: translateY(0);
+}
 
-  .chat-page-leave-to {
-    transform: translateY(400px);
-  }
+.chat-page-leave-to {
+  transform: translateY(400px);
+}
 </style>
 <style scoped>
 .v-btn {

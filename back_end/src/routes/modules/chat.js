@@ -16,6 +16,8 @@ const io = require('socket.io')(server, {
 
 router.post('/', chatController.createChat);
 router.get('/:idRoom', chatController.getChatByRoomId)
+router.get('/notification/:idRoom', chatController.getAllNotifications)
+router.put('/notification-update/:idRoom', chatController.updateNotification)
 server.listen(server_port);
 
 io.on('connection', function (socket) {

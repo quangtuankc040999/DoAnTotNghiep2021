@@ -1,5 +1,5 @@
 const Chat = require('../../models/Chat');
-// const Notification = require('../../models/Notification');
+const Notification = require('../../models/Notification');
 const User = require('../../models/User');
 const apiResponse = require('../../../utils/apiResponse');
 const host = require('../../../utils/decodeJWT');
@@ -34,8 +34,10 @@ class ChatController {
     chatParams.createdBy = user;
     chatParams.room = room;
     const newChat = await Chat.create(chatParams);
-
-
+    const notification = new Notification();
+    notification.createdBy = user;
+    notification.room = room;
+    const newNotification = await Notification.create(notification)
     // const notification = await Notification.findOne({ room: req.body.room });
     // let listContent = notification.listContent;
     // for (let content of listContent) {
@@ -57,7 +59,28 @@ class ChatController {
       chat,
     );
   };
-
+  getAllNotifications = async (req, res) => {
+    const room = await Room.findById(req.params.idRoom)
+    const user = await User.findById(host(req, res));
+    const notifications = await Notification.find({ isRead: false, room: room, createdBy: { $not: user } }).sort({ createdAt: 1 });
+    return apiResponse.successResponseWithData(
+      res,
+      'Get all notifications successfully',
+    );
+  };
+  updateNotification = async (req, res) => {
+    const room = await Room.findById(req.params.idRoom)
+    const user = await User.findById(host(req, res));
+    const notifications = await Notification.findOneAndUpdate({ room: room, createdBy: { $not: user } }, {
+      $set: {
+        isRead: true
+      }
+    }).sort({ createdAt: 1 });
+    return apiResponse.successResponse(
+      res,
+      'Update all notifications successfully',
+    );
+  };
 
   updateChat = async (req, res) => {
     const chat = await Chat.findByIdAndUpdate(req.params.id, req.body.chat);

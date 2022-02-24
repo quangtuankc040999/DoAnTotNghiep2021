@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      getAllChatByIdRoom: "CHAT/getAllChatByIdRoom",
       toggleShowChatAction: "CHAT/toggleShowChat",
     }),
     closeChatWindow() {

@@ -7,31 +7,7 @@ const Notification = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Room',
     },
-    listContent: [
-      {
-        member: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-        },
-        count: {
-          type: Number,
-        },
-        unreadCount: {
-          type: Number,
-        },
-        contents: [
-          {
-            message: {
-              type: String,
-            },
-            createdBy: {
-              type: Schema.Types.ObjectId,
-              ref: 'User',
-            },
-          },
-        ],
-      },
-    ],
+    isRead: {type: Boolean, default: false},
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',

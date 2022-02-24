@@ -193,6 +193,7 @@ class ProductController {
         let title = req.body.title;
         const listProduct = await Product.find({
             is_deleted: false,
+            inventory: { $gt: 0 },
             title: { $regex: ".*" + title + ".*" }
         });
         return apiResponse.successResponseWithData(

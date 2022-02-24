@@ -27,8 +27,8 @@ const actions = {
         .then((response) => {
             commit('setRoomChatOfUser', response.data.data)
             commit('ERROR/clearErrorMessage', null, { root: true });
-
             dispatch('CHAT/getAllChatByIdRoom',response.data.data._id, { root: true })
+            dispatch('CHAT/getAllNotification', response.data.data._id, { root: true });
         })
         .catch((error) => {
             commit('ERROR/setErrorMessage', error.response.data.message, {
