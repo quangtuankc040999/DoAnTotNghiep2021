@@ -24,6 +24,7 @@
               v-html="item.member.email"
             ></v-list-item-subtitle>
           </v-list-item-content>
+          <badge-notification  class="badge-notification" :idRoom="item._id" />
         </v-list-item>
       </template>
     </v-list>
@@ -32,12 +33,15 @@
 
 <script>
 import { mapGetters } from "vuex";
+import BadgeNotification from "./BadgeNotification.vue";
 export default {
   props: ["roomChats"],
+  components: {
+    BadgeNotification,
+  },
   data: () => ({}),
   computed: {
-    ...mapGetters({
-    }),
+    ...mapGetters({}),
   },
   methods: {
     toRoomChat(idRoom) {
@@ -62,5 +66,8 @@ export default {
 }
 .v-list-item {
   border-bottom: 1px solid rgb(216, 216, 216) !important;
+}
+.badge-notification{
+  margin-left: 0 !important;
 }
 </style>

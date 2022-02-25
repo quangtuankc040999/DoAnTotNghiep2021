@@ -172,7 +172,7 @@ export default {
   padding: 0 !important;
   height: 300px;
   width: 100% !important;
-  background-size: cover;
+  background-size: 100% 400px;
 }
 .main-container {
   display: flex;

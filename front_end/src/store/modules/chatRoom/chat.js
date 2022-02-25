@@ -3,8 +3,8 @@ import io from 'socket.io-client';
 const socket = io(`${process.env.VUE_APP_SOCKET_URL}:4000`, {
     transports: ['websocket', 'polling', 'flashsocket'],
 });
-// import room from './room'
-
+import room from './room'
+import auth from '../auth'
 const state = {
     isShowChat: false,
     chats: [],
@@ -28,11 +28,11 @@ const getters = {
 };
 const cutNotification = function (datas) {
     let arrayResult = []
-    for (let room of room.state.roomChat) {
+    let listRooms = room.state.roomChat
+    for (let room of listRooms) {
         let array = datas.filter(notification => notification.room === room._id)
-        arrayResult.push({roomId: room._id, length: array.length})
+        arrayResult.push({ roomId: room._id, length: array.length })
     }
-    console.log(arrayResult, "cut ");
     return arrayResult
 
 }
@@ -57,14 +57,15 @@ const actions = {
         commit('setToggleShowChat', data)
     },
     getAllChatByIdRoom({ commit, dispatch }, params) {
-        commit('ERROR/setIsLoading', true, { root: true });
         http.get(`/chat/${params}`).then((response) => {
-            commit('ERROR/setIsLoading', false, { root: true });
             commit('setChats', response.data.data);
         });
         socket.on(
             'new-message',
             function (data) {
+                if (auth.state.userInfo.role === "Admin") {
+                    dispatch("ROOM/getAllRoomChat", null, { root: true })
+                }
                 if (data.message.idRoom === params) {
                     dispatch('getAllChatByIdRoom', params);
                     dispatch('CHAT/getAllNotification', params, { root: true });
@@ -77,6 +78,10 @@ const actions = {
         http.post(`/chat/`, data)
             .then((response) => {
                 socket.emit('save-message', response.data.data);
+                if (auth.state.userInfo.role === "Admin") {
+                    dispatch('ROOM/getAllRoomChat', null, { root: true })
+                }
+                dispatch('updateNotification', data.idRoom)
                 dispatch('getAllChatByIdRoom', data.idRoom);
                 commit('ERROR/clearErrorMessage', null, { root: true });
             })
@@ -110,11 +115,14 @@ const actions = {
                 });
             });
     },
-    updateNotification({ commit }, idRoom) {
+    updateNotification({ commit, dispatch }, idRoom) {
         http
             .put(`/chat/notification-update/${idRoom}`)
             .then((result) => {
                 commit('setNotifications', result.data.data);
+                if (auth.state.userInfo.role === "Admin") {
+                    dispatch('getAllNotificationAdmin', null)
+                }
             })
             .catch((err) => {
                 commit('ERROR/setErrorMessage', err.response.data.message, {

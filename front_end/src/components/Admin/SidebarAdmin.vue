@@ -69,7 +69,7 @@
       </v-list>
 
       <v-list dense>
-        <v-list-item link  @click="manageUser">
+        <v-list-item link @click="manageUser">
           <v-list-item-icon>
             <v-icon>mdi-account-group </v-icon>
           </v-list-item-icon>
@@ -82,7 +82,10 @@
       <v-list dense>
         <v-list-item link @click="manageChat">
           <v-list-item-icon>
-            <v-icon>mdi-forum </v-icon>
+            <v-badge color="red" dot v-if="notificationsAdmin[0] && notificationsAdmin[0].length > 0">
+              <v-icon>mdi-forum </v-icon>
+            </v-badge>
+            <v-icon v-else>mdi-forum </v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
@@ -126,7 +129,7 @@ export default {
     ...mapGetters({
       rooms: "CHAT/rooms",
       roomChats: "ROOM/roomChat",
-      // notifications: 'NOTIFICATION/notifications',
+      notificationsAdmin: "CHAT/notificationsAdmin",
       userInfoAuth: "AUTH/userInfo",
       // userRole: 'AUTH/userRole',
     }),
@@ -135,7 +138,7 @@ export default {
     manageLogout() {
       this.logoutAction();
     },
-    manageUser(){
+    manageUser() {
       this.$router.push(`/admin/manage-user/`);
     },
     manageOrder() {
@@ -154,7 +157,7 @@ export default {
       getUserByToken: "AUTH/getUserByToken",
       getUser: "USER/getUser",
       logoutAction: "AUTH/logout",
-      getAllRoomChatAction: "ROOM/getAllRommChat",
+      getAllRoomChatAction: "ROOM/getAllRoomChat",
     }),
   },
   created() {
@@ -162,9 +165,7 @@ export default {
       this.getUserByToken();
     }
     this.getAllRoomChatAction();
-
   },
-  // watch: {},
 };
 </script>
 <style scoped>

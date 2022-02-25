@@ -36,7 +36,7 @@ const actions = {
         });
     },
 
-    getAllRommChat({commit, dispatch}){
+    getAllRoomChat({commit, dispatch}){
         http.get(`/room/all-room`)
           .then((response) => {
               commit('setRoomChat', response.data.data)

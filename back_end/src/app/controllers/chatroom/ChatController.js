@@ -38,21 +38,6 @@ class ChatController {
     notification.createdBy = user;
     notification.room = room;
     const newNotification = await Notification.create(notification)
-    // const notification = await Notification.findOne({ room: req.body.room });
-    // let listContent = notification.listContent;
-    // for (let content of listContent) {
-    //   if (JSON.stringify(user._id) != JSON.stringify(content.member._id)) {
-    //     content.count += 1;
-    //     content.unreadCount += 1;
-    //     content.contents.push({
-    //       message: chat.message,
-    //       createdBy: chat.createdBy,
-    //     });
-    //   }
-    // }
-    // await Notification.findByIdAndUpdate(notification._id, {
-    //   listContent: listContent,
-    // });
     return apiResponse.successResponseWithData(
       res,
       'Create chat successfully',

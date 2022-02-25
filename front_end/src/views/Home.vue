@@ -1,6 +1,18 @@
 <template>
   <div>
-    <navigation />
+    <navigation class="navigation" />
+    <div class="ad">
+      <v-carousel hide-delimiters>
+        <v-carousel-item
+          v-for="(item, i) in listAds"
+          :key="i"
+          reverse-transition="fade-transition"
+          transition="fade-transition"
+        >
+          <advertisement :url="item.adBanner" :linkBlog="item.linkBlog"/>
+        </v-carousel-item>
+      </v-carousel>
+    </div>
     <div class="home-container">
       <div class="grid-img">
         <div class="div-1">
@@ -43,18 +55,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="new-products" style="">
-        <p>Hàng mới lên kệ</p>
-        <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
-          <product
-            v-for="(product, index) in productInfor"
-            :key="index"
-            :product="product"
-            :indexProduct="index"
-            class="product"
-          />
-        </VueSlickCarousel>
-      </div> -->
       <div class="hot-saler">
         <p>Hàng bán chạy</p>
         <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
@@ -67,25 +67,24 @@
           />
         </VueSlickCarousel>
       </div>
-      <!-- <div class="discounting">
-        <p>Hàng đang giảm giá!!!</p>
-        <VueSlickCarousel v-bind="settings" v-if="productInfor.length">
-          <product
-            v-for="(product, index) in productInfor"
-            :key="index"
-            :product="product"
-            :indexProduct="index"
-            class="product"
-          />
-        </VueSlickCarousel>
-      </div> -->
       <div class="new-posts"></div>
+    </div>
+    <div class="foot">
+      <div class="why-rubik">
+        <why-rubik />
+      </div>
+      <div class="contact-us">
+        <contact-us />
+      </div>
     </div>
     <footerRubik />
   </div>
 </template>
 
 <script>
+import Advertisement from "../components/Advertisement/Advertisement.vue";
+import WhyRubik from "../components/Home/why-rubik/Why-rubik.vue";
+import ContactUs from "../components/Home/contact/Contact.vue";
 import Navigation from "../components/Navigation.vue";
 import FooterRubik from "../components/Footer.vue";
 import VueSlickCarousel from "vue-slick-carousel";
@@ -94,6 +93,9 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Home",
   components: {
+    Advertisement,
+    ContactUs,
+    WhyRubik,
     Navigation,
     FooterRubik,
     VueSlickCarousel,
@@ -101,6 +103,17 @@ export default {
   },
   data() {
     return {
+      items: [
+        {
+          src: "https://www.gancube.com/wp-content/uploads/2021/09/Lark20210924-212043.jpg",
+        },
+        {
+          src: "https://www.gancube.com/wp-content/uploads/2021/12/20211211-101245.jpg",
+        },
+        {
+          src: "http://en.qiyitoys.net/images/l/page_index/1628581612Spy4.jpg",
+        },
+      ],
       settings: {
         dots: true,
         infinite: true,
@@ -142,6 +155,7 @@ export default {
       userInfo: "USER/userInfo",
       userInfoAuth: "AUTH/userInfo",
       productInfor: "PRODUCTS/productInfor",
+      listAds: "BLOGS/listAds"
     }),
   },
   methods: {
@@ -150,6 +164,7 @@ export default {
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
       getUserAction: "USER/getUser",
+      getAdsAction: "BLOGS/getAds"
     }),
     getProductsByCategoryDetail(category, categoryDetail) {
       this.$router.push(`/products/list-detail/${category}/${categoryDetail}`);
@@ -170,6 +185,7 @@ export default {
       this.getProductCart(this.userInfoAuth._id);
     }
     this.getAllProduct();
+    this.getAdsAction();
   },
 };
 </script>
@@ -182,9 +198,9 @@ export default {
     display: flex;
     justify-content: center;
     height: 610px;
-    width: 100% !important;
+    width: 80% !important;
     margin: 15px auto;
-    margin-bottom: 0;
+    margin-bottom: 0px;
 
     .div-1,
     .div-2,
@@ -296,10 +312,11 @@ export default {
   .new-products,
   .hot-saler,
   .discounting {
-    margin-top: 30px !important;
+    margin-top: 10px !important;
     text-align: center;
     width: 80%;
-    margin: 0 auto;
+    margin: 0 auto !important;
+    height: 550px !important;
     p {
       font-size: 1.5rem !important;
       font-weight: 700;
@@ -310,6 +327,17 @@ export default {
     }
   }
   .product-item {
+  }
+}
+.foot {
+  width: 100% !important;
+  position: relative;
+  margin-bottom: 775px;
+  .contact-us {
+    position: absolute;
+    top: 423px;
+    right: 0;
+    left: 0;
   }
 }
 </style>

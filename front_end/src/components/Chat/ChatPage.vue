@@ -3,7 +3,7 @@
     <div class="chat-page-header">
       <span>Chat</span>
       <v-btn text @click="closeChatWindow"
-        ><v-icon small>mdi-chevron-down-circle-outline</v-icon>
+        ><v-icon >mdi-chevron-down-circle-outline</v-icon>
       </v-btn>
     </div>
     <chat/>
@@ -36,6 +36,17 @@ export default {
   .chat-page-header {
     display: flex;
     justify-content: space-between;
+    align-content: center;
+    padding: 5px;
+    padding-left: 20px;
+    padding-bottom: 0 !important;
+    background-color: rgb(210,110,75);
+    font-weight: 700;
+    text-transform: uppercase;
+    color: white;
   }
+}
+.v-icon{
+  color: white !important;
 }
 </style>

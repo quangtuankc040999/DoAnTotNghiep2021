@@ -41,13 +41,13 @@
               }}</v-chip>
             </td>
             <td class="price">
-              {{ formatPrice(item.sale_price) }}
+              {{ formatPrice(item.input_price) }}
             </td>
             <td>
               {{ item.quantity }}
             </td>
             <td>
-              {{ item.total }}
+           {{ formatPrice(item.total) }}
             </td>
           </tr>
         </template>
@@ -87,7 +87,7 @@ export default {
         {
           text: "Phân loại",
           value: "category_name",
-          width: "20%",
+          width: "10%",
           align: "center",
         },
         { text: "Giá bán", value: "sale_price", width: "15%" },

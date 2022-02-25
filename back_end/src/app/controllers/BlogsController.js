@@ -15,10 +15,11 @@ class BlogController {
         if (blogParams.isCensored) {
             blog.isCensored = blogParams.isCensored;
         }
-        await Blog.create(blog);
-        return apiResponse.successResponse(
+        const blogCreated = await Blog.create(blog);
+        return apiResponse.successResponseWithData(
             res,
             'Add new blog successfully',
+            blogCreated
         );
     }
     updateBlog = async (req, res) => {
@@ -70,7 +71,7 @@ class BlogController {
         }
     }
     getLastestBlog = async (req, res) => {
-        const blog = await Blog.find({ isCensored: true, isDeleted: false }).sort({ createdAt: 1 }).populate("author").limit(5);
+        const blog = await Blog.find({ isCensored: true, isDeleted: false }).sort({ createdAt: -1 }).populate("author").limit(5);
         if (blog) {
             return apiResponse.successResponseWithData(
                 res,

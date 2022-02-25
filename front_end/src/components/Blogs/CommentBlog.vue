@@ -12,11 +12,11 @@
       </v-avatar>
     </div>
     <div class="comment">
-      <p v-if="userInfo._id === comment.author._id" style="font-size: 10px">
+      <!-- <p v-if="userInfo._id === comment.author._id" style="font-size: 10px">
         <v-chip class="ma-1" color="grey lighten-1" small >
           Tác giả
         </v-chip>
-      </p>
+      </p> -->
       <p>{{ comment.content }}</p>
       <h6><vue-time-cus :time="comment.createdAt" /></h6>
     </div>

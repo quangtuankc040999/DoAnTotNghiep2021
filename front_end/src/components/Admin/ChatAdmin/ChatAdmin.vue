@@ -154,6 +154,7 @@ export default {
       sendMessageAction: "CHAT/sendMessage",
       addCurrentRoom: "CHAT/addCurrentRoom",
       getRoomChatOfUserAction: "ROOM/getRoomChatUser",
+      updateNotificationAction: "CHAT/updateNotification",
     }),
     sendMessage(e) {
       if (e.keyCode === 13) {
@@ -207,6 +208,7 @@ export default {
     $route() {
       if (this.$route.params.idChatRoom) {
         this.getAllChatByIdRoom(this.$route.params.idChatRoom);
+        this.updateNotificationAction(this.$route.params.idChatRoom);
       }
     },
   },

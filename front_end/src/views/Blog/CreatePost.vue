@@ -1,21 +1,21 @@
 <template>
   <div class="create-post">
+    <modal-preview
+      :blogTitle="blogTitle"
+      :blogHtml="blogHtml"
+      :blogCoverPhotoURL="blogCoverPhotoURL"
+      ref="modalPreview"
+    />
+    <modal-preview-image
+      :url="this.blogCoverPhotoURL"
+      ref="modalPreviewImage"
+    />
+
     <div class="container">
       <div :class="{ invisible: !error }" class="err-message">
         <p><span>Error:</span>{{ this.errorMsg }}</p>
       </div>
       <div class="blog-info">
-        <!-- <input type="text" placeholder="Enter Blog Title" v-model="blogTitle" /> -->
-        <!-- <select type="text" >
-          <option value="" selected >Chọn chủ đề</option>
-          <option
-            v-for="(topic, index) in blogTopics"
-            :key="index"
-            :value="topic.value"
-          >
-            {{ topic.text }}
-          </option>
-        </select> -->
         <v-text-field
           class="text-field"
           dense
@@ -38,7 +38,13 @@
             @change="fileChange"
             accept=".png, .jpg, ,jpeg"
           />
-          <button class="preview">Preview</button>
+          <button
+            class="preview"
+            :disabled="this.isDisabled"
+            @click="showModalPreviewImage"
+          >
+            Preview
+          </button>
           <span>File Chosen: {{ this.blogCoverPhotoChooseName }}</span>
         </div>
       </div>
@@ -52,8 +58,8 @@
       </div>
       <div class="blog-actions">
         <button @click="createNewBlog">Đăng bài</button>
-        <router-link class="router-button" to="/blog/blog-preview"
-          >Post Preview</router-link
+        <v-btn class="router-button btn-preview" @click="showModalPreview"
+          >Post Preview</v-btn
         >
       </div>
     </div>
@@ -61,16 +67,20 @@
 </template>
 
 <script>
+import modalPreview from "../../components/Modal/ModalPreviewBlog.vue";
+import modalPreviewImage from "../../components/Modal/ModalPreviewCoverPhoto.vue";
 import axios from "axios";
 import Quill from "quill";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 window.Quill = Quill;
 const ImageResize = require("quill-image-resize-module").default;
 Quill.register("modules/imageResize", ImageResize);
 export default {
   name: "CreateBlog",
+  components: { modalPreview, modalPreviewImage },
   data() {
     return {
+      isDisabled: true,
       blogTitle: "",
       blogHtml: "",
       blogTopic: "",
@@ -99,10 +109,21 @@ export default {
       ],
     };
   },
+  computed: {
+    ...mapGetters({
+      userInfo: "AUTH/userInfo",
+    }),
+  },
   methods: {
     ...mapActions({
       createNewBlogAction: "BLOGS/createNewBlog",
     }),
+    showModalPreview() {
+      this.$refs.modalPreview.show();
+    },
+    showModalPreviewImage() {
+      this.$refs.modalPreviewImage.show();
+    },
     createNewBlog() {
       if (this.blogTitle.length == 0) {
         this.error = true;
@@ -133,12 +154,22 @@ export default {
         this.blogHtml.length !== 0 &&
         this.blogTitle.length !== 0
       ) {
-        this.createNewBlogAction({
-          blogTitle: this.blogTitle,
-          blogCoverPhoto: this.blogCoverPhotoURL,
-          blogHTML: this.blogHtml,
-          blogTopic: this.blogTopic,
-        });
+        if (this.userInfo.role === "Admin") {
+          this.createNewBlogAction({
+            blogTitle: this.blogTitle,
+            blogCoverPhoto: this.blogCoverPhotoURL,
+            blogHTML: this.blogHtml,
+            blogTopic: this.blogTopic,
+            isCensored: true,
+          })
+        } else {
+          this.createNewBlogAction({
+            blogTitle: this.blogTitle,
+            blogCoverPhoto: this.blogCoverPhotoURL,
+            blogHTML: this.blogHtml,
+            blogTopic: this.blogTopic,
+          })
+        }
       }
     },
     fileChange() {
@@ -155,6 +186,7 @@ export default {
         )
         .then((response) => {
           this.blogCoverPhotoURL = response.data.url;
+          this.isDisabled = false;
         })
         .catch((error) => {
           console.log(error);
@@ -177,7 +209,7 @@ export default {
   },
 };
 </script>
-<style lang="scss">
+<style lang="scss" >
 .create-post {
   position: relative;
   height: 100%;
@@ -328,7 +360,21 @@ export default {
     top: -6px !important;
     left: -6px !important;
     height: 30px !important;
-    
   }
+}
+.btn-preview{
+   transition: 0.5s ease-in-out all !important;
+    align-self: center !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    border-radius: 20px !important;
+    padding: 20px 24px !important;
+    color: #fff !important;
+    background-color: #303030 !important;
+    text-decoration: none !important;
+
+    &:hover {
+      background-color: rgba(48, 48, 48, 0.7) !important;
+    }
 }
 </style>

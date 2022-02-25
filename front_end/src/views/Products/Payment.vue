@@ -24,21 +24,6 @@
           <div class="form-group">
             <input
               type="text"
-              placeholder="Số điện thoại"
-              v-model="orderInput.customerPhone"
-            />
-            <div class="errors">
-              <p v-show="showErrors.emptyCustomerPhone" class="errors">
-                Số điện thoại không được bỏ trống
-              </p>
-              <p v-show="showErrors.customerPhoneMaxLength" class="errors">
-                Số điện thoại dài quá sô ký tự quy định
-              </p>
-            </div>
-          </div>
-          <div class="form-group">
-            <input
-              type="text"
               placeholder="Email"
               v-model="orderInput.customerEmail"
             />
@@ -48,6 +33,21 @@
               </p>
               <p v-show="showErrors.invalidEmail" class="errors">
                 Email không đúng định dạng
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              placeholder="Số điện thoại"
+              v-model="orderInput.customerPhone"
+            />
+            <div class="errors">
+              <p v-show="showErrors.emptyCustomerPhone" class="errors">
+                Số điện thoại không được bỏ trống
+              </p>
+              <p v-show="showErrors.customerPhoneMaxLength" class="errors">
+                Số điện thoại dài quá sô ký tự quy định
               </p>
             </div>
           </div>
@@ -172,7 +172,13 @@
               </tr>
             </tbody>
           </table>
-          <v-btn :disabled="disabledMakeOrder" type="submit" class="btn-make-order"> Đặt hàng </v-btn>
+          <v-btn
+            :disabled="disabledMakeOrder"
+            type="submit"
+            class="btn-make-order"
+          >
+            Đặt hàng
+          </v-btn>
         </div>
       </form>
     </div>
@@ -369,6 +375,11 @@ export default {
       this.getUserByToken();
     }
     this.getProductCartOfUserAction(this.userInfoAuth._id);
+    if (this.userInfo) {
+      this.orderInput.customerName =
+        this.userInfo.lastName + " " + this.userInfo.firstName;
+      this.orderInput.customerEmail = this.userInfo.email;
+    }
   },
   watch: {
     "orderInput.customerName"() {
@@ -489,10 +500,10 @@ h5 {
 </style>
 <style scoped>
 .btn-make-order {
-  background-color:  #d26e4b  !important;
+  background-color: #d26e4b !important;
   color: white !important;
   font-weight: 700;
-  margin-top: 20px ;
+  margin-top: 20px;
   width: 100%;
 }
 </style>

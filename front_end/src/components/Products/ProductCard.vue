@@ -84,7 +84,7 @@ export default {
 }
 .container {
   &:hover {
-    transform: rotateZ(-2deg) scale(1.01);
+    transform:  scale(1.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
@@ -94,7 +94,7 @@ export default {
   padding: 0;
   height: 400px;
   width: 300px;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
   position: relative;
   .out-of-stock {
     display: flex;

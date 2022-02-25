@@ -1,8 +1,8 @@
 <template>
-  <div class="nav">
+  <nav class="nav">
     <div class="content">
       <div class="logo">
-        <a href="/"><img src="../assets/Logo-design-Width.png" /></a>
+        <a href="/"><img src="../assets/Logo.png" /></a>
       </div>
       <div class="search-box">
         <v-text-field
@@ -158,7 +158,7 @@
         </v-navigation-drawer>
       </div>
     </div>
-  </div>
+  </nav>
 </template>
 
 <script>
@@ -173,7 +173,7 @@ export default {
   }),
 
   watch: {
-    $route(){
+    $route() {
       this.clearProductInforSearch();
     },
     group() {
@@ -298,12 +298,17 @@ export default {
 }
 .nav {
   background-color: none;
-  width: 100%;
+  width: 100% !important;
   margin: 0 auto;
   padding: 0px 20px;
   border-bottom: 1px rgba(187, 166, 166, 0.3) solid;
+  .content{
+    width: 100% !important;
+  }
   .logo {
-    width: 20% !important;
+    width: 10% !important;
+    max-width: 20%;
+
     img {
       margin-top: 10px;
       max-width: 100%;
@@ -311,11 +316,14 @@ export default {
   }
 }
 .search-box {
-  width: 20%;
+  width: 25% !important;
+  max-width: 25%;
   margin-bottom: 2px !important;
 }
 .action {
-  width: 20%;
+  width: 30% !important;
+  max-width: 20%;
+
   margin-bottom: 9px !important;
   .v-icon {
     margin-bottom: 7px;
@@ -323,7 +331,8 @@ export default {
   }
 }
 .cart {
-  width: 15%;
+  width: 10%;
+  max-width: 20%;
   position: relative;
   margin-bottom: 2px !important;
   font-weight: 500;
@@ -341,8 +350,7 @@ export default {
   }
 }
 img {
-  width: 100%;
-  height: 100%;
+
 }
 .content {
   display: flex;
@@ -351,9 +359,7 @@ img {
   align-self: center;
   margin-bottom: 10px;
 }
-.logo {
-  width: 20%;
-}
+
 ul {
   display: flex;
   list-style: none;
