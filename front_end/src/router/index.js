@@ -32,7 +32,7 @@ import ForbbidenPage from '../views/403Page.vue'
 import SinglePlay from '../components/PlayRubik/Single-play.vue'
 import CreatePostBlogs from '../views/Blog/CreatePost.vue'
 import BlogHome from '../views/Blog/BlogHome.vue'
-import BlogPreview from '../views/Blog/BlogPreview'
+// import BlogPreview from '../views/Blog/BlogPreview'
 import BlogDetail from '../views/Blog/BlogDetail'
 import { decodeToken } from '../utils/helper';
 Vue.use(VueRouter);
@@ -131,11 +131,7 @@ const routes = [
         name: CreatePostBlogs,
         component: CreatePostBlogs,
       },
-      {
-        path: '/blog/blog-preview',
-        name: BlogPreview,
-        component: BlogPreview,
-      },
+    
       {
         path: '/blog/main-page',
         name: Blog,

@@ -59,7 +59,7 @@
       <div class="blog-actions">
         <button @click="createNewBlog">Đăng bài</button>
         <v-btn class="router-button btn-preview" @click="showModalPreview"
-          >Post Preview</v-btn
+          >Xem trước</v-btn
         >
       </div>
     </div>
@@ -372,6 +372,7 @@ export default {
     color: #fff !important;
     background-color: #303030 !important;
     text-decoration: none !important;
+    text-transform: none !important;
 
     &:hover {
       background-color: rgba(48, 48, 48, 0.7) !important;

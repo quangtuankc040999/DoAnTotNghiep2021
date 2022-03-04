@@ -34,7 +34,7 @@ const actions = {
             .post(`/comment-blog/`, params)
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
-                dispatch('COMMENTBLOG/getAllCommentByBlogId', {blogId: params.blogId, page: 1}, {root: true})
+                dispatch('COMMENTBLOG/getAllCommentByBlogId', { blogId: params.blogId, page: 1 }, { root: true })
                 commit('ERROR/setIsLoading', false, { root: true });
 
             })
@@ -49,7 +49,6 @@ const actions = {
     getAllCommentByBlogId({ commit }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
         http.get(`/comment-blog/${params.blogId}/${params.page}`).then((response) => {
-            console.log(response.data.data);
             commit('setListComment', response.data.data.listComment)
             commit('setNumberRecords', response.data.data.numberRecords)
             commit('setNumberPages', response.data.data.numberPages)
@@ -61,7 +60,25 @@ const actions = {
             })
             commit('ERROR/setIsLoading', false, { root: true })
         });
-    }
+    },
+    updateCommentBlog({ commit, dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .post(`/comment-blog/${params.commentBlogId}`, params)
+            .then(() => {
+                commit('ERROR/clearErrorMessage', null, { root: true });
+                dispatch('COMMENTBLOG/getAllCommentByBlogId', { blogId: params.blogId, page: 1 }, { root: true })
+                commit('ERROR/setIsLoading', false, { root: true });
+
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+
+            });
+    },
 };
 
 export default {

@@ -3,7 +3,7 @@
     <div class="container-product">
       <div class="list-img">
         <div class="img">
-          <vueper-slides
+          <!-- <vueper-slides
             lazy
             lazy-load-on-drag
             class="no-shadow slides"
@@ -18,12 +18,25 @@
               :key="i"
               :image="img"
             >
-              <template #loader>
-                <i class="icon icon-loader spinning"></i>
-                <span>Loading...</span>
-              </template>
             </vueper-slide>
-          </vueper-slides>
+          </vueper-slides> -->
+          <v-carousel hide-delimiter-background show-arrows-on-hover cycle>
+            <v-carousel-item
+              v-for="(item, i) in productById.image"
+              :key="i"
+              reverse-transition="fade-transition"
+              transition="fade-transition"
+            >
+              <div class="image">
+                <img
+                  class="product_img"
+                  :src="item"
+                  alt=""
+                  @click="showGalery(item, i)"
+                />
+              </div>
+            </v-carousel-item>
+          </v-carousel>
         </div>
       </div>
       <div class="product-infor">
@@ -101,8 +114,10 @@
     </div>
     <div class="description">
       <p class="description-title">Thông tin sản phẩm</p>
-       <div class="post-content ql-editor" v-html="productById.description"></div>
-
+      <div
+        class="post-content ql-editor"
+        v-html="productById.description"
+      ></div>
     </div>
     <p class="comment-title">Đánh giá sản phẩm</p>
     <div v-if="listCommentProduct">
@@ -139,22 +154,51 @@
       </div>
       <div v-else>Chưa có đánh giá</div>
     </div>
+
+    <div class="gallery" v-bind:class="{ show: isShow }">
+      <div class="gallery_inner">
+        <!-- <img :src="srcImg" /> -->
+        <div
+          class="img_gallery"
+          :style="{ backgroundImage: 'url(' + this.srcImg + ')' }"
+        ></div>
+      </div>
+      <div class="close">
+        <v-btn text @click="isShow = false">
+          <v-icon large color="grey lighten-5">mdi-close-thick</v-icon>
+        </v-btn>
+      </div>
+
+      <div class="pre" v-if="curentIndex > 0">
+        <v-btn text @click="changImage('pre')">
+          <v-icon x-large color="grey lighten-5">mdi-chevron-left </v-icon>
+        </v-btn>
+      </div>
+      <div class="next" v-if="curentIndex < productById.image.length -1">
+        <v-btn text @click="changImage('next')">
+          <v-icon x-large color="grey lighten-5">mdi-chevron-right </v-icon>
+        </v-btn>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { VueperSlides, VueperSlide } from "vueperslides";
+// import { VueperSlides, VueperSlide } from "vueperslides";
 import { mapActions, mapGetters } from "vuex";
 import commentItem from "../../components/Products/CommentItem.vue";
 import AwesomeVueStarRating from "awesome-vue-star-rating";
 export default {
   components: {
-    VueperSlides,
-    VueperSlide,
+    // VueperSlides,
+    // VueperSlide,
     commentItem,
     AwesomeVueStarRating,
   },
   data() {
     return {
+      curentIndex: 0,
+      isShow: false,
+      srcImg: "",
       page: 1,
       hasresults: false,
       hasdescription: false,
@@ -177,6 +221,23 @@ export default {
     }),
   },
   methods: {
+    showGalery(src, i) {
+      this.srcImg = src;
+      this.isShow = true;
+      this.curentIndex = i;
+    },
+    changImage(action) {
+      switch (action) {
+        case "pre":
+          this.curentIndex--;
+          this.srcImg = this.productById.image[this.curentIndex];
+          break;
+        case "next":
+          this.curentIndex++;
+          this.srcImg = this.productById.image[this.curentIndex];
+          break
+      }
+    },
     top(number) {
       return Math.ceil(number);
     },
@@ -278,7 +339,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/style.scss";
-a{
+a {
   text-decoration: none;
 }
 p {
@@ -312,8 +373,8 @@ p {
   height: 100%;
 }
 .img {
-  width: 370px;
-  height: 410px;
+  max-width: 370px;
+  max-height: 410px;
 }
 .container-product {
   display: flex;
@@ -355,7 +416,7 @@ p {
         }
         .discount-persent {
           background-color: #c62828;
-          color: white;;
+          color: white;
           padding: 5px;
           font-weight: 700 !important;
           border-radius: 4px;
@@ -430,5 +491,79 @@ p {
   font-size: 1.2em;
   font-weight: 700;
   border: none;
+}
+// .slides:hover .slide {
+//   transition: scale(1.2) !important;
+// }
+.v-carousel {
+  max-width: 370px !important;
+  max-height: 370px !important;
+  width: 370px !important;
+  height: 370px !important;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+.product_img {
+  max-height: 100%;
+  height: auto;
+  max-width: 100%;
+  width: 100%;
+  object-position: center !important;
+  object-fit: cover;
+  transition: 0.5s;
+}
+.image:hover .product_img {
+  transform: scale(1.1) !important;
+}
+
+.gallery {
+  position: fixed;
+  width: 100vw !important;
+  height: 100vh !important;
+  background-color: rgb(0, 0, 0, 0.5);
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.8);
+  transition: 0.5s;
+}
+.gallery_inner {
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  // img {
+  //   margin: 0 auto;
+  //   height: auto;
+  //   width: 70%;
+  // }
+  .img_gallery {
+    height: 70vh !important;
+    width: 40vw !important;
+    background-size: 40vw 70vh;
+  }
+}
+.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  color: white !important;
+}
+.pre {
+  position: fixed;
+  left: 20px;
+}
+.next {
+  position: fixed;
+  right: 20px;
 }
 </style>

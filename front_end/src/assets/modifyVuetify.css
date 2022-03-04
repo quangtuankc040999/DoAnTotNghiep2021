@@ -4,6 +4,7 @@ html {
     font-family: 'Nunito Sans', sans-serif !important;
     letter-spacing: 1.5px;
     min-width: 1000px !important;
+    scroll-behavior: smooth;
 }
 /* width */
 ::-webkit-scrollbar {

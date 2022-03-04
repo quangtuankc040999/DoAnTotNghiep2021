@@ -11,7 +11,18 @@ const CommentBlog = new Schema(
             type: Schema.Types.ObjectId,
             ref: 'User',
         },
-        content: {type: String}
+        content: { type: String },
+        reply: [{
+            authorReply: {
+                type: Schema.Types.ObjectId,
+                ref: 'User',
+            },
+            contentReply: { type: String },
+        },
+        {
+            timestamps: true,
+        },
+        ]
     },
     {
         timestamps: true,

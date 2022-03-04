@@ -51,7 +51,7 @@
         </div>
       </div>
     </div>
-    <h5>Bình luận ({{numberRecords}})</h5>
+    <h5>Bình luận ({{ numberRecords }})</h5>
     <div v-if="userInfoAuth" class="comment-blog">
       <div class="div1">
         <div class="avatar">
@@ -91,6 +91,18 @@
       <h6>Hãy đăng nhập để xem đánh giá hoặc là tham gia đánh giá!</h6>
       <router-link to="/login">Đăng nhập </router-link>
     </div>
+    <transition name="fade">
+      <div
+        id="pagetop"
+        class="fixed right-0 bottom-0"
+        v-show="scY > 300"
+        @click="toTop"
+      >
+        <v-btn>
+          <v-icon large>mdi-chevron-up </v-icon>
+        </v-btn>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -107,6 +119,8 @@ export default {
       commentBlog: "",
       page: 1,
       image: "",
+      scTimer: 0,
+      scY: 0,
     };
   },
   computed: {
@@ -120,7 +134,25 @@ export default {
       numberRecords: "COMMENTBLOG/numberRecords",
     }),
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      if (this.scTimer) return;
+      this.scTimer = setTimeout(() => {
+        this.scY = window.scrollY;
+        clearTimeout(this.scTimer);
+        this.scTimer = 0;
+      }, 100);
+    },
+    toTop() {
+      console.log("vao day");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
     handelComment(e) {
       if (e.keyCode === 13) {
         this.commentBlogAction({
@@ -193,9 +225,9 @@ export default {
     top: 20px;
     right: 0px;
     padding: 20px;
-    p{
+    p {
       text-transform: uppercase;
-      color: rgb(210,110,75);
+      color: rgb(210, 110, 75);
       font-weight: 600;
     }
     ul {
@@ -223,22 +255,51 @@ export default {
       width: 6% !important;
     }
     .input-comment {
+      margin-left: 10px;
       width: 80% !important;
     }
   }
 }
 .blog-info {
   h6 {
-    font-size: .9rem;
+    font-size: 0.9rem;
     margin-left: 10px;
   }
 }
-.blog-title{
-  h2{
+.blog-title {
+  h2 {
     font-size: 2.5rem !important;
     text-transform: uppercase;
     font-weight: 600;
-    color: rgb(210,110,75);
+    color: rgb(210, 110, 75);
+  }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+#pagetop {
+  position: fixed;
+  bottom: 40px !important;
+  right: 40px !important;
+  .v-btn {
+    height: 50px !important;
+    width: 50px !important;
+    padding: 0px !important;
+    min-width: 50px !important;
+    border-radius: 50%;
+    background-color: rgb(212, 91, 91) !important;
+    color: whitesmoke !important;
+    &:hover {
+      transform: rotateZ(-2deg) scale(1.01);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
   }
 }
 </style>

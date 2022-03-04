@@ -331,7 +331,7 @@ export default {
   }
 }
 .cart {
-  width: 10%;
+  width: 15%;
   max-width: 20%;
   position: relative;
   margin-bottom: 2px !important;

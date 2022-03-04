@@ -81,6 +81,7 @@ export default {
 .why-rubik {
   height: 880px;
   background-image: url("https://www.rubiksgift.com/wp-content/uploads/2019/12/Why-Rubiks-Section-BG.jpg");
+  background-size: 100% 880px;
   .text {
     height: 50% !important;
     width: 70% !important;
@@ -94,7 +95,7 @@ export default {
       margin-bottom: 50px;
     }
     .te{
-        font-size: 1,3rem;
+        font-size: 1.3rem;
     }
   
   }

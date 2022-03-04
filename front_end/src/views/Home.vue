@@ -2,14 +2,14 @@
   <div>
     <navigation class="navigation" />
     <div class="ad">
-      <v-carousel hide-delimiters>
+      <v-carousel hide-delimiter-background show-arrows-on-hover cycle>
         <v-carousel-item
           v-for="(item, i) in listAds"
           :key="i"
           reverse-transition="fade-transition"
           transition="fade-transition"
         >
-          <advertisement :url="item.adBanner" :linkBlog="item.linkBlog"/>
+          <advertisement :url="item.adBanner" :linkBlog="item.linkBlog" />
         </v-carousel-item>
       </v-carousel>
     </div>
@@ -78,6 +78,18 @@
       </div>
     </div>
     <footerRubik />
+    <transition name="fade">
+      <div
+        id="pagetop"
+        class="fixed right-0 bottom-0"
+        v-show="scY > 300"
+        @click="toTop"
+      >
+        <v-btn>
+          <v-icon large>mdi-chevron-up  </v-icon>
+        </v-btn>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -103,17 +115,8 @@ export default {
   },
   data() {
     return {
-      items: [
-        {
-          src: "https://www.gancube.com/wp-content/uploads/2021/09/Lark20210924-212043.jpg",
-        },
-        {
-          src: "https://www.gancube.com/wp-content/uploads/2021/12/20211211-101245.jpg",
-        },
-        {
-          src: "http://en.qiyitoys.net/images/l/page_index/1628581612Spy4.jpg",
-        },
-      ],
+      scTimer: 0,
+      scY: 0,
       settings: {
         dots: true,
         infinite: true,
@@ -150,12 +153,15 @@ export default {
       },
     };
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
   computed: {
     ...mapGetters({
       userInfo: "USER/userInfo",
       userInfoAuth: "AUTH/userInfo",
       productInfor: "PRODUCTS/productInfor",
-      listAds: "BLOGS/listAds"
+      listAds: "BLOGS/listAds",
     }),
   },
   methods: {
@@ -164,8 +170,24 @@ export default {
       getUserByToken: "AUTH/getUserByToken",
       getProductCart: "CART/userProductCart",
       getUserAction: "USER/getUser",
-      getAdsAction: "BLOGS/getAds"
+      getAdsAction: "BLOGS/getAds",
     }),
+    handleScroll() {
+      if (this.scTimer) return;
+      this.scTimer = setTimeout(() => {
+        this.scY = window.scrollY;
+        clearTimeout(this.scTimer);
+        this.scTimer = 0;
+      }, 100);
+    },
+    toTop() {
+      console.log("vao day");
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+
     getProductsByCategoryDetail(category, categoryDetail) {
       this.$router.push(`/products/list-detail/${category}/${categoryDetail}`);
     },
@@ -340,10 +362,41 @@ export default {
     left: 0;
   }
 }
+#pagetop {
+  position: fixed;
+  bottom: 40px !important;
+  right: 40px !important;
+  .v-btn {
+    height: 50px !important;
+    width: 50px !important;
+    padding: 0px !important;
+    min-width: 50px !important;
+    border-radius: 50%;
+    background-color: rgb(212, 91, 91) !important;
+    color: whitesmoke !important;
+    &:hover {
+      transform: rotateZ(-2deg) scale(1.01);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+  }
+}
 </style>
-<style>
+<style  scoped>
 .slick-arrow:before,
 .slick-prev:before {
   color: rgb(175, 175, 175) !important;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+
 }
 </style>

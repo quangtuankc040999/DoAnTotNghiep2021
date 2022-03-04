@@ -45,7 +45,7 @@ export default {
     font-size: 1.4rem !important;
   }
   .text {
-    font-size: 0.5rem;
+    font-size: 0.9rem;
   }
 }
 </style>

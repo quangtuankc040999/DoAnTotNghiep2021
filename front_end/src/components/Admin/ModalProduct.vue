@@ -505,7 +505,7 @@ export default {
       display: flex;
       flex-direction: column;
       height: 100%;
-      overflow: scroll;
+      overflow: auto !important;
     }
 
     .ql-editor {
