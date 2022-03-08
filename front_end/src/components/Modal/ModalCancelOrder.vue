@@ -5,7 +5,7 @@
     hide-footer
     size="lg md"
     class="col-lg-6"
-    hide-header-close
+    hide-header
     scrollable
     @hide="doWhenHide"
   >

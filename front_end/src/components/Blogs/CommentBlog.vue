@@ -157,7 +157,6 @@ p {
   text-transform: none;
 }
 .reply {
-  transition: 0.5s;
   margin-left: 40px !important;
   opacity: 0;
   height: 0px !important;

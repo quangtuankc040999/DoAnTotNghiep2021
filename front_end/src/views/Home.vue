@@ -86,7 +86,7 @@
         @click="toTop"
       >
         <v-btn>
-          <v-icon large>mdi-chevron-up  </v-icon>
+          <v-icon large>mdi-chevron-up </v-icon>
         </v-btn>
       </div>
     </transition>
@@ -181,7 +181,6 @@ export default {
       }, 100);
     },
     toTop() {
-      console.log("vao day");
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -397,6 +396,5 @@ export default {
 .fade-leave-to {
   opacity: 0;
   transition: opacity 0.5s ease;
-
 }
 </style>

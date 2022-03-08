@@ -99,7 +99,7 @@
         @click="toTop"
       >
         <v-btn>
-          <v-icon large>mdi-chevron-up </v-icon>
+          <v-icon large>mdi-chevron-up</v-icon>
         </v-btn>
       </div>
     </transition>

@@ -7,6 +7,7 @@ const Product = new Schema({
     popularity: { type: Number, default: 1 },
     rating: { type: Number, default: 0 },
     image: [{type: String, default: 0 }],
+    import_price: { type: Number },
     starting_price: { type: Number },
     discount: { type: Number, default: 0},
     sale_price: { type: Number },

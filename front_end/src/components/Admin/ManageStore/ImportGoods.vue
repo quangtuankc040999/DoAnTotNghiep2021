@@ -2,7 +2,7 @@
   <div class="import-goods">
     <div class="btn-file-container">
       <v-btn @click="chooseFile" class="btn-choosefile">Chọn tệp</v-btn>
-      <input type="text" id="file_name" placeholder="file" />
+      <input type="text" id="file_name" placeholder="choose file..." />
       <input
         type="file"
         class="my_input"
@@ -27,38 +27,22 @@
 
         <template v-slot:item="{ item }">
           <tr>
-            <td>{{ item._id }}</td>
+            <td v-if="item.status == 1"> <v-icon color="amber lighten-1">mdi-home-import-outline </v-icon></td>
+            <td v-else-if="item.status == 2"><v-icon color="green lighten-1">mdi-new-box </v-icon></td>
+
             <td>{{ item.title }}</td>
             <td>
-              <v-chip
-                color="purple lighten-3"
-                dark
-                style="margin-bottom: 5px"
-                >{{ item.category_name }}</v-chip
-              >
-              <v-chip color="teal lighten-3" dark>{{
-                item.category_detail
-              }}</v-chip>
+              {{ item.category_name }}
+              <br />
+              {{ item.category_detail }}
             </td>
             <td class="price">
               {{ formatPrice(item.import_price) }}
             </td>
+            <td>{{ item.quantity }}</td>
             <td>
-              {{ item.quantity }}
+              {{ formatPrice(item.total) }}
             </td>
-            <td>
-           {{ formatPrice(item.total) }}
-            </td>
-          </tr>
-        </template>
-        <template>
-          <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Tổng chi:</td>
-            <td>10000000</td>
           </tr>
         </template>
       </v-data-table>
@@ -77,30 +61,25 @@ export default {
     return {
       isDisable: true,
       headers: [
-        {
-          text: "Mã sản phẩm",
-          align: "start",
-          value: "title",
-          width: "20%",
-        },
-        { text: "Tên Sản phẩm", value: "image", width: "20%", sortable: false },
+        { text: "Thao tác", width: "3%",align:"center", sortable: false },
+        { text: "Tên Sản phẩm", value: "image", width: "10%", sortable: false },
         {
           text: "Phân loại",
           value: "category_name",
           width: "10%",
           align: "center",
         },
-        { text: "Giá nhập/ Cái", width: "15%" },
+        { text: "Giá nhập/ Cái", width: "10%" },
         {
           text: "Số lượng nhập",
           value: "",
-          width: "15%",
+          width: "10%",
           align: "center",
         },
         {
           text: "Tổng nhập",
           value: "",
-          width: "15%",
+          width: "10%",
           align: "center",
         },
       ],
@@ -181,8 +160,7 @@ export default {
       createNewLogAction: "LOG/createNewLog",
     }),
   },
-  created() {
-  },
+  created() {},
 };
 </script>
 
@@ -218,7 +196,6 @@ td {
   bottom: 0;
   margin-top: 20px !important;
 }
-.btn-choosefile{
-  
+.btn-choosefile {
 }
 </style>

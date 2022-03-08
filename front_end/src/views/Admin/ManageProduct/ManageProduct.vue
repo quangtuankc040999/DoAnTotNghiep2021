@@ -72,6 +72,7 @@
                 style="margin-bottom: 5px"
                 >{{ item.category_name }}</v-chip
               >
+              <br>
               <v-chip color="teal lighten-3" dark>{{
                 item.category_detail
               }}</v-chip>

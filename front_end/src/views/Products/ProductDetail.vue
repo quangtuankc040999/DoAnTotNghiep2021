@@ -542,9 +542,9 @@ p {
   //   width: 70%;
   // }
   .img_gallery {
-    height: 70vh !important;
-    width: 40vw !important;
-    background-size: 40vw 70vh;
+    height: 680px !important;
+    width: 680px !important;
+    background-size: 680px 680px;
   }
 }
 .show {
