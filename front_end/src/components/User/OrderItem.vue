@@ -57,7 +57,17 @@
         "
         >Đã nhận được hàng</v-btn
       >
-      <v-btn v-if="orderItem.status == 'Đã huỷ'" class="btn">Mua lại</v-btn>
+      <v-btn
+        v-if="orderItem.status == 'Đã huỷ'"
+        class="btn"
+        @click="
+          updateOrder({
+            orderId: orderItem._id,
+            body: { status: 'Chờ xác nhận', id: userInfoAuth._id },
+          })
+        "
+        >Mua lại</v-btn
+      >
       <v-btn
         v-if="orderItem.status == 'Đã hoàn thành'"
         class="btn"

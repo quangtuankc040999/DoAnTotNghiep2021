@@ -15,5 +15,5 @@ router.get('/admin/waitting-order', orderController.getOrderWaittingAdmin)
 router.get('/admin/delivery-order', orderController.getOrderDeliveryAdmin)
 router.get('/admin/rated-order', orderController.getOrderRatedAdmin)
 
-
+router.post('/dashboard/get-order-by-month', orderController.getOrderByMonth)
 module.exports = router;

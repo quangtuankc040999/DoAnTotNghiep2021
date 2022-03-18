@@ -1,11 +1,11 @@
 <template>
   <b-modal
     id="modalProduct"
-    ref="modalProduct"
-    hide-footer
+    ref="modalProduct"   
     size="lg md"
     class="col-lg-6"
-    hide-header-close
+    hide-header
+    hide-footer
     scrollable
     @hide="doWhenHide"
   >
@@ -108,6 +108,15 @@
 
       <!-- Starting-price -->
       <h5>Giá và ưu đãi</h5>
+        <label for="">Giá nhập </label>
+      <div class="startting-price">
+        <input
+          type="number"
+          v-model="productRequest.import_price"
+          placeholder=""
+        />
+        </div>
+
       <label for="">Giá khởi điểm </label>
       <div class="startting-price">
         <input
@@ -149,7 +158,6 @@
       <h5>Mô tả sản phẩm</h5>
       <div class="description group editor">
         <vue-editor
-          :editorOptions="editorSettings"
           v-model="productRequest.description"
           useCustomImageHandler
           @image-added="imageHandler"
@@ -182,11 +190,11 @@
             <i @click="deleteImg(index)"> <v-icon>mdi-delete </v-icon></i>
           </li>
         </ul>
-        <div class="errors">
+        <!-- <div class="errors">
           <p class="error" v-show="showErrors.emptyImages">
             Vui lòng chọn ít nhất 1 ảnh cho sản phẩm
           </p>
-        </div>
+        </div> -->
       </div>
       <div class="d-flex flex-row-reverse">
         <v-btn
@@ -394,11 +402,11 @@ export default {
           "emptyCategoryDetail",
           this.showErrors && !!errors && errors.emptyCategoryDetail
         );
-        Vue.set(
-          this.showErrors,
-          "emptyImages",
-          this.showErrors && !!errors && errors.emptyImages
-        );
+        // Vue.set(
+        //   this.showErrors,
+        //   "emptyImages",
+        //   this.showErrors && !!errors && errors.emptyImages
+        // );
         passedValidate = false;
       }
       return passedValidate;
@@ -480,19 +488,20 @@ export default {
       Vue.set(this.showErrors, "emptyCategoryDetail", null);
       this.isDisableButton = false;
     },
-    "productRequest.image"() {
-      Vue.set(this.showErrors, "emptyImages", null);
-      this.isDisableButton = false;
-    },
+    // "productRequest.image"() {
+    //   Vue.set(this.showErrors, "emptyImages", null);
+    //   this.isDisableButton = false;
+    // },
   },
 };
 </script>
 
 <style lang="scss" scoped>
   .editor {
-    height: 60vh;
+    height: 40vh;
     display: flex;
     flex-direction: column;
+    margin-bottom: 90px !important;
 
     .quillWrapper {
       position: relative;

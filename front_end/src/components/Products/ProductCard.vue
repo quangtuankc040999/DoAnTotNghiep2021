@@ -4,7 +4,11 @@
       <div class="out-of-stock" v-if="product.inventory == 0">
         <span>Hết hàng</span>
       </div>
-      <div class="img" style="position: relative">
+      <div
+        class="img"
+        style="position: relative"
+        v-if="product.image.length > 0"
+      >
         <b-carousel
           id="carousel-1"
           :interval="4000"
@@ -26,6 +30,12 @@
             </template>
           </b-carousel-slide>
         </b-carousel>
+        <v-btn text class="btn-add-cart" @click="viewProductDetail">
+          XEM CHI TIẾT
+        </v-btn>
+      </div>
+      <div class="img" style="position: relative" v-else>
+        <img :src="imageEmpty" class="imgEmpty" alt="" />
         <v-btn text class="btn-add-cart" @click="viewProductDetail">
           XEM CHI TIẾT
         </v-btn>
@@ -56,6 +66,12 @@
 export default {
   props: ["product", "indexProduct"],
   components: {},
+  data() {
+    return {
+      imageEmpty:
+        "https://thegioirubik.com/wp-content/uploads/woocommerce-placeholder.png",
+    };
+  },
   methods: {
     onSlideStart() {
       this.sliding = true;
@@ -84,7 +100,7 @@ export default {
 }
 .container {
   &:hover {
-    transform:  scale(1.1);
+    transform: scale(1.1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
       0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
@@ -190,6 +206,10 @@ export default {
   .img:hover img {
     opacity: 0.6;
   }
+}
+.imgEmpty {
+  height: 100% !important;
+  width: 100% !important;
 }
 </style>
 <style scoped>

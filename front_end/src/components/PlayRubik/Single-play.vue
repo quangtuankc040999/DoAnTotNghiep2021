@@ -384,11 +384,12 @@ table td {
 #container {
   background-color: rgb(206, 206, 206);
   background-image: url("https://img5.thuthuatphanmem.vn/uploads/2021/11/22/hinh-anh-rubik_040951176.jpg");
-  background-size: cover;
+  background-size:  100% 100%;
   // background: radial-gradient(circle at 100%, #333, #333 50%, #eee 75%, #333 75%);
 
   display: flex;
-  width: 100% !important;
+  width: 85vw !important;
+  min-width: 95% !important;
   max-height: 100vh;
   height: 100vh;
   padding: 0;

@@ -132,11 +132,6 @@
                 </v-list-item>
               </router-link>
 
-              <router-link to="/contact"
-                ><v-list-item>
-                  <v-list-item-title>Liên hệ</v-list-item-title>
-                </v-list-item>
-              </router-link>
               <router-link v-if="userInfoAuth" to="/play-rubik/single-player"
                 ><v-list-item>
                   <v-list-item-title>Play</v-list-item-title>

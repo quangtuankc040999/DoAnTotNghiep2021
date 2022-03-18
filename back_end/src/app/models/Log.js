@@ -6,7 +6,7 @@ const Log = new Schema({
         {
             product: {
                 type: Schema.Types.ObjectId,
-                ref: 'User',
+                ref: 'Product',
             }, 
             quantity: {type: Number}
         }

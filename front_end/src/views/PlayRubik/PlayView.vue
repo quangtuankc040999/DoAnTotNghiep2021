@@ -26,18 +26,18 @@ export default {
   padding: 0;
   margin: 0;
   display: flex;
-  width: 100%!important;
+  width: 95%!important;
   min-height: 100vh !important;
   .sidebar {
     min-height: 100vh !important;
-    width: 20%;
+    width: 15%;
     height: 100%;
   }
   .container{
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    width: 100%;
+    // box-sizing: border-box;
+    width: 90% !important;
   }
 }
 </style>

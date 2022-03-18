@@ -8,7 +8,8 @@
     />
 
     <div class="blog-card-wrap">
-      <h3>View More Recent Blogs</h3>
+      <h3>Bài viết gần đây
+      </h3>
       <div class="toggle-edit" v-if="userInfo && userInfo.role.name == 'Admin'">
         <span>Toggle Editing Post</span>
         <input type="checkbox" v-model="editPost" />
@@ -51,15 +52,14 @@ export default {
       welcomeScreen: {
         title: "Xin chào!",
         blogPost:
-          "Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!",
+          " Rubic là cuộc đời của tôi, là niềm đam mê duy nhất của tôi",
         welcomeScreen: true,
         photo: "coding",
       },
       sampleBlogPost: [
         {
-          blogTitle: "Title blog post",
-          blogHTML:
-            "Weekly blog articles with all things programming including HTML, CSS, JavaScript and more. Register today to never miss a post!",
+          blogTitle: "Hãy cùng nhau chơi rubik nào!",
+          blogHTML:"",
           blogCoverPhoto:
             "https://images.unsplash.com/photo-1562975327-29a8cbfd5be6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1172&q=80",
         },

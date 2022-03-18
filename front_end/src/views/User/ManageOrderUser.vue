@@ -55,16 +55,7 @@
       </div>
 
       <div class="status rated" @click="toListRated()">
-        <v-badge
-          bordered
-          color="error"
-          v-bind:value="listRated.length > 0 ? listRated.length : empty"
-          :content="listRated.length"
-          offset-x="10"
-          offset-y="10"
-        >
           <v-icon large> mdi-check-circle  </v-icon>
-        </v-badge>
         Đã hoàn thành
       </div>
     </div>

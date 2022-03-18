@@ -29,7 +29,7 @@
         </v-col>
         <v-col cols="9">
           <v-row>
-            <h1>ACCOUNT SETTING</h1>
+            <h3>Quản lý tài khoản</h3>
             <v-row>
               <v-col cols="3">
                 <label for="email">Email</label>
@@ -76,8 +76,8 @@
             </v-row>
           </v-row>
 
-          <v-row>
-            <h1>CHANGES PASSWORD</h1>
+          <v-row class="pass">
+            <h3>Đổi mật khẩu</h3>
             <v-row class="password">
               <v-row>
                 <v-col cols="3">
@@ -409,7 +409,7 @@ export default {
 }
 
 .avatar .row {
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 .password .col {
@@ -426,7 +426,7 @@ export default {
 .save-btn {
 }
 
-h1 {
+h3 {
   margin-top: 20px;
 }
 label {
@@ -449,4 +449,5 @@ i {
 .avatar .v-btn {
   width: 220px;
 }
+
 </style>

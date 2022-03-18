@@ -149,5 +149,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+td {
+  padding: 30px 10px !important;
+  text-align: center;
+  font-size: 13px !important;
+}
 </style>

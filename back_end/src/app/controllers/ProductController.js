@@ -5,10 +5,12 @@ class ProductController {
     // admin add product
     addNewProduct = async (req, res) => {
         const product = req.body;
-        await Product.create(product);
-        return apiResponse.successResponse(
+        // console.log(product);
+        const productCreated = await Product.create(product);
+        return apiResponse.successResponseWithData(
             res,
             'Add new product successfully',
+            productCreated
         );
     }
     // delete product
@@ -42,14 +44,16 @@ class ProductController {
                         description: product.description,
                         category_name: product.category_name,
                         category_detail: product.category_detail,
-                        inventory: product.quantity + productFind.inventory
+                        inventory: product.quantity + productFind.inventory,
+                        import_price: product.import_price
                     }
                 });
         }
         else {
             await Product.findByIdAndUpdate(req.params.productId,
                 {
-                    $set: {
+                    $set: {                        
+                        import_price: product.import_price,
                         title: product.title,
                         brand: product.brand,
                         product_key: product.product_key,

@@ -10,7 +10,7 @@
       :step="10000"
       v-model="dots"
     ></vue-range-slider> -->
-    <v-range-slider  max="2000000" min="0" step="10000" v-model="dots">
+    <v-range-slider max="2000000" min="0" step="10000" v-model="dots">
     </v-range-slider>
 
     <div class="view-price">
@@ -42,13 +42,9 @@
             :key="index"
             link
             class="category-detail"
+            @click="getProductsByCategoryDetail(category.name, categoryDetail)"
           >
-            <v-list-item-title
-              style="font-size: 0.7rem"
-              @click="
-                getProductsByCategoryDetail(category.name, categoryDetail)
-              "
-            >
+            <v-list-item-title style="font-size: 0.7rem">
               {{ categoryDetail }}</v-list-item-title
             >
           </v-list-item>
@@ -194,7 +190,7 @@ p {
   margin-bottom: 5px;
   span {
     width: 100% !important;
-    font-size:.8em;
+    font-size: 0.8em;
     color: $color;
     float: right;
   }

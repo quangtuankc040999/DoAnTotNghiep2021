@@ -160,6 +160,7 @@ export default {
         category_name: "",
         category_detail: "",
         inventory: 0,
+        import_price: 0,
         image: [],
       },
       action: "add",

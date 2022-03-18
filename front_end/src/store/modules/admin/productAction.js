@@ -3,7 +3,7 @@ const state = {
 };
 
 const getters = {
-
+  
 };
 const mutations = {
 };
@@ -14,7 +14,7 @@ const actions = {
             .post(`/product/`, params, "Thêm sản phẩm thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
-                dispatch('PRODUCTS/getAllProduct', null, {root:true})
+                dispatch('PRODUCTS/getAllProduct', null, { root: true })
                 commit('ERROR/setIsLoading', false, { root: true });
 
             })
@@ -26,14 +26,36 @@ const actions = {
 
             });
     },
-    updateProduct({ commit,dispatch }, params) {
+    addProductByExcel({ commit, dispatch }, params) {
+        commit('ERROR/setIsLoading', true, { root: true });
+        http
+            .post(`/product/`, params, "Nhập hàng thành công")
+            .then((response) => {
+                dispatch('LOG/createNewLog', {
+                    status: "Nhập hàng",
+                    logContents:[{
+                        _id: response.data.data._id,
+                        quantity: response.data.data.inventory
+                    }],
+                }, { root: true })
+                commit('ERROR/setIsLoading', false, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+                commit('ERROR/setIsLoading', false, { root: true });
+            });
+    },
+
+    updateProduct({ commit, dispatch }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
         http
             .put(`/product/update/${params.productId}`, params.body, "Chỉnh sửa sản phẩm thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('ERROR/setIsLoading', false, { root: true });
-                dispatch('PRODUCTS/getAllProduct', null, {root: true})
+                dispatch('PRODUCTS/getAllProduct', null, { root: true })
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
@@ -42,35 +64,36 @@ const actions = {
                 commit('ERROR/setIsLoading', false, { root: true });
             });
     },
-    deleteProduct({ commit,dispatch }, productId) {
+    deleteProduct({ commit, dispatch }, productId) {
         commit('ERROR/setIsLoading', true, { root: true });
         http
             .put(`/product/delete/${productId}`, null, 'Xoá sản phẩm thành công')
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('ERROR/setIsLoading', false, { root: true });
-                dispatch('PRODUCTS/getAllProduct', null, {root: true})
+                dispatch('PRODUCTS/getAllProduct', null, { root: true })
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
                 commit('ERROR/setIsLoading', false, { root: true });
-
             });
     },
     importProduct({ commit }, params) {
         commit('ERROR/setIsLoading', true, { root: true });
-
         http
             .put(`/product/update/${params.productId}`, params.body, "Nhập hàng thành công")
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
+                commit('ERROR/setIsLoading', false, { root: true });
+
             })
             .catch((error) => {
                 commit('ERROR/setErrorMessage', error.response.data.message, {
                     root: true,
                 });
+                commit('ERROR/setIsLoading', false, { root: true });
             });
     },
     outProduct({ commit }, params) {

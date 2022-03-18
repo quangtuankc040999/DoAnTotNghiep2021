@@ -63,7 +63,11 @@ const actions = {
             .put(`/order/user/${params.orderId}`, params.body, 'Hoàn thành đóng gói sản phẩm')
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
-                dispatch('ORDERADMIN/getAllOrderWatting', '', { root: true })
+                dispatch('ORDERADMIN/getAllOrderWatting', '', {root: true})
+                dispatch('ORDERADMIN/getAllOrderDelivery', '', {root: true})
+                dispatch('ORDERADMIN/getAllOrderCancel', '', {root: true})
+                dispatch('ORDERADMIN/getAllOrderDone', '', {root: true})
+                dispatch('ORDERADMIN/getAllOrderRated', '', {root: true})
                 commit('ERROR/setIsLoading', false, { root: true });
 
             })
@@ -80,8 +84,8 @@ const actions = {
         http
             .put(`/order/user/${params.orderId}`, params.body, 'Huỷ đơn hàng thành công')
             .then(() => {
-                commit('ERROR/clearErrorMessage', null, { root: true });
-                dispatch('ORDERADMIN/getAllOrderWatting', '', { root: true })
+                commit('ERROR/clearErrorMessage', null, { root: true });  
+                dispatch('ORDERADMIN/getAllOrderWatting', '', {root: true})
                 commit('ERROR/setIsLoading', false, { root: true });
 
             })

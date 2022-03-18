@@ -20,7 +20,7 @@
             >
             </vueper-slide>
           </vueper-slides> -->
-          <v-carousel hide-delimiter-background show-arrows-on-hover cycle>
+          <v-carousel hide-delimiter-background show-arrows-on-hover cycle v-if="productById.image.length > 0"> 
             <v-carousel-item
               v-for="(item, i) in productById.image"
               :key="i"
@@ -37,16 +37,22 @@
               </div>
             </v-carousel-item>
           </v-carousel>
+             <div class="image" v-else>
+                <img
+                  class="product_img"
+                  :src="imageEmpty"
+                />
+              </div>
         </div>
       </div>
       <div class="product-infor">
         <div class="category">
-          <router-link :to="`/products/${productById.category_name}`"
+          <router-link :to="`/products/list/${productById.category_name}`"
             >{{ productById.category_name }}
           </router-link>
           <span> / </span>
           <router-link
-            :to="`/products/${productById.category_name}/${productById.category_detail}`"
+            :to="`/products/list-detail/${productById.category_name}/${productById.category_detail}`"
             >{{ productById.category_detail }}
           </router-link>
         </div>
@@ -112,48 +118,54 @@
         </p>
       </div>
     </div>
-    <div class="description">
-      <p class="description-title">Thông tin sản phẩm</p>
-      <div
-        class="post-content ql-editor"
-        v-html="productById.description"
-      ></div>
-    </div>
-    <p class="comment-title">Đánh giá sản phẩm</p>
-    <div v-if="listCommentProduct">
-      <div v-if="listCommentProduct.listComment.length > 0">
-        <div class="star-total">
-          <div class="div1">
-            <AwesomeVueStarRating
-              :star="Math.round(listCommentProduct.starAvg)"
-              :disabled="this.disabled"
-              :maxstars="this.maxstars"
-              :starsize="this.starsize"
-              :hasresults="this.hasresults"
-              :hasdescription="this.hasdescription"
+    <v-tabs>
+      <v-tab> <p class="description-title">Thông tin sản phẩm</p></v-tab>
+      <v-tab><p class="comment-title">Đánh giá sản phẩm</p></v-tab>
+      <v-tab-item
+        >
+        <div class="description">
+          <div
+            class="post-content ql-editor"
+            v-html="productById.description"
+          ></div></div
+      ></v-tab-item>
+      <v-tab-item>
+        <div v-if="listCommentProduct">
+          <div v-if="listCommentProduct.listComment.length > 0">
+            <div class="star-total">
+              <div class="div1">
+                <AwesomeVueStarRating
+                  :star="Math.round(listCommentProduct.starAvg)"
+                  :disabled="this.disabled"
+                  :maxstars="this.maxstars"
+                  :starsize="this.starsize"
+                  :hasresults="this.hasresults"
+                  :hasdescription="this.hasdescription"
+                />
+                <span>{{ listCommentProduct.starAvg }} trên 5</span>
+              </div>
+              <span>(Có {{ listCommentProduct.numberComment }} đánh giá)</span>
+            </div>
+            <comment-item
+              v-for="(comment, index) in listCommentProduct.listComment"
+              :key="index"
+              :comment="comment"
+              :indexComment="index"
+              class="comment"
             />
-            <span>{{ listCommentProduct.starAvg }} trên 5</span>
+            <div class="text-center">
+              <v-pagination
+                v-model="page"
+                :length="listCommentProduct.numberPages"
+                :total-visible="7"
+                circle
+              ></v-pagination>
+            </div>
           </div>
-          <span>(Có {{ listCommentProduct.numberComment }} đánh giá)</span>
+          <div v-else>Chưa có đánh giá</div>
         </div>
-        <comment-item
-          v-for="(comment, index) in listCommentProduct.listComment"
-          :key="index"
-          :comment="comment"
-          :indexComment="index"
-          class="comment"
-        />
-        <div class="text-center">
-          <v-pagination
-            v-model="page"
-            :length="listCommentProduct.numberPages"
-            :total-visible="7"
-            circle
-          ></v-pagination>
-        </div>
-      </div>
-      <div v-else>Chưa có đánh giá</div>
-    </div>
+      </v-tab-item>
+    </v-tabs>
 
     <div class="gallery" v-bind:class="{ show: isShow }">
       <div class="gallery_inner">
@@ -164,18 +176,18 @@
         ></div>
       </div>
       <div class="close">
-        <v-btn text @click="isShow = false">
-          <v-icon large color="grey lighten-5">mdi-close-thick</v-icon>
+        <v-btn text class="gallary-btn" @click="isShow = false">
+          <v-icon color="grey lighten-5">mdi-close-thick</v-icon>
         </v-btn>
       </div>
 
       <div class="pre" v-if="curentIndex > 0">
-        <v-btn text @click="changImage('pre')">
+        <v-btn class="gallary-btn" text @click="changImage('pre')">
           <v-icon x-large color="grey lighten-5">mdi-chevron-left </v-icon>
         </v-btn>
       </div>
-      <div class="next" v-if="curentIndex < productById.image.length -1">
-        <v-btn text @click="changImage('next')">
+      <div class="next" v-if="curentIndex < productById.image.length - 1">
+        <v-btn text class="gallary-btn" @click="changImage('next')">
           <v-icon x-large color="grey lighten-5">mdi-chevron-right </v-icon>
         </v-btn>
       </div>
@@ -196,6 +208,8 @@ export default {
   },
   data() {
     return {
+      imageEmpty:
+        "https://thegioirubik.com/wp-content/uploads/woocommerce-placeholder.png",
       curentIndex: 0,
       isShow: false,
       srcImg: "",
@@ -235,7 +249,7 @@ export default {
         case "next":
           this.curentIndex++;
           this.srcImg = this.productById.image[this.curentIndex];
-          break
+          break;
       }
     },
     top(number) {
@@ -318,6 +332,7 @@ export default {
       productId: this.$route.params.id,
       page: 1,
     });
+ 
   },
   watch: {
     page() {
@@ -468,12 +483,12 @@ p {
     }
   }
 }
+.description-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  border: none;
+}
 .description {
-  .description-title {
-    font-size: 1.2em;
-    font-weight: 700;
-    border: none;
-  }
   .description-content {
     border-bottom: none;
     text-transform: unset !important;
@@ -565,5 +580,20 @@ p {
 .next {
   position: fixed;
   right: 20px;
+}
+.gallary-btn {
+  min-width: 50px !important;
+  min-height: 50px !important;
+  width: 50px !important;
+  height: 50px !important;
+  background-color: rgba(201, 201, 201, 0.5);
+  border-radius: 50%;
+}
+.v-tabs,
+.post-content {
+  margin-top: 30px !important;
+}
+p {
+  margin-bottom: 0px !important;
 }
 </style>

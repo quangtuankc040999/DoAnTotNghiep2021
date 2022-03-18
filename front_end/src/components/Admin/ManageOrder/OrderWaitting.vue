@@ -1,6 +1,10 @@
 <template>
   <div class="order-waiting">
-    <modal-cancel-order v-if="orderById" :orderById="orderById" ref="modalCancelOrder" />
+    <modal-cancel-order
+      v-if="orderById"
+      :orderById="orderById"
+      ref="modalCancelOrder"
+    />
     <div class="order-list">
       <v-text-field
         class="search"
@@ -60,7 +64,11 @@
 
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn text v-bind="attrs" v-on="on" @click="showModalCancel(item._id)"
+                  <v-btn
+                    text
+                    v-bind="attrs"
+                    v-on="on"
+                    @click="showModalCancel(item._id)"
                     ><v-icon small>mdi-close-box </v-icon></v-btn
                   >
                 </template>
@@ -134,12 +142,12 @@ export default {
   computed: {
     ...mapGetters({
       listOrderWaiting: "ORDERADMIN/listWaitting",
-      orderById: "ORDERADMIN/orderById"
+      orderById: "ORDERADMIN/orderById",
     }),
   },
   methods: {
     showModalCancel(idOrder) {
-      this.getOrderByIdAction(idOrder)
+      this.getOrderByIdAction(idOrder);
       this.$refs.modalCancelOrder.show();
     },
     updateOrder(params) {
@@ -176,7 +184,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-btn{
+.v-btn {
   min-width: 20px !important;
+}
+td {
+  padding: 30px 10px !important;
+  text-align: center;
+  font-size: 13px !important;
 }
 </style>

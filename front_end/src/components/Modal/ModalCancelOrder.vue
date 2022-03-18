@@ -43,7 +43,7 @@
       </table>
       <div v-show="isShow" class="question">
         <p>Bạn có thực sự muốn huỷ đơn hàng này không?</p>
-        <v-btn @click="hideModal" style="background-color: #BDBDBD">
+        <v-btn @click="hideModal" style="background-color: #bdbdbd">
           Không, cảm ơn</v-btn
         >
         <v-btn @click="confirmCacel" style="background-color: #616161">
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "modal-cancel",
   props: ["orderById"],
@@ -79,22 +79,34 @@ export default {
       showErrors: false,
     };
   },
+  computed: {
+    ...mapGetters({
+      userInfoAuth: "AUTH/userInfo",
+    }),
+  },
   methods: {
     cancelOrder(orderId) {
       if (this.note != "") {
-        this.cancelOrderAction({
-          orderId: orderId,
-          body: {
-            status: "Đã huỷ",
-            note: this.note,
-          },
-        })
-          .then(() => {
-            this.hideModal();
+        if (this.userInfoAuth.role == "Admin") {
+          this.cancelOrderAction({
+            orderId: orderId,
+            body: {
+              status: "Đã huỷ",
+              note: this.note,
+            },
           })
-          .catch((error) => {
-            console.log(error);
+            .then(() => {
+              this.hideModal();
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          this.updateOrderAction({
+            orderId: this.orderById._id,
+            body: { status: "Đã huỷ", id: this.userInfoAuth._id, note: this.note },
           });
+        }
       } else {
         this.showErrors = true;
       }
@@ -115,6 +127,7 @@ export default {
     },
     ...mapActions({
       cancelOrderAction: "ORDERADMIN/cancelOrder",
+      updateOrderAction: "PAYMENT/updateOrder",
     }),
   },
   watch: {
@@ -126,7 +139,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-p{
+p {
   font-size: 1rem !important;
   color: rgb(118, 118, 233);
   margin-top: 10px;
@@ -160,6 +173,6 @@ textarea {
   color: rgb(231, 61, 61);
   font-size: 1em;
   font-style: italic;
-  margin-top: 3px ;
+  margin-top: 3px;
 }
 </style>

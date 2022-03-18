@@ -57,13 +57,15 @@ const mutations = {
     },
 };
 const actions = {
-    newOrder({ commit }, params) {
+    newOrder({ commit, dispatch }, params) {
+        console.log(params);
         commit('ERROR/setIsLoading', true, { root: true });
         http
             .post('/order/', params, 'Đặt hàng thành công, chờ xác nhận')
             .then(() => {
                 commit('ERROR/clearErrorMessage', null, { root: true });
                 commit('ERROR/setIsLoading', false, { root: true })
+                dispatch('CART/clearProductCart', params.customerId, {root: true})
                 router.push(`/profile/user/manage-order/waitting`)
             })
             .catch((error) => {

@@ -379,6 +379,7 @@ export default {
       this.orderInput.customerName =
         this.userInfo.lastName + " " + this.userInfo.firstName;
       this.orderInput.customerEmail = this.userInfo.email;
+      this.orderInput.customerPhone = this.userInfo.phoneNumber;
     }
   },
   watch: {

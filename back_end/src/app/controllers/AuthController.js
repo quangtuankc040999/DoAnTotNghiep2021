@@ -21,11 +21,13 @@ class AuthController {
             errors.array(),
           );
         } else {
+          console.log(req.body);
           const salt = await bcrypt.genSalt(10);
           let user = new User();
           user.firstName = req.body.firstName;
           user.lastName = req.body.lastName;
           user.email = req.body.email;
+          user.phoneNumber = req.body.phoneNumber
           const userFind = await User.find({email: req.body.email})
           if(userFind.length != 0 ){
             return apiResponse.ErrorResponse(res, 'Email đã được đăng ký');

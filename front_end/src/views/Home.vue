@@ -397,4 +397,5 @@ export default {
   opacity: 0;
   transition: opacity 0.5s ease;
 }
+
 </style>

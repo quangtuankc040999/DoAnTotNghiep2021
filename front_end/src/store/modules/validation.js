@@ -183,9 +183,9 @@ const getters = {
       if (!productInput.category_detail) {
         errors.emptyCategoryDetail = true
       }
-      if (productInput.image.length <= 0) {
-        errors.emptyImages = true
-      }
+      // if (productInput.image.length <= 0) {
+      //   errors.emptyImages = true
+      // }
       if (Object.keys(errors).length) return errors;
       return null;
     }

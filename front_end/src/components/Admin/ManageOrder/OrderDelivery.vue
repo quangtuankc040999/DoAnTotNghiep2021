@@ -35,7 +35,6 @@
             <td>
               {{ formatPrice(item.total) }}
             </td>
-           
           </tr>
         </template>
       </v-data-table>
@@ -58,39 +57,43 @@ export default {
           align: "start",
           value: "title",
           width: "10%",
+          sortable: true,
         },
         {
           text: "Tên khách hàng",
           align: "start",
           value: "title",
           width: "10%",
+          sortable: true,
         },
         {
           text: "Số điện thoại",
           value: "image",
           width: "10%",
-          sortable: false,
+          sortable: true,
         },
         {
           text: "Đơn hàng",
           value: "category_name",
           width: "15%",
           align: "center",
+          sortable: true,
         },
-        { text: "Địa chỉ", value: "sale_price", width: "20%" },
+        { text: "Địa chỉ", value: "sale_price", width: "20%", sortable: true },
         {
           text: "Ngày đặt hàng",
           value: "",
           width: "15%",
           align: "center",
+          sortable: true,
         },
         {
           text: "Tổng thu",
           value: "",
           width: "15%",
           align: "center",
+          sortable: true,
         },
-       
       ],
     };
   },
@@ -133,5 +136,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+td {
+  padding: 30px 10px !important;
+  text-align: center;
+  font-size: 13px !important;
+}
 </style>

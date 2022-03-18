@@ -28,6 +28,7 @@ import ChatRoomAdmin from '../components/Admin/ChatAdmin/ChatAdmin.vue'
 import PlayView from '../views/PlayRubik/PlayView.vue'
 // import ImportGoods from '../components/Admin/ManageStore/ImportGoods.vue'
 // import ViewLog from '../components/Admin/ManageStore/ViewLog.vue'
+import dashboard from '../views/Admin/Dashboard/Dashboard.vue'
 import ForbbidenPage from '../views/403Page.vue'
 import SinglePlay from '../components/PlayRubik/Single-play.vue'
 import CreatePostBlogs from '../views/Blog/CreatePost.vue'
@@ -218,6 +219,12 @@ const routes = [
       requiresAuth: true
     },
     children: [
+      {
+        path: '/admin/dashboard/',
+        name: dashboard,
+        component: dashboard,
+      },
+
       {
         path: '/admin/manage-product/',
         name: manageProduct,

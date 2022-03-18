@@ -21,7 +21,7 @@
 
       <v-divider></v-divider>
       <v-list dense>
-        <v-list-item link @click="manageProduct">
+        <v-list-item link @click="dashboard">
           <v-list-item-icon>
             <v-icon>mdi-view-dashboard-outline</v-icon>
           </v-list-item-icon>
@@ -71,11 +71,12 @@
       <v-list dense>
         <v-list-item link @click="manageUser">
           <v-list-item-icon>
-            <v-icon>mdi-account-group </v-icon>
+            <v-icon>mdi-fountain-pen-tip </v-icon>
+            <!-- <v-icon>mdi-account-group </v-icon> -->
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>Quản lý khách hàng</v-list-item-title>
+            <v-list-item-title>Quản lý bài viết</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -135,6 +136,9 @@ export default {
     }),
   },
   methods: {
+    dashboard(){
+      this.$router.push(`/admin/dashboard/`);
+    },
     manageLogout() {
       this.logoutAction();
     },
@@ -170,7 +174,7 @@ export default {
 </script>
 <style scoped>
 .side-bar {
-  height: 100%;
+  height: 100% !important;
 }
 .v-sheet.v-card:not(.v-sheet--outlined) {
   box-shadow: none;

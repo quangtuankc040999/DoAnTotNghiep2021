@@ -2,11 +2,12 @@
   <div class="import-goods">
     <div class="btn-file-container">
       <v-btn @click="chooseFile" class="btn-choosefile">Chọn tệp</v-btn>
-      <input type="text" id="file_name" placeholder="choose file..." />
+      <input type="text" id="file_name" placeholder="Choose File..." />
       <input
         type="file"
         class="my_input"
         @change="importExcel"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         id="upload"
         ref="file_input"
       />
@@ -27,8 +28,12 @@
 
         <template v-slot:item="{ item }">
           <tr>
-            <td v-if="item.status == 1"> <v-icon color="amber lighten-1">mdi-home-import-outline </v-icon></td>
-            <td v-else-if="item.status == 2"><v-icon color="green lighten-1">mdi-new-box </v-icon></td>
+            <td v-if="item.status == 1">
+              <v-icon color="green lighten-1">mdi-home-import-outline </v-icon>
+            </td>
+            <td v-else-if="item.status == 2">
+              <v-icon color="red lighten-1" large>mdi-new-box </v-icon>
+            </td>
 
             <td>{{ item.title }}</td>
             <td>
@@ -60,26 +65,33 @@ export default {
   data() {
     return {
       isDisable: true,
+      logContent: [],
       headers: [
-        { text: "Thao tác", width: "3%",align:"center", sortable: false },
-        { text: "Tên Sản phẩm", value: "image", width: "10%", sortable: false },
+        { text: "Thao tác", width: "5%", align: "center", sortable: false },
+        {
+          text: "Sản phẩm",
+          value: "image",
+          width: "20%",
+          align: "center",
+          sortable: false,
+        },
         {
           text: "Phân loại",
           value: "category_name",
-          width: "10%",
+          width: "20%",
           align: "center",
         },
-        { text: "Giá nhập/ Cái", width: "10%" },
+        { text: "Giá/ Cái", align: "center", width: "20%" },
         {
-          text: "Số lượng nhập",
+          text: "Số lượng",
           value: "",
-          width: "10%",
+          width: "15%",
           align: "center",
         },
         {
-          text: "Tổng nhập",
+          text: "Tổng",
           value: "",
-          width: "10%",
+          width: "20%",
           align: "center",
         },
       ],
@@ -119,7 +131,7 @@ export default {
           for (var i = 0; i < ws.length; i++) {
             excellist.push(ws[i]);
           }
-          console.log("Read results", excellist); // At this point, you get an array containing objects that need to be processed
+          // console.log("Read results", excellist); // At this point, you get an array containing objects that need to be processed
           this.readExcelRecords = excellist;
           this.isDisable = false;
         } catch (e) {
@@ -138,14 +150,28 @@ export default {
         if (record.status == 1) {
           this.updateProductAction({
             productId: record._id,
-            body: { quantity: record.quantity },
+            body: {
+              import_price: record.import_price,
+              quantity: record.quantity,
+            },
+          });
+          this.logContent.push({ _id: record._id, quantity: record.quantity });
+        } else if (record.status == 2) {
+          this.addProductAction({
+            title: record.title,
+            brand: record.brand,
+            import_price: record.import_price,
+            category_name: record.category_name,
+            category_detail: record.category_detail,
+            inventory: record.quantity,
           });
         }
       }
       this.createNewLogAction({
         status: "Nhập hàng",
-        logContents: this.readExcelRecords,
+        logContents: this.logContent,
       });
+      this.readExcelRecords = [];
     },
     formatPrice(price) {
       return new Intl.NumberFormat("de-DE", {
@@ -158,6 +184,7 @@ export default {
       getProductInforAction: "PRODUCTS/getProduct",
       updateProductAction: "PRODUCTACTION/importProduct",
       createNewLogAction: "LOG/createNewLog",
+      addProductAction: "PRODUCTACTION/addProductByExcel",
     }),
   },
   created() {},
@@ -171,6 +198,8 @@ export default {
 }
 td {
   padding: 30px 10px !important;
+  text-align: center;
+  font-size: 17px !important;
 }
 .import-goods {
   height: 100% !important;
@@ -179,8 +208,9 @@ td {
     #file_name {
       margin-left: 10px;
       padding: 10px;
-      border: 1px solid rgb(187, 187, 187);
+      border: 0.3px solid rgb(235, 235, 235);
       border-radius: 25px;
+      width: 50% !important;
     }
   }
 }
@@ -197,5 +227,10 @@ td {
   margin-top: 20px !important;
 }
 .btn-choosefile {
+}
+.v-icon {
+  &:hover {
+    transform: rotateZ(-360deg);
+  }
 }
 </style>

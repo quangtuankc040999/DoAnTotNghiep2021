@@ -4,10 +4,10 @@
       <v-tabs color="deep-purple accent-4" right>
         <v-tab>Đơn hàng chờ xác nhận</v-tab>
         <v-tab>Đơn hàng đang vận chuyển</v-tab>
-        <v-tab>Đơn hàng đã đánh giá</v-tab>
+        <!-- <v-tab>Đơn hàng đã đánh giá</v-tab> -->
         <v-tab-item><order-waitting /> </v-tab-item>
         <v-tab-item><order-delivery/> </v-tab-item>
-        <v-tab-item><order-rated/> </v-tab-item>
+        <!-- <v-tab-item><order-rated/> </v-tab-item> -->
 
       </v-tabs>
     </v-card>
@@ -17,9 +17,9 @@
 <script>
 import OrderWaitting from './OrderWaitting.vue';
 import OrderDelivery from './OrderDelivery.vue';
-import OrderRated from './OrderRated.vue'
+// import OrderRated from './OrderRated.vue'
 export default {
-  components: { OrderWaitting, OrderDelivery, OrderRated },
+  components: { OrderWaitting, OrderDelivery },
   data() {
     return {};
   },

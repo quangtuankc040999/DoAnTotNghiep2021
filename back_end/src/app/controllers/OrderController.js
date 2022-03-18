@@ -1,5 +1,9 @@
 const Order = require('../models/Order')
 const apiResponse = require('../../utils/apiResponse');
+const endOfDay = require('date-fns/endOfDay');
+const endOfMonth = require('date-fns/endOfMonth');
+const startOfMonth = require('date-fns/startOfMonth');
+const startOfDay = require('date-fns/startOfDay');
 const Log = require('../models/Log');
 
 class OrderController {
@@ -22,6 +26,12 @@ class OrderController {
                     status: order.status,
                     additionalInformation: order.additionalInformation,
                     note: order.note
+                },
+                $push: {
+                    listStatus: {
+                        status: order.status,
+                        time: new Date()
+                    }
                 }
             });
         return apiResponse.successResponse(
@@ -105,6 +115,52 @@ class OrderController {
             'Get successfully',
             listOrderUserRated,
         );
+    }
+
+    getOrderByMonth = async (req, res) => {
+        const dateParams = req.body.date
+        const date = new Date(dateParams);
+        const status = req.body.status;
+        if (status != "Tất cả đơn hàng") {
+            const order1 = await Order.find(
+                {
+                    "createdAt": {
+                        $gte: startOfMonth(date),
+                        $lte: endOfMonth(date)
+                    },
+                    "status": status
+                }
+            );
+            if (!order1) {
+                apiResponse.ErrorResponse(res, 'Không tìm thấy đơn hàng');
+            }
+            return apiResponse.successResponseWithData(
+                res,
+                'Get successfully',
+                order1,
+            );
+        }
+        else {
+            const order2 = await Order.find(
+                {
+                    "createdAt": {
+                        $gte: startOfMonth(date),
+                        $lte: endOfMonth(date)
+                    }
+                }
+            );
+            if (!order2) {
+                apiResponse.ErrorResponse(res, 'Không tìm thấy đơn hàng');
+            }
+            return apiResponse.successResponseWithData(
+                res,
+                'Get successfully',
+                order2,
+            );
+
+        }
+
+
     }
 }
 module.exports = new OrderController;

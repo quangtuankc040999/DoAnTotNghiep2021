@@ -6,10 +6,10 @@
       </div>
       <div class="nav-links">
         <ul style="margin-bottom: 0px;" v-show="!mobile">
-          <router-link class="link" to="/">Home</router-link>
+          <router-link class="link" to="/">Trang chủ</router-link>
           <router-link class="link" to="/blog/main-page">Blogs</router-link>
           <router-link  v-if="userInfoAuth" class="link" to="/blog/create-blog"
-            >Create Post</router-link
+            >Viết bài</router-link
           >
         </ul>
       </div>

@@ -49,6 +49,7 @@ export default {
 
 <style scoped>
 .container {
+  min-height: 100vh;
   width: 100% !important;
   display: flex;
   margin: 0 auto;

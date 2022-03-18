@@ -48,7 +48,7 @@ const actions = {
           router.push("/")
         }
         else if (response.data.data.role.name == "Admin") {
-          router.push("/admin")
+          router.push("/admin/dashboard")
         }
       })
       .catch((err) => {

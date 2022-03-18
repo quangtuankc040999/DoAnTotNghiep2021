@@ -127,7 +127,7 @@
     </div>
     <div v-else class="cart-empty">
       <img src="../../assets/empty-cart.png" alt="" />
-      <router-link to="/products">
+      <router-link to="/products/all-product">
         <v-btn class="back-products"> TRỞ LẠI CỬA HÀNG </v-btn>
       </router-link>
     </div>
@@ -253,6 +253,7 @@ a:hover {
   font-weight: 500;
 }
 .cart-container {
+  min-height: 100vh !important;
   display: flex;
   margin: 0 auto;
   width: 90%;
@@ -324,6 +325,7 @@ a:hover {
   }
 }
 .cart-empty {
+  min-height: 80vh !important;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -331,7 +333,7 @@ a:hover {
   img {
     width: 188px;
     height: 177px;
-    margin: 20px auto;
+    margin: 50px auto ;
   }
   .back-products {
     background: rgb(41, 39, 39, 0.4) !important;

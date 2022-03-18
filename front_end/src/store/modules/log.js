@@ -1,17 +1,17 @@
 import http from '../../service/api.js';
 const state = {
-    // listCommentProduct: null
+    listLog: []
 };
 
 const getters = {
-    // listCommentProduct(state) {
-    //     return state.listCommentProduct
-    // }
+    listLog(state) {
+        return state.listLog
+    }
 };
 const mutations = {
-    // setListCommentProductById(state, listComment) {
-    //     state.listCommentProduct = listComment;
-    // },
+    setListLog(state, listLog) {
+        state.listLog = listLog;
+    },
 };
 const actions = {
     createNewLog({ commit }, params) {
@@ -38,7 +38,19 @@ const actions = {
                 });
             });
     },
- 
+    getAllLog({ commit }, params) {
+        http.get(`/log/get/${params}`)
+            .then((response) => {
+                commit('setListLog', response.data.data)
+                commit('ERROR/clearErrorMessage', null, { root: true });
+            })
+            .catch((error) => {
+                commit('ERROR/setErrorMessage', error.response.data.message, {
+                    root: true,
+                });
+            });
+    }
+
 };
 
 export default {

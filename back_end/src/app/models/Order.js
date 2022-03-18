@@ -7,6 +7,10 @@ const Order = new Schema(
         customerName: { type: String },
         customerPhone: { type: String },
         customerEmail: {type:String},
+        listStatus: [{
+            status: {type: String, default: "Chờ xác nhận"},
+            time: {type: Date, default: new Date()}
+        }],
         product: [{type: Object}],
         localization: { type: String, require: true },
         status: { type: String, default: "Chờ xác nhận" },

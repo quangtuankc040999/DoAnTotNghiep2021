@@ -48,7 +48,13 @@
             </v-tooltip>
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn text v-bind="attrs" v-on="on" @click="updateBlog({blogId: item._id, body: {isCensored: true}})"
+                <v-btn
+                  text
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="
+                    updateBlog({ blogId: item._id, body: { isCensored: true } })
+                  "
                   ><v-icon small>mdi-check-circle </v-icon></v-btn
                 >
               </template>
@@ -57,7 +63,13 @@
 
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-btn text v-bind="attrs" v-on="on" @click="deleteBlog({blogId: item._id, body: {isDeleted: true}})"
+                <v-btn
+                  text
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="
+                    deleteBlog({ blogId: item._id, body: { isDeleted: true } })
+                  "
                   ><v-icon small>mdi-delete </v-icon></v-btn
                 >
               </template>
@@ -83,27 +95,31 @@ export default {
       headers: [
         {
           text: "Tác giả",
-          align: "start",
-          width: "20%",
+          align: "center",
+          width: "15%",
         },
         {
           text: "Tên bài viết",
-          align: "start",
-          width: "20%",
+          align: "center",
+          width: "25%",
         },
         {
           text: "Chủ đề",
-          width: "20%",
+          width: "10%",
+          align: "center",
           sortable: false,
         },
         {
           text: "Ngày đăng",
           width: "10%",
+          align: "center",
           sortable: false,
         },
         {
           text: "Hành động",
-          width: "10%",
+          width: "20%",
+          align: "center",
+
           sortable: false,
         },
       ],
@@ -141,7 +157,9 @@ export default {
 
 <style lang="scss" scoped>
 td {
-  padding: 20px 10px 10px 20px !important;
+  padding: 20px 0px !important;
+  text-align: center;
+  font-size: 13px !important;
 }
 .v-btn {
   min-width: 30px !important;
