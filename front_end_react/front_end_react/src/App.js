@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginRequest } from './actions/login';
 import './App.css';
-import HomePage from './pages/HomePage';
+import MainPage from './pages/MainPage';
 // import Products from './pages/products/Products';
 
 function App() {
@@ -21,7 +21,7 @@ useEffect(() => {
 })
   return (
     <div className="App">
-      <HomePage/>
+      <MainPage/>
     </div>
   );
 }

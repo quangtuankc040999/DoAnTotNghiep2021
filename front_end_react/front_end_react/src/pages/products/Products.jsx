@@ -6,26 +6,24 @@ import { ProductCard } from '../../components/product/productCard/ProductCard';
 import { SideBar } from '../../components/product/sideBar/SideBar'
 import { ProductListContainer } from './style';
 import './Product.css'
-// import Pagination from '@mui/material/Pagination';
+import ProductList from './ProductList';
+import { useLocation } from "react-router-dom";
+
 export default function Products() {
 
   const dispatch = useDispatch();
-  const products = useSelector(state => state.product.productList)
 
   useEffect(() => {
     dispatch(getProductsRequest())
   }, [])
 
+
+ 
+
   return (
     <div className="container-product">
       <SideBar className="side-bar-product" />
-      <ProductListContainer  className="infor-product">
-        {products.map((product, i) => (
-          <ProductCard key={i} product={product} />
-        ))
-        }
-        {/* <Pagination count={10} /> */}
-      </ProductListContainer>
+      <ProductList/>
     </div>
 
   )

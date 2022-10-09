@@ -20,3 +20,12 @@ export const getProductsRequest = () => {
     })
   }
 }
+
+
+export const getProductsByCategoryRequest = (params) => {
+  return dispatch => {
+    return get(`fillter-product/category/${params}/1`).then(res => {
+      dispatch(getProductsSuccess(res.data.data))
+    })
+  }
+}

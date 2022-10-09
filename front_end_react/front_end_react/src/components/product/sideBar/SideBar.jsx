@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCategoriesRequest } from '../../../actions/category';
+import { getProductsByCategoryRequest } from '../../../actions/product';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,25 +10,30 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { useState } from 'react';
+import { Route, Routes, BrowserRouter as Router, Link, useLocation } from 'react-router-dom'
 import './Sidebar.css'
-function valuetext(value) {
-  return `${value}`;
-}
-
 
 export const SideBar = () => {
   const [idCategory, setIdCategory] = useState('')
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const categories = useSelector(state => state.category.categoryList);
+
   const handleClick = (id) => {
     setIdCategory(id)
     setOpen(!open);
   };
-  const dispatch = useDispatch();
-  const categories = useSelector(state => state.category.categoryList);
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
 
   useEffect(() => {
     dispatch(getCategoriesRequest())
   }, [])
+
 
   return (
     <div>
@@ -41,12 +47,16 @@ export const SideBar = () => {
           categories.map((category, i) => (
             category.categoryDetails.length === 0 ? (
               <ListItemButton sx={{ pl: 2 }}>
-                <ListItemText primary={category.name} />
+                <Link to={`/products/${category.name}`} >
+                  <ListItemText primary={category.name} />
+                </Link>
               </ListItemButton>
             ) : (
               <List>
                 <ListItemButton onClick={() => handleClick(category._id)} sx={{ pl: 2 }}>
-                  <ListItemText primary={category.name} />
+                  <Link to={`/products/${category.name}`}  >
+                    <ListItemText primary={category.name} />
+                  </Link>
                   {(open && category._id === idCategory) ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
                 <Collapse in={open && category._id === idCategory} timeout="auto" unmountOnExit>
@@ -54,7 +64,9 @@ export const SideBar = () => {
                     {
                       category.categoryDetails.map((categoryDetail, i) => (
                         <ListItemButton sx={{ pl: 6 }} >
-                          <ListItemText primary={categoryDetail} />
+                          <Link to={`/products/${category.name}/${categoryDetail}`} >
+                            <ListItemText primary={categoryDetail} />
+                          </Link>
                         </ListItemButton>
                       ))
                     }
@@ -66,10 +78,6 @@ export const SideBar = () => {
           )
         }
       </List>
-
-
     </div>
-
-
   )
 }
