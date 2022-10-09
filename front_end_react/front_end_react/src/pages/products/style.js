@@ -7,3 +7,14 @@ export const ProductListContainer = styled.div`
     grid-row-gap: 80px; 
     width: 80%;
 `
+export const Empty = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60vw
+`
+export const Img = styled.img`
+    height: 200px;
+    width: 200px;
+`
+  

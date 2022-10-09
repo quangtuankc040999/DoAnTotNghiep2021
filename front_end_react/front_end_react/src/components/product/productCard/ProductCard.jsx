@@ -58,7 +58,6 @@ export const ProductCard = (props) => {
                   {formatPrice(product.starting_price)}
                   </OldPrice>
                 </H4>
-                {/* <DiscountPersent>-{product.discount}%</DiscountPersent> */}
               </div>
             }
           </ProductPrice>

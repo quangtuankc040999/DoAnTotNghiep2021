@@ -18,3 +18,13 @@ export const post = (endPoint, param) => {
         console.log(error);
     })
 }
+
+export const put = (endPoint, param) => {
+    return axios({
+        method: 'PUT',
+        url: `${baseURL}/${endPoint}`,
+        data: param
+    }).catch((error) => {
+        console.log(error);
+    })
+}
