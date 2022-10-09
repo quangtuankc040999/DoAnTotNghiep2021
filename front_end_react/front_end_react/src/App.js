@@ -16,9 +16,6 @@ function App() {
     }
     dispatch(loginRequest(user))
   }, [])
-useEffect(() => {
-  console.log(user);
-})
   return (
     <div className="App">
       <MainPage/>
