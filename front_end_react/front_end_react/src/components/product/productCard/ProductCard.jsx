@@ -1,31 +1,34 @@
 import Carousel from 'react-material-ui-carousel'
+import { Navigate, useNavigate } from 'react-router-dom';
 import { Item } from '../../carousel/Carousel';
-import './productCardStyle.css'
+import { H3, H4, H6, Image, OldPrice, OutOfStock, ProductContainer, ProductDetail, ProductInfor, ProductPrice, Span } from './style';
 
 
 
 export const ProductCard = (props) => {
+  const navigate = useNavigate();
   const formatPrice = (price) => {
     return new Intl.NumberFormat("de-DE", {
       style: "currency",
       currency: "VND",
     }).format(price);
   }
-  const viewProductDetail = () => {
-    console.log('log');
-  }
   const { product } = props
   return (
-    <div className='product-card' onClick = {viewProductDetail}>
-      <div className="container">
+    <div className='product-card' onClick = {() => {
+      localStorage.setItem('product_id', product._id)
+      navigate(`/products/product-detail/${product._id}`)
+    }}>
+      <ProductContainer>
         {
           product.inventory === 0 && (
-            <div className="out-of-stock">
-              <span>Hết hàng</span>
-            </div>
+            <OutOfStock>
+              <Span>Hết hàng</Span>
+            </OutOfStock>
           )
         }
-        <div className="img">
+        <Image>
+
           <Carousel>
             {product.image.length > 0 ? (
               product.image.map((item, index) => {
@@ -35,29 +38,32 @@ export const ProductCard = (props) => {
             ) : <Item item={'https://thegioirubik.com/wp-content/uploads/woocommerce-placeholder.png'}></Item>
             }
           </Carousel>
-        </div>
+        </Image>
+        
        
-        <div className="product">
-          <div className="product-infor">
+        <ProductDetail>
+          <ProductInfor>
             <div className="name">
-              <h3>{product.title}</h3>
-              <h6>{product.category_name}</h6>
+              <H3>{product.title}</H3>
+              <H6>{product.category_name}</H6>
             </div>
-          </div>
-          <div className="product-price">
-            <h4>{formatPrice(product.sale_price)}</h4>
+          </ProductInfor>
+          <ProductPrice>
+            <H4>{formatPrice(product.sale_price)}</H4>
             {
               product.discount > 0 &&
               <div className="discount" >
-                <h6 className="old-price">
+                <H4>
+                  <OldPrice>
                   {formatPrice(product.starting_price)}
-                </h6>
-                {/* <span className="discount-persent">-{product.discount}%</span> */}
+                  </OldPrice>
+                </H4>
+                {/* <DiscountPersent>-{product.discount}%</DiscountPersent> */}
               </div>
             }
-          </div>
-        </div>
-      </div>
+          </ProductPrice>
+        </ProductDetail>
+      </ProductContainer>
     </div>
   )
 }

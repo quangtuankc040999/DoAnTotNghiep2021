@@ -1,5 +1,6 @@
 import React from 'react';
 import HomePage from './pages/homePage/HomePage';
+import ProductDetail from './pages/products/ProductDetail';
 import Products from './pages/products/Products'
 
 const routers = [
@@ -23,6 +24,11 @@ const routers = [
         exact: true,
         main: () => <Products/>
     },
+    {
+        path: '/products/product-detail/:id',
+        exact: true,
+        main: () => <ProductDetail/>
+    }
 
 
 ];

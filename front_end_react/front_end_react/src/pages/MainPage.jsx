@@ -1,6 +1,7 @@
 import React from 'react'
 import routers from '../router'
 import { Route, Routes , BrowserRouter as Router } from 'react-router-dom'
+import Navigation from '../components/navigation/Navigation';
 export default function MainPage() {
   const showContentMenus = (routers) => {
     let result = null;
@@ -19,6 +20,7 @@ export default function MainPage() {
   return (
     <Router>
       <div>
+        <Navigation></Navigation>
         {showContentMenus(routers)}
       </div>
     </Router>

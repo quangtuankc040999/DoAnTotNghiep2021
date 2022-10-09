@@ -2,7 +2,8 @@ import productActionType from '../actionTypes/products'
 
 
 const initalState = {
-  productList: []
+  productList: [],
+  product: {}
 }
 const productReducer = (state = initalState, action) => {
   switch (action.type) {
@@ -10,6 +11,11 @@ const productReducer = (state = initalState, action) => {
       return {
         ...state,
         productList: action.payload
+      }
+    case productActionType.GET_PRODUCT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        product: action.payload
       }
     default:
       return state

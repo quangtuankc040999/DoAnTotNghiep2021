@@ -1,30 +1,26 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getCategoriesRequest } from '../../actions/category'
 import { getProductsRequest } from '../../actions/product'
-import { ProductCard } from '../../components/product/productCard/ProductCard';
 import { SideBar } from '../../components/product/sideBar/SideBar'
-import { ProductListContainer } from './style';
 import './Product.css'
 import ProductList from './ProductList';
-import { useLocation } from "react-router-dom";
+import { ContainerProduct } from './productStyle'
 
 export default function Products() {
 
   const dispatch = useDispatch();
+  const categories = useSelector(state => state.category.categoryList);
 
   useEffect(() => {
     dispatch(getProductsRequest())
+    dispatch(getCategoriesRequest())
   }, [])
-
-
- 
-
   return (
-    <div className="container-product">
-      <SideBar className="side-bar-product" />
+    <ContainerProduct>
+      <SideBar className="side-bar-product" categories={categories} />
       <ProductList/>
-    </div>
-
+    </ContainerProduct>
   )
 }

@@ -13,32 +13,23 @@ import { useState } from 'react';
 import { Route, Routes, BrowserRouter as Router, Link, useLocation } from 'react-router-dom'
 import './Sidebar.css'
 
-export const SideBar = () => {
+export const SideBar = (props) => {
   const [idCategory, setIdCategory] = useState('')
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const categories = useSelector(state => state.category.categoryList);
-
+  const {categories} = props
   const handleClick = (id) => {
     setIdCategory(id)
     setOpen(!open);
   };
-  const location = useLocation();
-
-  useEffect(() => {
-    console.log(location);
-  }, [location]);
-
-
-  useEffect(() => {
-    dispatch(getCategoriesRequest())
-  }, [])
-
+  const callApi = (e, name) => {
+    dispatch(getProductsByCategoryRequest(name))
+  }
 
   return (
     <div>
       <List
-        sx={{ width: '200%', bgcolor: 'background.paper', marginLeft: '30%', textTransform: 'uppercase', fontWeight: 'bold', color: ' rgba(102, 102, 102, 0.85)' }}
+        sx={{ width: '100%', bgcolor: 'background.paper', marginLeft: '30%', textTransform: 'uppercase', fontWeight: 'bold', color: ' rgba(102, 102, 102, 0.85)' }}
         aria-labelledby="nested-list-subheader"
       >
         <p className="danh-muc">DANH MỤC SẢN PHẨM</p>
@@ -48,14 +39,14 @@ export const SideBar = () => {
             category.categoryDetails.length === 0 ? (
               <ListItemButton sx={{ pl: 2 }}>
                 <Link to={`/products/${category.name}`} >
-                  <ListItemText primary={category.name} />
+                  <ListItemText primary={category.name} onClick={ (e) => callApi(e, category.name)} />
                 </Link>
               </ListItemButton>
             ) : (
               <List>
                 <ListItemButton onClick={() => handleClick(category._id)} sx={{ pl: 2 }}>
                   <Link to={`/products/${category.name}`}  >
-                    <ListItemText primary={category.name} />
+                    <ListItemText primary={category.name} onClick={(e) => callApi(e, category.name)} />
                   </Link>
                   {(open && category._id === idCategory) ? <ExpandLess /> : <ExpandMore />}
                 </ListItemButton>
@@ -65,7 +56,7 @@ export const SideBar = () => {
                       category.categoryDetails.map((categoryDetail, i) => (
                         <ListItemButton sx={{ pl: 6 }} >
                           <Link to={`/products/${category.name}/${categoryDetail}`} >
-                            <ListItemText primary={categoryDetail} />
+                            <ListItemText primary={categoryDetail} onClick={(e) => callApi(e, `${category.name}/${categoryDetail}`)}  />
                           </Link>
                         </ListItemButton>
                       ))
