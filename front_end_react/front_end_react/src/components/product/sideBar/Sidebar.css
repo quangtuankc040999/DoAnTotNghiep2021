@@ -1,0 +1,14 @@
+.danh-muc {
+    font-size: 1rem;
+    color:  rgb(210,110,75)!important;
+    font-weight: 700;
+    text-transform: uppercase !important;
+    margin-bottom: 0 !important;
+  }
+  .get-border {
+    margin-top: 10px;
+    height: 0px;
+    width: 30px;
+    border-bottom: 3px solid rgb(212, 212, 212);
+    margin-bottom: 10px;
+  }

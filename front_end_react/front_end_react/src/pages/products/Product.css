@@ -1,0 +1,12 @@
+.container-product {
+    min-height: 100vh;
+    width: 100% !important;
+    display: flex;
+    margin: 0 auto;
+  }
+  .side-bar-product {
+    width: 10% !important;
+  }
+  .infor-product {
+    width: 50% !important;
+  }
